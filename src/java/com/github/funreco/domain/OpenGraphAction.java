@@ -49,4 +49,14 @@ public class OpenGraphAction {
     public FacebookProfileRef getProfile() {
         return profile;
     }
+
+    @Override
+    public String toString() {
+        return "OpenGraphAction{" +
+                "date=" + date +
+                ", id=" + id +
+                ", profile=" + profile +
+                ", object=" + object +
+                '}';
+    }
 }

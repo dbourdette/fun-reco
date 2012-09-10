@@ -39,4 +39,14 @@ public class OpenGraphObjectTest {
 
         assertThat(object1).isEqualTo(object2);
     }
+
+    @Test
+    public void setProperties() {
+        OpenGraphObject object = new OpenGraphObject();
+
+        object.setProperties("type=video\nshow=la grosse émission");
+
+        assertThat(object.get("type")).contains("video");
+        assertThat(object.get("show")).contains("la grosse émission");
+    }
 }

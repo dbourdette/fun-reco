@@ -1,5 +1,7 @@
 package com.github.funreco.domain.query;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author damien bourdette
  */
@@ -18,5 +20,11 @@ public class Query {
 
     public static Criterion notNull(String key) {
         return new NotNullCriterion(key);
+    }
+
+    public static Criterion parse(String query) {
+        String[] keyValue = StringUtils.split(query, "=");
+
+        return Query.property(StringUtils.trim(keyValue[0]), StringUtils.trim(keyValue[1]));
     }
 }

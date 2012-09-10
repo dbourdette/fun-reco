@@ -1,9 +1,14 @@
 package com.github.funreco.domain;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.google.code.morphia.annotations.Property;
 
@@ -39,6 +44,27 @@ public class OpenGraphObject {
         return this;
     }
 
+    /**
+     * Reads properties from standard java properties form
+     */
+    public void setProperties(String properties) {
+        this.properties = new HashMap<String, Set<String>>();
+
+        Properties props = new Properties();
+
+        try {
+            props.load(new StringReader(properties));
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Failed to read properties", e);
+        }
+
+        for (Object object : props.keySet()) {
+            String key = (String) object;
+
+            put(key, StringUtils.split((String) props.get(key), ","));
+        }
+    }
+
     public Set<String> get(String key) {
         return properties.get(key);
     }
@@ -52,6 +78,14 @@ public class OpenGraphObject {
         }
 
         return values;
+    }
+
+    @Override
+    public String toString() {
+        return "OpenGraphObject{" +
+                "id='" + id + '\'' +
+                ", properties=" + properties +
+                '}';
     }
 
     @Override
