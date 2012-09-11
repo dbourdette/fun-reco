@@ -14,7 +14,7 @@ import org.apache.commons.collections.Predicate;
 import com.github.funreco.domain.FacebookProfileRef;
 import com.github.funreco.domain.OpenGraphAction;
 import com.github.funreco.domain.OpenGraphObject;
-import com.github.funreco.domain.query.Criterion;
+import com.github.funreco.domain.query.Query;
 
 /**
  * @author damien bourdette
@@ -64,7 +64,7 @@ public class OpenGraphActionStats {
         return filter(new FriendsPredicate(friends));
     }
 
-    public OpenGraphActionStats filterByQuery(Criterion criterion) {
+    public OpenGraphActionStats filterByQuery(Query criterion) {
         return filter(new CriterionPredicate(criterion));
     }
 
@@ -120,9 +120,9 @@ public class OpenGraphActionStats {
     }
 
     private class CriterionPredicate implements Predicate {
-        private Criterion criterion;
+        private Query criterion;
 
-        private CriterionPredicate(Criterion criterion) {
+        private CriterionPredicate(Query criterion) {
             this.criterion = criterion;
         }
 

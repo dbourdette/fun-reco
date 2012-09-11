@@ -2,11 +2,11 @@ package com.github.funreco.domain.query;
 
 import com.github.funreco.domain.OpenGraphObject;
 
-/**
- * @author damien bourdette
- */
-public class NotNullCriterion implements Criterion {
+public class NotNullCriterion implements Query {
     private String key;
+
+    public NotNullCriterion() {
+    }
 
     public NotNullCriterion(String key) {
         this.key = key;
@@ -32,5 +32,10 @@ public class NotNullCriterion implements Criterion {
     @Override
     public int hashCode() {
         return key != null ? key.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return key + "!=null";
     }
 }

@@ -4,13 +4,13 @@ import java.util.Set;
 
 import com.github.funreco.domain.OpenGraphObject;
 
-/**
- * @author damien bourdette
- */
-public class PropertyCriterion implements Criterion {
+public class PropertyCriterion implements Query {
     private String key;
 
     private String value;
+
+    public PropertyCriterion() {
+    }
 
     public PropertyCriterion(String key, String value) {
         this.key = key;
@@ -46,9 +46,6 @@ public class PropertyCriterion implements Criterion {
 
     @Override
     public String toString() {
-        return "PropertyCriterion{" +
-                "key='" + key + '\'' +
-                ", value='" + value + '\'' +
-                '}';
+        return key + "=" + value;
     }
 }

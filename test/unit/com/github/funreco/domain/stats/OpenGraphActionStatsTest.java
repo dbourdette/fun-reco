@@ -11,7 +11,7 @@ import com.github.funreco.domain.FacebookProfile;
 import com.github.funreco.domain.FacebookTestProfiles;
 import com.github.funreco.domain.OpenGraphObject;
 
-import static com.github.funreco.domain.query.Query.*;
+import static com.github.funreco.domain.query.Queries.*;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**

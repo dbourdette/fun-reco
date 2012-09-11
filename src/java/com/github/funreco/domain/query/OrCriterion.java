@@ -3,25 +3,27 @@ package com.github.funreco.domain.query;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.github.funreco.domain.OpenGraphObject;
 
-/**
- * @author damien bourdette
- */
-public class OrCriterion implements Criterion {
-    private List<Criterion> criteria;
+public class OrCriterion implements Query {
+    private List<Query> criteria;
 
-    public OrCriterion(List<Criterion> criteria) {
+    public OrCriterion() {
+    }
+
+    public OrCriterion(List<Query> criteria) {
         this.criteria = criteria;
     }
 
-    public OrCriterion(Criterion... criteria) {
+    public OrCriterion(Query... criteria) {
         this(Arrays.asList(criteria));
     }
 
     @Override
     public boolean match(OpenGraphObject object) {
-        for (Criterion criterion : criteria) {
+        for (Query criterion : criteria) {
             if (criterion.match(object)) {
                 return true;
             }
@@ -45,5 +47,10 @@ public class OrCriterion implements Criterion {
     @Override
     public int hashCode() {
         return criteria != null ? criteria.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "or(" + StringUtils.join(criteria, ", ") + ")";
     }
 }

@@ -23,14 +23,13 @@
         </div>
 
         <div class="span6">
-            <legend>Registered Queries<g:link controller="queries" class="btn btn-primary pull-right">Add</g:link></legend>
+            <legend>Registered Queries</legend>
 
             <ul>
                 <g:each in="${queries}">
                     <li>
                         <g:set var="date"><g:formatDate date="${it.lastUsage}" format="HH:mm dd/MM/yyyy" /></g:set>
                         ${it.query} (used last at ${it.lastUsage ? date : 'unknown'})
-                        <g:link controller="queries" action="delete" id="${it.id.toString()}"><i class="icon-trash"></i></g:link>
                     </li>
                 </g:each>
             </ul>

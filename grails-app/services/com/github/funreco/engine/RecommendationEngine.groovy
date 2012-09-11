@@ -1,4 +1,4 @@
-package com.github.funreco.service
+package com.github.funreco.engine
 
 import com.github.funreco.domain.FacebookIdAndName
 import com.github.funreco.domain.FacebookProfile
@@ -9,31 +9,31 @@ import com.github.funreco.domain.recommandation.OpenGraphRecommendation
 import com.github.funreco.domain.recommandation.RecommendedObject
 import com.github.funreco.domain.stats.OpenGraphActionStat
 import com.github.funreco.domain.stats.OpenGraphActionStats
+import com.github.funreco.service.FacebookFriendsService
+import com.github.funreco.service.OpenGraphQueryService
 import com.google.code.morphia.Datastore
 import com.google.code.morphia.query.Query
 import org.apache.commons.collections.CollectionUtils
 import org.joda.time.DateTime
 import org.joda.time.Interval
 
-class RecommendationService {
+class RecommendationEngine {
     OpenGraphQueryService openGraphQueryService
 
     FacebookFriendsService facebookFriendsService
 
     Datastore datastore
 
-    public void save(OpenGraphRecommendation recommendation) {
-        if (recommendation.size() == 0) {
-            return;
-        }
+    private volatile OpenGraphActionStats stats;
 
-        OpenGraphRecommendation dbRecommendation = query(recommendation.getProfile()).get();
+    private volatile List<OpenGraphQuery> queries;
 
-        if (dbRecommendation != null) {
-            recommendation.setId(dbRecommendation.getId());
-        }
+    public void buildStats() {
+        stats = findStats(last7Days());
+    }
 
-        datastore.save(recommendation);
+    public void loadQueries() {
+        queries = openGraphQueryService.findAll();
     }
 
     public OpenGraphRecommendation findRecommendation(FacebookIdAndName profile) {
@@ -47,8 +47,8 @@ class RecommendationService {
 
         OpenGraphRecommendation recommendation = OpenGraphRecommendation.forProfile(facebookProfile);
 
-        for (OpenGraphQuery query : openGraphQueryService.findAll()) {
-            OpenGraphActionStats filteredStats = stats.filterByQuery(com.github.funreco.domain.query.Query.parse(query.getQuery()));
+        for (OpenGraphQuery query : queries) {
+            OpenGraphActionStats filteredStats = stats.filterByQuery(query.getQuery());
 
             List<RecommendedObject> objects = new ArrayList<RecommendedObject>();
 
@@ -58,10 +58,24 @@ class RecommendationService {
                 objects.add(RecommendedObject.object(stat.getObject()).by(mutualFiends));
             }
 
-            recommendation.forQuery(query.getQuery()).recommend(objects);
+            recommendation.forQuery(query.getQuery().toString()).recommend(objects);
         }
 
         save(recommendation)
+    }
+
+    private void save(OpenGraphRecommendation recommendation) {
+        if (recommendation.size() == 0) {
+            return;
+        }
+
+        OpenGraphRecommendation dbRecommendation = query(recommendation.getProfile()).get();
+
+        if (dbRecommendation != null) {
+            recommendation.setId(dbRecommendation.getId());
+        }
+
+        datastore.save(recommendation);
     }
 
     private List<FacebookProfileRef> mutualFiends(OpenGraphActionStat stat, List<FacebookProfileRef> myFriends) {

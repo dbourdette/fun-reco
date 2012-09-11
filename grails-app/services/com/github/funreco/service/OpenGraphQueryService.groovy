@@ -1,9 +1,8 @@
 package com.github.funreco.service
 
 import com.github.funreco.domain.OpenGraphQuery
+import com.github.funreco.domain.query.Query
 import com.google.code.morphia.Datastore
-import com.google.code.morphia.query.Query
-import com.google.code.morphia.query.UpdateOperations
 import org.bson.types.ObjectId
 
 class OpenGraphQueryService {
@@ -13,11 +12,17 @@ class OpenGraphQueryService {
         return datastore.find(OpenGraphQuery.class).asList()
     }
 
-    public void add(String query) {
-        Query<OpenGraphQuery> dbQuery = datastore.find(OpenGraphQuery.class).filter("query", query);
-        UpdateOperations<OpenGraphQuery> ops = datastore.createUpdateOperations(OpenGraphQuery.class).set("lastUsage", new Date());
+    public void save(Query query) {
+        OpenGraphQuery openGraphQuery = datastore.find(OpenGraphQuery.class).filter("queryLiteral", query.toString()).get();
 
-        datastore.update(dbQuery, ops, true)
+        if (openGraphQuery == null) {
+            openGraphQuery = new OpenGraphQuery();
+            openGraphQuery.setQuery(query);
+        }
+
+        openGraphQuery.setLastUsage(new Date());
+
+        datastore.save(openGraphQuery)
     }
 
     public void delete(String id) {

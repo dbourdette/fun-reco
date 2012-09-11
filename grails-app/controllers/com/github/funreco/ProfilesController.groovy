@@ -6,7 +6,7 @@ import com.github.funreco.domain.FacebookProfileRef
 import com.github.funreco.domain.OpenGraphAction
 import com.github.funreco.service.FacebookFriendsService
 import com.github.funreco.service.FacebookProfileService
-import com.github.funreco.service.RecommendationService
+import com.github.funreco.engine.RecommendationEngine
 import com.google.code.morphia.Datastore
 import com.google.code.morphia.query.Query
 import org.apache.commons.lang.StringUtils
@@ -19,7 +19,7 @@ class ProfilesController {
 
     FacebookFriendsService facebookFriendsService
 
-    RecommendationService recommendationService
+    RecommendationEngine recommendationEngine
 
     def index() {
         Query<FacebookProfile> query = datastore.find(FacebookProfile.class)
@@ -56,7 +56,7 @@ class ProfilesController {
                 'profile': profile,
                 'actions': datastore.find(OpenGraphAction.class).filter("profile.facebookId", profile.getFacebookId()).asList(),
                 'friends': datastore.find(FacebookFriends.class).filter("profile.facebookId", profile.getFacebookId()).get(),
-                'recommendations': recommendationService.findRecommendation(profile)
+                'recommendations': recommendationEngine.findRecommendation(profile)
         ]
     }
 
@@ -77,7 +77,9 @@ class ProfilesController {
     def buildRecommendations() {
         FacebookProfile profile = datastore.get(FacebookProfile.class, new ObjectId(params.id))
 
-        recommendationService.buildRecommendations(profile)
+        recommendationEngine.buildStats()
+        recommendationEngine.loadQueries()
+        recommendationEngine.buildRecommendations(profile)
 
         redirect(action: 'profile', id: params.id)
     }
