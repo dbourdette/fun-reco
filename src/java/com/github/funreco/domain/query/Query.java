@@ -1,6 +1,12 @@
 package com.github.funreco.domain.query;
 
-import org.apache.commons.lang.StringUtils;
+import org.antlr.runtime.ANTLRStringStream;
+import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.RecognitionException;
+
+import com.github.funreco.domain.query.parser.QueryLexer;
+import com.github.funreco.domain.query.parser.QueryParser;
+
 
 /**
  * @author damien bourdette
@@ -23,8 +29,14 @@ public class Query {
     }
 
     public static Criterion parse(String query) {
-        String[] keyValue = StringUtils.split(query, "=");
+        QueryLexer lex = new QueryLexer(new ANTLRStringStream(query));
+        CommonTokenStream tokens = new CommonTokenStream(lex);
+        QueryParser parser = new QueryParser(tokens);
 
-        return Query.property(StringUtils.trim(keyValue[0]), StringUtils.trim(keyValue[1]));
+        try {
+            return parser.parse();
+        } catch (RecognitionException e) {
+            throw new IllegalArgumentException("Failed to parse query", e);
+        }
     }
 }

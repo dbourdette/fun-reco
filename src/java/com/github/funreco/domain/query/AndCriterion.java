@@ -19,6 +19,10 @@ public class AndCriterion implements Criterion {
         this(Arrays.asList(criteria));
     }
 
+    public void add(Criterion criterion) {
+        criteria.add(criterion);
+    }
+
     @Override
     public boolean match(OpenGraphObject object) {
         for (Criterion criterion : criteria) {

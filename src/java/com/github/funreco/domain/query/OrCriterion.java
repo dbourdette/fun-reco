@@ -1,5 +1,6 @@
 package com.github.funreco.domain.query;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,12 +12,23 @@ import com.github.funreco.domain.OpenGraphObject;
 public class OrCriterion implements Criterion {
     private List<Criterion> criteria;
 
+    public OrCriterion() {
+    }
+
     public OrCriterion(List<Criterion> criteria) {
         this.criteria = criteria;
     }
 
     public OrCriterion(Criterion... criteria) {
         this(Arrays.asList(criteria));
+    }
+
+    public void add(Criterion criterion) {
+        if (criteria == null) {
+            criteria = new ArrayList<Criterion>();
+        }
+
+        criteria.add(criterion);
     }
 
     @Override

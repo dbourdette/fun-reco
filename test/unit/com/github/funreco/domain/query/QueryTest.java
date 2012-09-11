@@ -24,6 +24,17 @@ public class QueryTest {
     @Test
     public void parseProperty() {
         assertThat(Query.parse("type = video")).isEqualTo(new PropertyCriterion("type", "video"));
-        assertThat(Query.parse("type = sound")).isEqualTo(new PropertyCriterion("type", "sound"));
+        assertThat(Query.parse("type=sound")).isEqualTo(new PropertyCriterion("type", "sound"));
+    }
+
+    @Test
+    public void parseNotNull() {
+        assertThat(Query.parse("show != null")).isEqualTo(new NotNullCriterion("show"));
+    }
+
+    @Test
+    public void parseOr() {
+        assertThat(Query.parse("or(type = video, show != null)")).isEqualTo(new OrCriterion(new PropertyCriterion("type", "video"), new NotNullCriterion("show")));
+        assertThat(Query.parse("or (type=video,show!=null)")).isEqualTo(new OrCriterion(new PropertyCriterion("type", "video"), new NotNullCriterion("show")));
     }
 }
