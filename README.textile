@@ -1,6 +1,5 @@
-
 # install and run a local mongodb
-# install "grails 2.x":http://grails.org/
+# install "grails 2.1.x":http://grails.org/
 # git clone git@github.com:dbourdette/fun-reco.git
 # grails run-app
 
