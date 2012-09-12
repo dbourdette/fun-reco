@@ -1,5 +1,6 @@
 package com.github.funreco.domain.query;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,6 +20,14 @@ public class OrCriterion implements Query {
 
     public OrCriterion(Query... criteria) {
         this(Arrays.asList(criteria));
+    }
+
+    public void add(Query criterion) {
+        if (criteria == null) {
+            criteria = new ArrayList<Query>();
+        }
+
+        criteria.add(criterion);
     }
 
     @Override

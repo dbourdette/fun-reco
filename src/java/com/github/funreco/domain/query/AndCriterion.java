@@ -21,6 +21,10 @@ public class AndCriterion implements Query {
         this(Arrays.asList(criteria));
     }
 
+    public void add(Query criterion) {
+        criteria.add(criterion);
+    }
+
     @Override
     public boolean match(OpenGraphObject object) {
         for (Query criterion : criteria) {
