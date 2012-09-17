@@ -1,19 +1,18 @@
 package com.github.funreco.service
 
 import com.github.funreco.domain.OpenGraphQuery
-import com.github.funreco.domain.query.Query
 import com.google.code.morphia.Datastore
 import org.bson.types.ObjectId
 
 class OpenGraphQueryService {
-    Datastore datastore
+    private Datastore communityDatastore
 
     public List<OpenGraphQuery> findAll() {
-        return datastore.find(OpenGraphQuery.class).asList()
+        return communityDatastore.find(OpenGraphQuery.class).asList()
     }
 
-    public void save(Query query) {
-        OpenGraphQuery openGraphQuery = datastore.find(OpenGraphQuery.class).filter("queryLiteral", query.toString()).get();
+    public void save(com.github.funreco.domain.query.Query query) {
+        OpenGraphQuery openGraphQuery = communityDatastore.find(OpenGraphQuery.class).filter("queryLiteral", query.toString()).get();
 
         if (openGraphQuery == null) {
             openGraphQuery = new OpenGraphQuery();
@@ -22,10 +21,14 @@ class OpenGraphQueryService {
 
         openGraphQuery.setLastUsage(new Date());
 
-        datastore.save(openGraphQuery)
+        communityDatastore.save(openGraphQuery)
     }
 
     public void delete(String id) {
-        datastore.delete(OpenGraphQuery.class, new ObjectId(id));
+        communityDatastore.delete(OpenGraphQuery.class, new ObjectId(id));
+    }
+
+    void setCommunityDatastore(Datastore communityDatastore) {
+        this.communityDatastore = communityDatastore
     }
 }

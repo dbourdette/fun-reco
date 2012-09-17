@@ -1,22 +1,18 @@
 package com.github.funreco
 
+import com.github.funreco.bootstrap.BootstrapDB
 import com.github.funreco.domain.FacebookProfile
 import com.github.funreco.engine.RecommendationEngine
 import com.github.funreco.service.FacebookFriendsService
 import com.github.funreco.service.FacebookLikesRecommendationService
 import com.github.funreco.service.FacebookProfileService
 import com.github.funreco.service.OpenGraphActionService
-import com.github.funreco.service.OpenGraphQueryService
 import com.google.code.morphia.Datastore
 import org.apache.commons.lang.StringUtils
-import org.bson.types.ObjectId
-import com.github.funreco.bootstrap.BootstrapDB
 
 class IndexController {
 
     Datastore datastore
-
-    OpenGraphQueryService openGraphQueryService
 
     FacebookProfileService facebookProfileService
 
@@ -52,6 +48,20 @@ class IndexController {
         render(view: "/index", model : model)
     }
 
+    def buildRecommendations() {
+        FacebookProfile profile = findByEmailOrFacebookId(params.email, params.facebookId);
+
+        recommendationEngine.reloadStatsAndQueries()
+
+        if (profile == null) {
+            recommendationEngine.buildGenericRecommendations()
+        } else {
+            recommendationEngine.buildRecommendations(profile)
+        }
+
+        redirect(action: "index", params : [facebookId : params.facebookId])
+    }
+
     def bootstrap() {
         bootstrapDB.reset()
 
@@ -68,15 +78,5 @@ class IndexController {
         }
 
         return null;
-    }
-
-    def buildRecommendations() {
-        FacebookProfile profile = datastore.get(FacebookProfile.class, new ObjectId(params.id))
-
-        recommendationEngine.buildStats()
-        recommendationEngine.loadQueries()
-        recommendationEngine.buildRecommendations(profile)
-
-        redirect(action: 'profile', id: params.id)
     }
 }

@@ -69,7 +69,7 @@ public class RecommendationEngine {
     }
 
     public void buildRecommendations(FacebookProfile facebookProfile) {
-        List<FacebookProfileRef> myFriends = facebookFriendsService.findFriends(facebookProfile.toRef());
+        List<FacebookProfileRef> myFriends = facebookFriendsService.findFriends(facebookProfile);
 
         OpenGraphActionStats myFriendsStats = stats.filterByFriends(myFriends);
 

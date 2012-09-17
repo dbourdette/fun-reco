@@ -7,11 +7,15 @@ import com.github.funreco.bootstrap.BootstrapDB
 beans = {
     datastore(DatastoreFactoryBean)
 
+    bootstrapDB(BootstrapDB)
+
+    openGraphQueryService(OpenGraphQueryService) {
+        communityDatastore = ref("datastore")
+    }
+
     recommendationEngine(RecommendationEngine) {
         communityDatastore = ref("datastore")
         openGraphQueryService = ref("openGraphQueryService")
         facebookFriendsService = ref("facebookFriendsService")
     }
-
-    bootstrapDB(BootstrapDB)
 }

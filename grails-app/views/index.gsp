@@ -35,7 +35,7 @@
 
         <div class="row">
             <div class="span8">
-                <legend>Open graph for ${profile == null ? 'all users' : profile.email}</legend>
+                <legend>Open graph for ${profile == null ? 'all users' : profile.email} <g:link action="buildRecommendations" params="[facebookId : profile?.facebookId]" class="btn btn-warning">Build recos</g:link></legend>
                 <g:each var="recommendationEntry" in="${recommendation?.entries}">
                     <h4>${recommendationEntry.query}</h4>
                     <ul>
