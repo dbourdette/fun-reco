@@ -53,8 +53,8 @@ public class OpenGraphAction {
     @Override
     public String toString() {
         return "OpenGraphAction{" +
-                "date=" + date +
-                ", id=" + id +
+                "id=" + id +
+                ", date=" + date +
                 ", profile=" + profile +
                 ", object=" + object +
                 '}';

@@ -9,7 +9,7 @@ import java.util.Random;
 import com.github.funreco.domain.FacebookIdAndName;
 import com.github.funreco.domain.FacebookProfileRef;
 import com.github.funreco.domain.OpenGraphObject;
-import com.github.funreco.domain.stats.OpenGraphActionStat;
+import com.github.funreco.engine.OpenGraphActionStat;
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Property;
 
@@ -101,10 +101,10 @@ public class RecommendedObject {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RecommendedObject that = (RecommendedObject) o;
+        RecommendedObject object = (RecommendedObject) o;
 
-        if (by != null ? !by.equals(that.by) : that.by != null) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (by != null ? !by.equals(object.by) : object.by != null) return false;
+        if (id != null ? !id.equals(object.id) : object.id != null) return false;
 
         return true;
     }

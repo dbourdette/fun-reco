@@ -4,9 +4,6 @@ import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
 
-/**
- * @author damien bourdette
- */
 public class FacebookTestProfiles {
     public static FacebookProfile johnDoe() {
         return aProfile("john.doe@unkown.com");

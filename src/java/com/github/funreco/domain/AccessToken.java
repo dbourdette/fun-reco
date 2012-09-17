@@ -2,9 +2,6 @@ package com.github.funreco.domain;
 
 import java.util.Date;
 
-/**
- * @author damien bourdette
- */
 public class AccessToken {
     private Date createdAt;
 
@@ -14,6 +11,8 @@ public class AccessToken {
     private String domain;
 
     private String value;
+
+    private boolean extended;
 
     public AccessToken() {
     }
@@ -38,5 +37,13 @@ public class AccessToken {
 
     public String getValue() {
         return value;
+    }
+
+    public boolean isExtended() {
+        return extended;
+    }
+
+    public void setExtended(boolean extended) {
+        this.extended = extended;
     }
 }

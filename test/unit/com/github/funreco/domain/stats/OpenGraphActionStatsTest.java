@@ -10,13 +10,12 @@ import org.junit.Test;
 import com.github.funreco.domain.FacebookProfile;
 import com.github.funreco.domain.FacebookTestProfiles;
 import com.github.funreco.domain.OpenGraphObject;
+import com.github.funreco.engine.OpenGraphActionStat;
+import com.github.funreco.engine.OpenGraphActionStats;
 
 import static com.github.funreco.domain.query.Queries.*;
 import static org.fest.assertions.Assertions.assertThat;
 
-/**
- * @author damien bourdette
- */
 public class OpenGraphActionStatsTest {
     private OpenGraphActionStats stats;
 
@@ -30,7 +29,7 @@ public class OpenGraphActionStatsTest {
 
         init.add(new OpenGraphActionStat(new OpenGraphObject("1").put("type", "video"))
                 .increaseCount(profile1));
-        init.add(new OpenGraphActionStat(new OpenGraphObject("2").put("type", "photo"))
+        init.add(new OpenGraphActionStat(new OpenGraphObject("2").put("type", "image"))
                 .increaseCount(profile1)
                 .increaseCount(profile2));
         init.add(new OpenGraphActionStat(new OpenGraphObject("3").put("type", "video"))
@@ -46,16 +45,16 @@ public class OpenGraphActionStatsTest {
         stats = stats.filterByFriends(Arrays.asList(profile1.toRef()));
 
         assertThat(stats.getObjectCount()).isEqualTo(2);
-        assertThat(stats.getObject(0)).isEqualTo(new OpenGraphObject("2").put("type", "photo"));
+        assertThat(stats.getObject(0)).isEqualTo(new OpenGraphObject("2").put("type", "image"));
         assertThat(stats.getObject(1)).isEqualTo(new OpenGraphObject("1").put("type", "video"));
     }
 
     @Test
     public void filterByTypeQuery() {
-        stats = stats.filterByQuery(property("type", "photo"));
+        stats = stats.filterByQuery(property("type", "image"));
 
         assertThat(stats.getObjectCount()).isEqualTo(1);
-        assertThat(stats.getObject(0)).isEqualTo(new OpenGraphObject("2").put("type", "photo"));
+        assertThat(stats.getObject(0)).isEqualTo(new OpenGraphObject("2").put("type", "image"));
     }
 
     @Test
@@ -68,7 +67,7 @@ public class OpenGraphActionStatsTest {
 
     @Test
     public void filterWithOrQuery() {
-        stats = stats.filterByQuery(or(property("type", "photo"), property("type", "video")));
+        stats = stats.filterByQuery(or(property("type", "image"), property("type", "video")));
 
         assertThat(stats.getObjectCount()).isEqualTo(4);
     }
@@ -94,7 +93,7 @@ public class OpenGraphActionStatsTest {
         stats = stats.top(1);
 
         assertThat(stats.getObjectCount()).isEqualTo(1);
-        assertThat(stats.getObject(0)).isEqualTo(new OpenGraphObject("2").put("type", "photo"));
+        assertThat(stats.getObject(0)).isEqualTo(new OpenGraphObject("2").put("type", "image"));
     }
 
     @Test
@@ -105,6 +104,6 @@ public class OpenGraphActionStatsTest {
 
     @Test
     public void iterate() {
-        assertThat(stats.iterate().iterator().next().getObject()).isEqualTo(new OpenGraphObject("2").put("type", "photo"));
+        assertThat(stats.iterate().iterator().next().getObject()).isEqualTo(new OpenGraphObject("2").put("type", "image"));
     }
 }

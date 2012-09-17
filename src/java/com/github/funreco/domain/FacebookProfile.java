@@ -12,6 +12,9 @@ import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.annotations.Property;
 
+/**
+ * @author damien bourdette
+ */
 @Entity(value = FacebookProfile.COLLECTION_NAME, noClassnameStored = true)
 public class FacebookProfile implements FacebookIdAndName {
     public static final String COLLECTION_NAME = "facebook.profiles";
@@ -104,6 +107,10 @@ public class FacebookProfile implements FacebookIdAndName {
 
     public ObjectId getId() {
         return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -217,4 +224,3 @@ public class FacebookProfile implements FacebookIdAndName {
         return rootNode.get(name) == null ? "" : rootNode.get(name).getValueAsText();
     }
 }
-

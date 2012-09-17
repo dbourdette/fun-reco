@@ -8,19 +8,23 @@ import com.github.funreco.domain.query.parser.QueryLexer;
 import com.github.funreco.domain.query.parser.QueryParser;
 
 public class Queries {
-    public static Query property(String key, String value) {
+    public static PropertyCriterion property(String key, String value) {
         return new PropertyCriterion(key, value);
     }
 
-    public static Query or(Query... criteria) {
+    public static PropertyCriterion property(String key, Long value) {
+        return property(key, value.toString());
+    }
+
+    public static OrCriterion or(Query... criteria) {
         return new OrCriterion(criteria);
     }
 
-    public static Query and(Query... criteria) {
+    public static AndCriterion and(Query... criteria) {
         return new AndCriterion(criteria);
     }
 
-    public static Query notNull(String key) {
+    public static NotNullCriterion notNull(String key) {
         return new NotNullCriterion(key);
     }
 

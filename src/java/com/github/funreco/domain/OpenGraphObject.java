@@ -2,6 +2,7 @@ package com.github.funreco.domain;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -10,11 +11,9 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Property;
 
-/**
- * @author damien bourdette
- */
 public class OpenGraphObject {
     @Property
     private String id;
@@ -22,10 +21,14 @@ public class OpenGraphObject {
     /**
      * A property is multi valued.
      */
-    @Property
+    @Embedded
     private Map<String, Set<String>> properties = new HashMap<String, Set<String>>();
 
     public OpenGraphObject() {
+    }
+
+    public OpenGraphObject(Long id) {
+        this.id = id.toString();
     }
 
     public OpenGraphObject(String id) {
@@ -37,9 +40,7 @@ public class OpenGraphObject {
     }
 
     public OpenGraphObject put(String key, String... values) {
-        for (String value : values) {
-            ensureKey(key).add(value);
-        }
+        Collections.addAll(ensureKey(key), values);
 
         return this;
     }

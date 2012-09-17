@@ -1,11 +1,16 @@
 package com.github.funreco
 
 import com.github.funreco.domain.FacebookProfile
-import com.github.funreco.domain.OpenGraphAction
-import com.github.funreco.domain.OpenGraphQuery
+import com.github.funreco.engine.RecommendationEngine
+import com.github.funreco.service.FacebookFriendsService
+import com.github.funreco.service.FacebookLikesRecommendationService
+import com.github.funreco.service.FacebookProfileService
+import com.github.funreco.service.OpenGraphActionService
 import com.github.funreco.service.OpenGraphQueryService
 import com.google.code.morphia.Datastore
-import com.github.funreco.domain.query.Queries
+import org.apache.commons.lang.StringUtils
+import org.bson.types.ObjectId
+import com.github.funreco.bootstrap.BootstrapDB
 
 class IndexController {
 
@@ -13,22 +18,65 @@ class IndexController {
 
     OpenGraphQueryService openGraphQueryService
 
-    def index() {
-        bootstrapQueries();
+    FacebookProfileService facebookProfileService
 
-        render(view: "/index", model :
-                [
-                        "queries" : datastore.find(OpenGraphQuery.class),
-                        'profileCount': datastore.find(FacebookProfile.class).countAll() ,
-                        'actionCount': datastore.find(OpenGraphAction.class).countAll()
-                ]
-        )
+    RecommendationEngine recommendationEngine
+
+    OpenGraphActionService openGraphActionService
+
+    FacebookFriendsService facebookFriendsService
+
+    FacebookLikesRecommendationService facebookLikesRecommendationService
+
+    BootstrapDB bootstrapDB
+
+    def index() {
+        FacebookProfile profile = findByEmailOrFacebookId(params.email, params.facebookId);
+
+        def model = [
+                email : params.email,
+                facebookId : params.facebookId,
+                profile : profile
+        ]
+
+        if (profile == null) {
+            model["recommendation"] = recommendationEngine.findGenericRecommendation();
+            model["actions"] = openGraphActionService.findLatests();
+        } else {
+            model["recommendation"] = recommendationEngine.findRecommendation(profile);
+            model["actions"] = openGraphActionService.findLatestsByProfile(profile);
+            model["facebookLikesRecommendation"] = facebookLikesRecommendationService.findRecommendation(profile);
+            model["friends"] = facebookFriendsService.findFriends(profile);
+        }
+
+        render(view: "/index", model : model)
     }
 
-    private void bootstrapQueries() {
-        ['video', 'sound', 'image', 'news'].each {
-            openGraphQueryService.save(Queries.property("type", it))
-            openGraphQueryService.save(Queries.and(Queries.property("type", it), Queries.notNull("show")))
+    def bootstrap() {
+        bootstrapDB.reset()
+
+        redirect(action: "index")
+    }
+
+    private FacebookProfile findByEmailOrFacebookId(String email, String facebookId) {
+        if (StringUtils.isNotEmpty(email)) {
+            return facebookProfileService.findByEmail(email);
         }
+
+        if (StringUtils.isNotEmpty(facebookId)) {
+            return facebookProfileService.findByFacebookId(facebookId);
+        }
+
+        return null;
+    }
+
+    def buildRecommendations() {
+        FacebookProfile profile = datastore.get(FacebookProfile.class, new ObjectId(params.id))
+
+        recommendationEngine.buildStats()
+        recommendationEngine.loadQueries()
+        recommendationEngine.buildRecommendations(profile)
+
+        redirect(action: 'profile', id: params.id)
     }
 }

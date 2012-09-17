@@ -1,4 +1,4 @@
-package com.github.funreco.domain.stats;
+package com.github.funreco.engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,9 +16,6 @@ import com.github.funreco.domain.OpenGraphAction;
 import com.github.funreco.domain.OpenGraphObject;
 import com.github.funreco.domain.query.Query;
 
-/**
- * @author damien bourdette
- */
 public class OpenGraphActionStats {
     private List<OpenGraphActionStat> stats = new ArrayList<OpenGraphActionStat>();
 

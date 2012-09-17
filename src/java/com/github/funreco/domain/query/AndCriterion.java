@@ -1,5 +1,6 @@
 package com.github.funreco.domain.query;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +23,10 @@ public class AndCriterion implements Query {
     }
 
     public void add(Query criterion) {
+        if (criteria == null) {
+            criteria = new ArrayList<Query>();
+        }
+
         criteria.add(criterion);
     }
 

@@ -8,6 +8,9 @@ import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 
+/**
+ * Stores friends for a profile
+ */
 @Entity(value = FacebookFriends.COLLECTION_NAME, noClassnameStored = true)
 public class FacebookFriends {
     public static final String COLLECTION_NAME = "facebook.friends";

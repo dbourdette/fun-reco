@@ -9,7 +9,7 @@ public class NotNullCriterion implements Query {
     }
 
     public NotNullCriterion(String key) {
-        this.key = key;
+        this.key = key == null ? null : key.trim();
     }
 
     @Override

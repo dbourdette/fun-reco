@@ -1,4 +1,4 @@
-package com.github.funreco.domain.stats;
+package com.github.funreco.engine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,6 @@ import com.github.funreco.domain.FacebookIdAndName;
 import com.github.funreco.domain.FacebookProfileRef;
 import com.github.funreco.domain.OpenGraphObject;
 
-/**
- * @author damien bourdette
- */
 public class OpenGraphActionStat {
     private OpenGraphObject object;
 
@@ -38,7 +35,7 @@ public class OpenGraphActionStat {
     public OpenGraphActionStat increaseCount(FacebookIdAndName profile) {
         count += 1;
 
-        FacebookProfileRef profileRef = FacebookProfileRef.fromIdAndName(profile);
+        FacebookProfileRef profileRef = new FacebookProfileRef(profile);
 
         if (!profiles.contains(profileRef)) {
             profiles.add(profileRef);

@@ -13,8 +13,8 @@ public class PropertyCriterion implements Query {
     }
 
     public PropertyCriterion(String key, String value) {
-        this.key = key;
-        this.value = value;
+        this.key = key == null ? null : key.trim();
+        this.value = value == null ? null : sanitizeValue(value.trim());
     }
 
     @Override
@@ -46,6 +46,23 @@ public class PropertyCriterion implements Query {
 
     @Override
     public String toString() {
-        return key + "=" + value;
+        return key + "='" + value + "'";
+    }
+
+    /**
+     * Until parser can remove quotes and double quotes.
+     */
+    private String sanitizeValue(String value) {
+        if (value.length() <= 2) {
+            return value;
+        }
+
+        if (value.startsWith("'") && value.endsWith("'")) {
+            return value.substring(1, value.length() - 1);
+        } else if (value.startsWith("\"") && value.endsWith("\"")) {
+            return value.substring(1, value.length() - 1);
+        }
+
+        return value;
     }
 }

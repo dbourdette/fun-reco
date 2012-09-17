@@ -9,7 +9,7 @@ import com.google.code.morphia.Datastore
 class FacebookFriendsService {
     Datastore datastore
 
-    public List<FacebookProfileRef> findFriends(FacebookProfileRef profile) {
+    public List<FacebookProfileRef> findFriends(FacebookIdAndName profile) {
         FacebookFriends friends = queryForProfile(profile).get();
 
         return friends == null ? new ArrayList<FacebookProfileRef>() : friends.getFriends();
