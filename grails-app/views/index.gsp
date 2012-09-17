@@ -35,7 +35,10 @@
 
         <div class="row">
             <div class="span8">
-                <legend>Open graph for ${profile == null ? 'all users' : profile.email} <g:link action="buildRecommendations" params="[facebookId : profile?.facebookId]" class="btn btn-warning">Build recos</g:link></legend>
+                <legend>
+                    Open graph for ${profile == null ? 'all users' : profile.email}
+                    <g:link action="buildRecommendations" params="[facebookId : profile?.facebookId]" class="btn btn-warning pull-right">Build recos</g:link>
+                </legend>
                 <g:each var="recommendationEntry" in="${recommendation?.entries}">
                     <h4>${recommendationEntry.query}</h4>
                     <ul>
@@ -73,7 +76,10 @@
 
         <div class="row">
             <div class="span12">
-                <legend>Latests actions</legend>
+                <legend>
+                    Latests actions
+                    <g:link controller="actions" class="btn btn-warning pull-right">View all</g:link>
+                </legend>
                 <ul>
                     <g:each var="action" in="${actions}">
                         <li>
