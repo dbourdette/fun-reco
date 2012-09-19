@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title></title>
 
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-combined.min.css" rel="stylesheet">
 
 </head>
 <body>
