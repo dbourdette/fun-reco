@@ -19,8 +19,6 @@ class BootstrapDB {
         new Mongo().getDB("fun-reco").getCollection(name).remove(new BasicDBObject());
 
         File file = new File("scripts/${name}.json")
-		
-		//println "mongoimport -d fun-reco -c ${name} ${file.absolutePath}";
 
         "mongoimport -d fun-reco -c ${name} ${file.absolutePath}".execute()
     }

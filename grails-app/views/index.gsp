@@ -13,7 +13,7 @@
     <div class="container">
         <div class="row">
             <div class="span12 well">
-                <g:link action="bootstrap" class="btn btn-warning pull-right">Reset DB</g:link>
+                <g:link controller="index" action="bootstrap" class="btn btn-warning pull-right">Reset DB</g:link>
                 <g:form controller="index" class="form-inline">
                     email
                     <input type="text" name="email" value="${email}" class="input-medium search-query input-xlarge">
