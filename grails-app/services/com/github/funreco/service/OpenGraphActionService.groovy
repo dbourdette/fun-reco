@@ -21,6 +21,11 @@ class OpenGraphActionService {
 
         return OpenGraphActionStats.fromActions(query);
     }
+	
+	public List<OpenGraphAction> findLatests() {
+		//Ensure compatibility of the new function findLatests
+		return findLatests(-1);
+	}
 
     public List<OpenGraphAction> findLatests(int numberOfRecord) {
 		if (numberOfRecord > 0 || numberOfRecord == null) {
