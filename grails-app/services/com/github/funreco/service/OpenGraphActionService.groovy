@@ -21,19 +21,9 @@ class OpenGraphActionService {
 
         return OpenGraphActionStats.fromActions(query);
     }
-	
-	public List<OpenGraphAction> findLatests() {
-		//Ensure compatibility of the new function findLatests
-		return findLatests(-1);
-	}
 
-    public List<OpenGraphAction> findLatests(int numberOfRecord) {
-		if (numberOfRecord > 0 || numberOfRecord == null) {
-			return datastore.find(OpenGraphAction.class).limit(numberOfRecord).order("-date").asList();
-		}
-		else {
-			return datastore.find(OpenGraphAction.class).order("-date").asList();
-		}
+    public List<OpenGraphAction> findLatests(int recordCount) {
+        return datastore.find(OpenGraphAction.class).limit(recordCount).order("-date").asList();
     }
 
     public List<OpenGraphAction> findLatestsByProfile(FacebookIdAndName profile) {

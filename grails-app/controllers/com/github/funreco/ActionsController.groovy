@@ -1,28 +1,20 @@
 package com.github.funreco
 
-import com.github.funreco.domain.FacebookProfile
 import com.github.funreco.domain.OpenGraphAction
-import com.github.funreco.domain.OpenGraphObject
-import com.github.funreco.service.OpenGraphActionService
-import com.github.funreco.service.FacebookProfileService
 import com.google.code.morphia.Datastore
+import com.google.code.morphia.query.Query
 
 class ActionsController {
 	
 	Datastore datastore
-	
-	OpenGraphActionService openGraphActionService
 
     def index() {
-		
-		def model = [
-			actions : openGraphActionService.findLatests(-1),
-			actionCount : 78
-		]
-		
+        int offset = params.offset ? params.int("offset") : 0
+        int limit = params.max ? params.int("max") : 10
 
-        render(view: "/actions/index", model : model)
+        Query<OpenGraphAction> query = datastore.find(OpenGraphAction.class);
+
+        [actions: query.skip(offset).limit(limit), total: query.countAll()]
     }
 	
 }
-

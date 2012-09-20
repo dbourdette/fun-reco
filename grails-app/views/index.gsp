@@ -14,13 +14,13 @@
         <div class="row">
             <div class="span12 well">
                 <g:link action="bootstrap" class="btn btn-warning pull-right">Reset DB</g:link>
-                <form class="form-inline">
+                <g:form controller="index" class="form-inline">
                     email
                     <input type="text" name="email" value="${email}" class="input-medium search-query input-xlarge">
                     facebook id
                     <input type="text" name="facebookId" value="${facebookId}" class="input-medium search-query input-xlarge">
                     <button type="submit" class="btn">Search</button>
-                </form>
+                </g:form>
             </div>
         </div>
 
