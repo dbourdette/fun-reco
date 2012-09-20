@@ -22,8 +22,13 @@ class OpenGraphActionService {
         return OpenGraphActionStats.fromActions(query);
     }
 
-    public List<OpenGraphAction> findLatests() {
-        return datastore.find(OpenGraphAction.class).limit(100).order("-date").asList();
+    public List<OpenGraphAction> findLatests(int numberOfRecord) {
+		if (numberOfRecord > 0 || numberOfRecord == null) {
+			return datastore.find(OpenGraphAction.class).limit(numberOfRecord).order("-date").asList();
+		}
+		else {
+			return datastore.find(OpenGraphAction.class).order("-date").asList();
+		}
     }
 
     public List<OpenGraphAction> findLatestsByProfile(FacebookIdAndName profile) {

@@ -37,7 +37,7 @@ class IndexController {
 
         if (profile == null) {
             model["recommendation"] = recommendationEngine.findGenericRecommendation();
-            model["actions"] = openGraphActionService.findLatests();
+            model["actions"] = openGraphActionService.findLatests(10);
         } else {
             model["recommendation"] = recommendationEngine.findRecommendation(profile);
             model["actions"] = openGraphActionService.findLatestsByProfile(profile);
