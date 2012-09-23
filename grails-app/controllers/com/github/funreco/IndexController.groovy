@@ -1,33 +1,18 @@
 package com.github.funreco
 
-import com.github.funreco.bootstrap.BootstrapDB
-import com.github.funreco.domain.FacebookProfile
-import com.github.funreco.engine.RecommendationEngine
-import com.github.funreco.service.FacebookFriendsService
-import com.github.funreco.service.FacebookLikesRecommendationService
-import com.github.funreco.service.FacebookProfileService
-import com.github.funreco.service.OpenGraphActionService
-import com.google.code.morphia.Datastore
-import org.apache.commons.lang.StringUtils
+import com.github.funreco.legacy.bootstrap.BootstrapDB
+import com.github.funreco.legacy.engine.RecommendationEngine
 
 class IndexController {
 
-    Datastore datastore
-
-    FacebookProfileService facebookProfileService
-
     RecommendationEngine recommendationEngine
 
-    OpenGraphActionService openGraphActionService
-
-    FacebookFriendsService facebookFriendsService
-
-    FacebookLikesRecommendationService facebookLikesRecommendationService
+    RecommendationFacade recommendationFacade
 
     BootstrapDB bootstrapDB
 
     def index() {
-        FacebookProfile profile = findByEmailOrFacebookId(params.email, params.facebookId);
+        Profile profile = recommendationFacade.findProfile(params.email, params.facebookId);
 
         def model = [
                 email : params.email,
@@ -36,20 +21,19 @@ class IndexController {
         ]
 
         if (profile == null) {
-            model["recommendation"] = recommendationEngine.findGenericRecommendation();
-            model["actions"] = openGraphActionService.findLatests(10);
+            model["recommendation"] = recommendationFacade.findDefaultRecommendations();
+            model["actions"] = recommendationFacade.findActions(0, 10);
         } else {
-            model["recommendation"] = recommendationEngine.findRecommendation(profile);
-            model["actions"] = openGraphActionService.findLatestsByProfile(profile);
-            model["facebookLikesRecommendation"] = facebookLikesRecommendationService.findRecommendation(profile);
-            model["friends"] = facebookFriendsService.findFriends(profile);
+            model["recommendation"] = recommendationFacade.findRecommendations(profile.facebookId);
+            model["actions"] = recommendationFacade.findActions(profile.facebookId, 0, 10);
+            model["friends"] = recommendationFacade.findFriends(profile.facebookId);
         }
 
         render(view: "/index", model : model)
     }
 
     def buildRecommendations() {
-        FacebookProfile profile = findByEmailOrFacebookId(params.email, params.facebookId);
+        Profile profile = recommendationFacade.findProfile(params.email, params.facebookId);
 
         recommendationEngine.reloadStatsAndQueries()
 
@@ -66,17 +50,5 @@ class IndexController {
         bootstrapDB.reset()
 
         redirect(action: "index")
-    }
-
-    private FacebookProfile findByEmailOrFacebookId(String email, String facebookId) {
-        if (StringUtils.isNotEmpty(email)) {
-            return facebookProfileService.findByEmail(email);
-        }
-
-        if (StringUtils.isNotEmpty(facebookId)) {
-            return facebookProfileService.findByFacebookId(facebookId);
-        }
-
-        return null;
     }
 }

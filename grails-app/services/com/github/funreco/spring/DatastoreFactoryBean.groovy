@@ -1,10 +1,10 @@
 package com.github.funreco.spring
 
-import com.github.funreco.domain.FacebookFriends
-import com.github.funreco.domain.FacebookProfile
-import com.github.funreco.domain.OpenGraphAction
-import com.github.funreco.domain.OpenGraphQuery
-import com.github.funreco.domain.recommandation.OpenGraphRecommendation
+import com.github.funreco.legacy.domain.FacebookFriends
+import com.github.funreco.legacy.domain.FacebookProfile
+import com.github.funreco.legacy.domain.OpenGraphAction
+import com.github.funreco.legacy.domain.OpenGraphQuery
+import com.github.funreco.legacy.domain.recommandation.OpenGraphRecommendation
 import com.google.code.morphia.Datastore
 import com.google.code.morphia.Morphia
 import com.mongodb.Mongo
