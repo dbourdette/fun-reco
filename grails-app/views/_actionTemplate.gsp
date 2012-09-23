@@ -1,5 +1,5 @@
 <g:formatDate value="${action.date}" pattern="dd/MM HH:mm" />
 -
-<a href="?facebookId=${action.profile.facebookId}">${action.profile.name}</a>
+<g:link controller="index" params="[facebookId: action.profile.facebookId]">${action.profile.name}</g:link>
 -
 ${action.entity}
