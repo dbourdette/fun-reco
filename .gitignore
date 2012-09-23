@@ -1,2 +1,12 @@
 *.iml
 target
+
+grails-app/views/index.gsp.BACKUP.3786.gsp
+
+grails-app/views/index.gsp.BASE.3786.gsp
+
+grails-app/views/index.gsp.LOCAL.3786.gsp
+
+grails-app/views/index.gsp.REMOTE.3786.gsp
+
+grails-app/views/index.gsp.orig
