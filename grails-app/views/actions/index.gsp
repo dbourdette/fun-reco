@@ -2,6 +2,7 @@
 
 	<head>
 	    <meta name="layout" content="main" />
+	    <r:require modules="bootstrap"/>
 	</head>
 	
 	<body>
@@ -9,9 +10,7 @@
         <div class="row">
             <div class="span12">
                 <legend>All actions</legend>
-                <div class="well">
-                    <g:paginate controller="actions" total="${total}" />
-                </div>
+                <g:paginate controller="actions" total="${total}" />
                 <ul>
                     <g:each var="action" in="${actions}">
                         <li>

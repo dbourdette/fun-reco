@@ -91,3 +91,6 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+// plugin Bootstrap
+grails.plugins.twitterbootstrap.fixtaglib = true
