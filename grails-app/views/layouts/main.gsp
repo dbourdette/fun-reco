@@ -4,6 +4,7 @@
 
 	<head>
 	    <meta charset="UTF-8">
+        <r:require modules="bootstrap"/>
 	    <r:layoutResources/>
 		<g:layoutHead />
 	</head>

@@ -2,7 +2,6 @@
 
 	<head>
 	    <meta name="layout" content="main" />
-	    <r:require modules="bootstrap"/>
 	</head>
 	
 	<body>
