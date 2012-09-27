@@ -20,9 +20,9 @@
 	                <g:each var="recommendationEntry" in="${recommendation?.entries}">
 	                    <h4>${recommendationEntry.query}</h4>
 	                    <ul>
-	                        <g:each var="recommendedEntity" in="${recommendationEntry.entities}">
+	                        <g:each var="recommendedObject" in="${recommendationEntry.objects}">
 	                            <li>
-	                                <g:formatRecommendation recommendedEntity="${recommendedEntity}" />
+	                                <g:formatRecommendation recommendedObject="${recommendedObject}" />
 	                            </li>
 	                        </g:each>
 	                    </ul>

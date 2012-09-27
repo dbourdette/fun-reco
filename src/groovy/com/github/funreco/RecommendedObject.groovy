@@ -1,6 +1,6 @@
 package com.github.funreco
 
-class RecommendedEntity {
-    Entity entity
+class RecommendedObject {
+    Object object
     List<Friend> by
 }

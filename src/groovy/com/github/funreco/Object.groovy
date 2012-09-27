@@ -1,12 +1,12 @@
 package com.github.funreco
 
-class Entity {
+class Object {
     String id
     Map<String, Set<String>> properties
 
     @Override
     public String toString() {
-        return "Entity{" +
+        return "Object{" +
                 "id='" + id + '\'' +
                 ", properties=" + properties +
                 '}';

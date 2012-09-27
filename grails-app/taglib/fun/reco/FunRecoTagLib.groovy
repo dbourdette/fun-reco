@@ -14,10 +14,10 @@ class FunRecoTagLib {
 	/**
 	 * Format an OpenGraphRecommendation
 	 *
-	 * @attr recommendedEntity REQUIRED
+	 * @attr recommendedObject REQUIRED
 	 */
 	def formatRecommendation = { attrs, body ->
-		out << render(template: "/recommendationTemplate", model: [recommendedEntity: attrs.recommendedEntity])
+		out << render(template: "/recommendationTemplate", model: [recommendedObject: attrs.recommendedObject])
 	}
 
 }

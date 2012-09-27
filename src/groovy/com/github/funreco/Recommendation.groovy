@@ -5,9 +5,9 @@ package com.github.funreco
  */
 class Recommendation {
     String query
-    List<RecommendedEntity> entities = new ArrayList<RecommendedEntity>()
+    List<RecommendedObject> objects = new ArrayList<RecommendedObject>()
 
-    void addEntity(RecommendedEntity entity) {
-        entities.add(entity)
+    void addObject(RecommendedObject object) {
+        objects.add(object)
     }
 }

@@ -1,13 +1,13 @@
 package com.github.funreco.legacy
 
 import com.github.funreco.Action
-import com.github.funreco.Entity
+import com.github.funreco.Object
 import com.github.funreco.Friend
 import com.github.funreco.Profile
 import com.github.funreco.Recommendation
 import com.github.funreco.RecommendationFacade
 import com.github.funreco.Recommendations
-import com.github.funreco.RecommendedEntity
+import com.github.funreco.RecommendedObject
 import com.github.funreco.legacy.domain.FacebookProfile
 import com.github.funreco.legacy.domain.FacebookProfileRef
 import com.github.funreco.legacy.domain.recommandation.OpenGraphRecommendation
@@ -64,13 +64,13 @@ class LegacyRecommendationFacade implements RecommendationFacade {
 
     List<Action> findActions(int offset, int limit) {
         return openGraphActionService.find(offset, limit).collect {
-            new Action(profile: fromFacebookProfileRef(it.profile), entity: new Entity(id: it.object.id, properties: it.object.properties))
+            new Action(profile: fromFacebookProfileRef(it.profile), object: new Object(id: it.object.id, properties: it.object.properties))
         }
     }
 
     List<Action> findActions(String facebookId, int offset, int limit) {
         return openGraphActionService.findByProfile(new FacebookProfile(facebookId: facebookId), offset, limit).collect {
-            new Action(profile: fromFacebookProfileRef(it.profile), entity: new Entity(id: it.object.id, properties: it.object.properties))
+            new Action(profile: fromFacebookProfileRef(it.profile), object: new Object(id: it.object.id, properties: it.object.properties))
         }
     }
 
@@ -106,7 +106,7 @@ class LegacyRecommendationFacade implements RecommendationFacade {
             it.objects.each {
                 List<Friend> by = it.by.collect { new Friend(facebookId: it.facebookId, name: it.name) }
 
-                recommendation.addEntity(new RecommendedEntity(entity: new Entity(id: it.id), by: by))
+                recommendation.addObject(new RecommendedObject(object: new Object(id: it.id), by: by))
             }
 
             recommendations.addRecommendation(recommendation)

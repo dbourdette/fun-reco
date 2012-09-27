@@ -5,6 +5,6 @@ package com.github.funreco
  */
 class Action {
     Profile profile
-    Entity entity
+    Object object
     Date date
 }
