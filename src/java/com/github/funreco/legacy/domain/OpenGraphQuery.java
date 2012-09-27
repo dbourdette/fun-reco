@@ -4,19 +4,21 @@ import java.util.Date;
 
 import org.bson.types.ObjectId;
 
+import com.github.funreco.legacy.domain.query.Queries;
 import com.github.funreco.legacy.domain.query.Query;
-import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.PostLoad;
 import com.google.code.morphia.annotations.PrePersist;
 import com.google.code.morphia.annotations.Property;
+import com.google.code.morphia.annotations.Transient;
 
 @Entity(value = "facebook.opengraph.queries", noClassnameStored = true)
 public class OpenGraphQuery {
     @Id
     private ObjectId id;
 
-    @Embedded
+    @Transient
     private Query query;
 
     @Property
@@ -32,6 +34,11 @@ public class OpenGraphQuery {
         } else {
             queryLiteral = "";
         }
+    }
+
+    @PostLoad
+    public void parseQuery() {
+        query = Queries.parse(queryLiteral);
     }
 
     public ObjectId getId() {
