@@ -68,12 +68,14 @@ public class RecommendationEngine {
         save(recommendation);
     }
 
-    public void buildRecommendations(FacebookProfile facebookProfile) {
-        List<FacebookProfileRef> myFriends = facebookFriendsService.findFriends(facebookProfile);
+    public void buildRecommendations(String facebookId) {
+        FacebookProfile profile = communityDatastore.createQuery(FacebookProfile.class).filter("facebookId", facebookId).get();
+
+        List<FacebookProfileRef> myFriends = facebookFriendsService.findFriends(profile);
 
         OpenGraphActionStats myFriendsStats = stats.filterByFriends(myFriends);
 
-        OpenGraphRecommendation recommendation = OpenGraphRecommendation.forProfile(facebookProfile);
+        OpenGraphRecommendation recommendation = OpenGraphRecommendation.forProfile(profile);
 
         for (OpenGraphQuery query : queries) {
             OpenGraphActionStats filteredStats = myFriendsStats.filterByQuery(query.getQuery());

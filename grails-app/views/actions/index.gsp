@@ -20,7 +20,7 @@
                 <g:paginate controller="actions" total="${total}" class="pagination-centered" />
             </div>
         </div>
-        
+
 	</body>
-	
+
 </html>

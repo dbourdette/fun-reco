@@ -16,10 +16,7 @@
 	
 	        <div class="row">
 	            <div class="span12">
-	                <legend>
-	                    Recommendations for ${profile == null ? 'all users' : profile.email}
-	                    <g:link action="buildRecommendations" params="[facebookId : profile?.facebookId]" class="btn btn-warning pull-right">Build recos</g:link>
-	                </legend>
+	                <legend>Recommendations for ${profile == null ? 'all users' : profile.email}</legend>
 	                <g:each var="recommendationEntry" in="${recommendation?.entries}">
 	                    <h4>${recommendationEntry.query}</h4>
 	                    <ul>

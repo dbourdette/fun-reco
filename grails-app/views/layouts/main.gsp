@@ -2,10 +2,9 @@
 
 <html lang="en-US">
 
-
 	<head>
 	    <meta charset="UTF-8">
-	    <r:require modules="bootstrap"/>
+	    <r:require module="bootstrap"/>
 	    <r:layoutResources/>
 		<g:layoutHead />
 	</head>
@@ -15,8 +14,6 @@
 			<div class="navbar">
 				<div class="navbar-inner">
 					<a class="brand" href="/">Fun-reco</a>
-					<g:link controller="index" action="bootstrap"
-						class="btn btn-warning pull-right">Reset DB</g:link>
 					<g:form controller="index" class="navbar-form pull-left">
 						<input type="text" name="email" value="${email}" class="span2"
 							placeholder="Email">
@@ -26,6 +23,7 @@
 					</g:form>
 				</div>
 			</div>
+
             <g:if test="${errorMessage != null}" >
                 <div class="alert alert-error">
                     <button type="button" class="close" data-dismiss="alert">×</button>
@@ -33,8 +31,11 @@
                     ${errorMessage}
                 </div>
             </g:if>
+
             <g:layoutBody />
 		</div>
+
+        <r:layoutResources/>
 	</body>
 
 </html>

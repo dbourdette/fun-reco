@@ -1,15 +1,8 @@
 package com.github.funreco
 
-import com.github.funreco.legacy.bootstrap.BootstrapDB
-import com.github.funreco.legacy.engine.RecommendationEngine
-
 class IndexController {
 
-    RecommendationEngine recommendationEngine
-
     RecommendationFacade recommendationFacade
-
-    BootstrapDB bootstrapDB
 
     def index() {
         Profile profile = recommendationFacade.findProfile(params.email, params.facebookId);
@@ -34,30 +27,5 @@ class IndexController {
 		}
 
         render(view: "/index", model : model)
-    }
-
-    def buildRecommendations() {
-        Profile profile = recommendationFacade.findProfile(params.email, params.facebookId);
-
-        recommendationEngine.reloadStatsAndQueries()
-
-        if (profile == null) {
-            recommendationEngine.buildGenericRecommendations()
-        } else {
-            recommendationEngine.buildRecommendations(profile)
-        }
-
-        redirect(action: "index", params : [facebookId : params.facebookId])
-    }
-
-    def bootstrap() {
-		def params = [:];
-		try {
-			bootstrapDB.reset()
-		} catch (Exception e) {
-            params["errorMessage"] = e.message;
-		}
-
-        redirect(action: "index", params : params)
     }
 }
