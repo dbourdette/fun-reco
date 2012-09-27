@@ -29,8 +29,8 @@ class IndexController {
             model["friends"] = recommendationFacade.findFriends(profile.facebookId);
         }
 		
-		if (params.error_message != null) {
-			model["error_message"] = params.error_message;
+		if (params.errorMessage != null) {
+			model["errorMessage"] = params.errorMessage;
 		}
 
         render(view: "/index", model : model)
@@ -51,14 +51,13 @@ class IndexController {
     }
 
     def bootstrap() {
-		def error_message;
+		def params = [:];
 		try {
 			bootstrapDB.reset()
-		}
-		catch (Exception e) {
-			error_message = e.message;
+		} catch (Exception e) {
+            params["errorMessage"] = e.message;
 		}
 
-        redirect(action: "index", params : [error_message : error_message])
+        redirect(action: "index", params : params)
     }
 }

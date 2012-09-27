@@ -26,14 +26,14 @@
 					</g:form>
 				</div>
 			</div>
-		<g:if test="${error_message != null}" >
-			<div class="alert alert-error">
-				<button type="button" class="close" data-dismiss="alert">×</button>
-				<h4>Error</h4>
-	            ${error_message}
-			</div>
-		</g:if>
-		<g:layoutBody />
+            <g:if test="${errorMessage != null}" >
+                <div class="alert alert-error">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <h4>Error</h4>
+                    ${errorMessage}
+                </div>
+            </g:if>
+            <g:layoutBody />
 		</div>
 	</body>
 
