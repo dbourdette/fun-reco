@@ -60,6 +60,11 @@ public class OrCriterion implements Query {
 
     @Override
     public String toString() {
-        return "or(" + StringUtils.join(criteria, ", ") + ")";
+    	if (criteria.size() > 1) {
+    		return "or(" + StringUtils.join(criteria, ", ") + ")";
+    	}
+    	else {
+    		return criteria.get(0).toString();
+    	}
     }
 }

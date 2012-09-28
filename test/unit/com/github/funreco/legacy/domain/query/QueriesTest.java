@@ -37,8 +37,19 @@ public class QueriesTest {
     }
 
     @Test
+    public void singleAndToString() {
+        assertThat(Queries.and(Queries.property("type", "video")).toString()).isEqualTo("type='video'");
+    }
+    
+    
+    @Test
     public void orToString() {
         assertThat(Queries.or(Queries.property("type", "video"), Queries.notNull("show")).toString()).isEqualTo("or(type='video', show!=null)");
+    }
+    
+    @Test
+    public void singleOrToString() {
+        assertThat(Queries.or(Queries.property("type", "video")).toString()).isEqualTo("type='video'");
     }
 
     @Test

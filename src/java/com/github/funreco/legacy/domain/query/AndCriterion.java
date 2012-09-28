@@ -60,6 +60,11 @@ public class AndCriterion implements Query {
 
     @Override
     public String toString() {
-        return "and(" + StringUtils.join(criteria, ", ") + ")";
+    	if (criteria.size() > 1) {
+    		return "and(" + StringUtils.join(criteria, ", ") + ")";
+    	}
+    	else {
+    		return criteria.get(0).toString();
+    	}
     }
 }
