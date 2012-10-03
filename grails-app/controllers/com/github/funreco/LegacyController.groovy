@@ -29,7 +29,8 @@ class LegacyController {
         Profile profile = recommendationFacade.findProfile(params.email, params.facebookId);
 
         if (!profile) {
-            return render(view: "/legacy/index", model: [errorMessage: "Profile not found"])
+            flash.error = "Profile not found"
+			return redirect(action: "index")
         }
 
         recommendationEngine.reloadStatsAndQueries()
@@ -39,13 +40,14 @@ class LegacyController {
         redirect(action: "index")
     }
 
-    def bootstrap() {
-        try {
-            bootstrapDB.reset()
-
-            return redirect(view: "/legacy/index")
-        } catch (Exception e) {
-            return render(view: "/legacy/index", model: [errorMessage: e.message])
-        }
-    }
+	def bootstrap() {
+		try {
+			bootstrapDB.reset()
+			flash.success = "DB has been bootstraped"
+			redirect(action: 'index')
+		} catch (Exception e) {
+			flash.error = e.toString()
+			redirect(action: 'index')
+		}
+	}
 }

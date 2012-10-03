@@ -21,16 +21,26 @@
 							class="span2" placeholder="Facebook ID">
 						<button type="submit" class="btn">Search</button>
 					</g:form>
+					<ul class="nav pull-right">
+						<li><a href="/legacy">Legacy</a></li>
+					</ul>
 				</div>
 			</div>
 
-            <g:if test="${errorMessage != null}" >
-                <div class="alert alert-error">
+            <g:if test="${flash.success}">
+			    <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <h4>Success</h4>
+                    ${flash.success}
+                </div>
+			</g:if>
+			<g:if test="${flash.error}">
+			    <div class="alert alert-error">
                     <button type="button" class="close" data-dismiss="alert">×</button>
                     <h4>Error</h4>
-                    ${errorMessage}
+                    ${flash.error}
                 </div>
-            </g:if>
+			</g:if>
 
             <g:layoutBody />
 		</div>
