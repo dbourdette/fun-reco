@@ -19,26 +19,25 @@ class LegacyController {
 
     def build() {
         recommendationEngine.reloadStatsAndQueries()
-
         recommendationEngine.buildGenericRecommendations()
 
 		flash.success = "Recommendations have been built"
+
         redirect(action: "index")
     }
 
     def buildForProfile() {
         Profile profile = recommendationFacade.findProfile(params.email, params.facebookId);
 
-        if (!profile) {
+        if (profile) {
+            recommendationEngine.reloadStatsAndQueries()
+            recommendationEngine.buildRecommendations(profile.getFacebookId())
+
+            flash.success = "Recommendations have been built for " + profile.getName()
+        } else {
             flash.error = "Profile not found"
-			return redirect(action: "index")
         }
 
-        recommendationEngine.reloadStatsAndQueries()
-
-        recommendationEngine.buildRecommendations(profile.getFacebookId())
-
-		flash.success = "Recommendations have been built for " + profile.getName()
         redirect(action: "index")
     }
 
@@ -48,8 +47,8 @@ class LegacyController {
 			flash.success = "DB has been bootstraped"
 		} catch (Exception e) {
 			flash.error = e.toString()
-		} finally {
-			redirect(action: 'index')
 		}
+
+        redirect(action: 'index')
 	}
 }
