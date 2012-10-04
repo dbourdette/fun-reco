@@ -22,6 +22,7 @@ class LegacyController {
 
         recommendationEngine.buildGenericRecommendations()
 
+		flash.success = "Recommendations have been built"
         redirect(action: "index")
     }
 
@@ -37,6 +38,7 @@ class LegacyController {
 
         recommendationEngine.buildRecommendations(profile.getFacebookId())
 
+		flash.success = "Recommendations have been built for " + profile.getName()
         redirect(action: "index")
     }
 
@@ -44,9 +46,9 @@ class LegacyController {
 		try {
 			bootstrapDB.reset()
 			flash.success = "DB has been bootstraped"
-			redirect(action: 'index')
 		} catch (Exception e) {
 			flash.error = e.toString()
+		} finally {
 			redirect(action: 'index')
 		}
 	}
