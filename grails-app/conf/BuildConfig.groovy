@@ -38,14 +38,13 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.20'
-  test("org.seleniumhq.selenium:selenium-htmlunit-driver:2.0rc3") {
-        exclude "xml-apis"
-    }
-    test("org.seleniumhq.selenium:selenium-chrome-driver:2.0rc3")
-    test("org.seleniumhq.selenium:selenium-firefox-driver:2.0rc3")
-    
-    test "org.codehaus.geb:geb-junit4:$gebVersion"
-       
+        test "org.codehaus.geb:geb-junit4:0.7.2"
+        test "org.seleniumhq.selenium:selenium-support:2.25.0"
+        test "org.seleniumhq.selenium:selenium-firefox-driver:2.25.0"
+        test "org.seleniumhq.selenium:selenium-chrome-driver:2.25.0"
+        test("org.seleniumhq.selenium:selenium-htmlunit-driver:2.25.0") {
+            exclude "xml-apis"
+        }
     }
 
     plugins {
