@@ -11,4 +11,9 @@ class ActionsController {
         [actions: recommendationFacade.findActions(offset, limit), total: recommendationFacade.countActions()]
     }
 	
+	def persistence() {
+		def test = new Persistence(first:"Angela",last:"Prestaux", number:29)
+		test.save()
+	}
+	
 }
