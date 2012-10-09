@@ -1,5 +1,6 @@
 package fun.reco
 
+import org.bson.types.ObjectId
 import org.springframework.dao.DataIntegrityViolationException
 
 class PersistenceController {
@@ -30,8 +31,8 @@ class PersistenceController {
         redirect(action: "show", id: persistenceInstance.id)
     }
 
-    def show(Long id) {
-        def persistenceInstance = Persistence.get(id)
+    def show(String id) {
+        def persistenceInstance = Persistence.get(new ObjectId(id))
         if (!persistenceInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'persistence.label', default: 'Persistence'), id])
             redirect(action: "list")
@@ -41,8 +42,8 @@ class PersistenceController {
         [persistenceInstance: persistenceInstance]
     }
 
-    def edit(Long id) {
-        def persistenceInstance = Persistence.get(id)
+    def edit(String id) {
+		def persistenceInstance = Persistence.get(new ObjectId(id))
         if (!persistenceInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'persistence.label', default: 'Persistence'), id])
             redirect(action: "list")
@@ -52,8 +53,8 @@ class PersistenceController {
         [persistenceInstance: persistenceInstance]
     }
 
-    def update(Long id, Long version) {
-        def persistenceInstance = Persistence.get(id)
+    def update(String id, Long version) {
+        def persistenceInstance = Persistence.get(new ObjectId(id))
         if (!persistenceInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'persistence.label', default: 'Persistence'), id])
             redirect(action: "list")
@@ -81,8 +82,8 @@ class PersistenceController {
         redirect(action: "show", id: persistenceInstance.id)
     }
 
-    def delete(Long id) {
-        def persistenceInstance = Persistence.get(id)
+    def delete(String id) {
+        def persistenceInstance = Persistence.get(new ObjectId(id))
         if (!persistenceInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'persistence.label', default: 'Persistence'), id])
             redirect(action: "list")
