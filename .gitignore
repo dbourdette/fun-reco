@@ -1,4 +1,6 @@
 *.iml
+*.ipr
+*.iws
 target
 .settings
 target-eclipse
