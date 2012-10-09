@@ -1,24 +1,26 @@
 package pages
 import geb.Page
 
-class HomePage extends Page {
+
+class HomePage extends Page{
 
 	static url = "index"
 	
-		static at = { title == "HomePage" }
+		static at = { title == "Home" }
 	
 		static content = {
 		 
-			recommandationEnt {$("g", var : "recommandationEntry")}
-			findRecommandation{ $(recommandationEnt.find("ul").find("li"))}
-			action { $("g", var : "action")
-			findAction { action.find("li") }
+		
+			findRecommandation {$("ul", 0).find("li").size()}
+			findActions{ $("ul", 1).find("li").size()}
+			ViewAllButton{ $("g",class : "btn btn-warning pull-right")}
 			
-				
+			
+		 
+					
 			}
 			
 			
 		}
 	
 	
-}

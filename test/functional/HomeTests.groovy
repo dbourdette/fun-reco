@@ -6,15 +6,18 @@ class HomeTests extends GebReportingTest{
 	
 	@Test
 	void recommandationAndActionTest()
-	{
-		To HomePage
-		assert  findRecommandation.size() != 0
-		assert findAction.size()!= 0 
+	{	
+		to HomePage
+	    assert findRecommandation != 0
+		assert findActions != 0
 	}
 	@Test
 	void viewAllTest()
 	{
-		
+	    to HomePage
+	    ViewAllButton.click()
+		assert at (ActionsPage)
+		assert findAllActions !=0
 	}
 	@Test
 	void profileTest()

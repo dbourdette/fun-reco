@@ -1,4 +1,4 @@
-package pages;
+package test.functional.pages;
 import geb.Page
 
 public class ActionsPage extends Page {
@@ -8,8 +8,7 @@ public class ActionsPage extends Page {
 			static at = { title == "ActionsPage" }
 		
 			static content = {
-			 
-				action { $("g", var : "action")
-					findAction { action.find("li") }
-			
+		
+				findAllAction {$("ul").find("li").size()}
+		}		
 }
