@@ -4,6 +4,7 @@ import org.junit.Test
 
 class HomeTests extends GebReportingTest{
 
+
 	@Test
 	void recommandationAndActionTest() {
 		to HomePage

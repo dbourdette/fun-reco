@@ -7,5 +7,6 @@ public class ActionsPage extends Page {
 
 	static content = {
 		findAllAction {$("ul").find("li").size()}
+		
 	}
 }
