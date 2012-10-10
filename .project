@@ -28,5 +28,10 @@
 			<type>2</type>
 			<locationURI>GRAILS_ROOT/2.1.1/projects/fun-reco/plugins</locationURI>
 		</link>
+		<link>
+			<name>domain</name>
+			<type>2</type>
+			<locationURI>PROJECT_LOC/grails-app/domain</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>
