@@ -12,7 +12,8 @@ class HomePage extends Page{
 
 		findRecommandation {$("ul", 0).find("li").size()}
 		findActions{ $("ul", 1).find("li").size()}
-		viewAllButton{ $("a",class : "btn btn-warning pull-right")}
+		viewAllButton{ $("a", name : "viewAll")}
+		findProfile{$("a", href : "?facebookId=650249226") }
 	}
 }
 

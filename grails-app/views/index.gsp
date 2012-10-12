@@ -45,7 +45,7 @@
 	            <div class="span12">
 	                <legend>
 	                    Latests actions
-	                    <g:link controller="actions" class="btn btn-warning pull-right">View all</g:link>
+	                    <g:link name="viewAll" controller="actions"  class="btn btn-warning pull-right">View all</g:link>
 	                </legend>
 	                <ul>
 	                    <g:each var="action" in="${actions}">
