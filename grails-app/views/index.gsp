@@ -45,6 +45,7 @@
 	            <div class="span12">
 	                <legend>
 	                    Latests actions
+	                    
 	                    <g:link name="viewAll" controller="actions"  class="btn btn-warning pull-right">View all</g:link>
 	                </legend>
 	                <ul>

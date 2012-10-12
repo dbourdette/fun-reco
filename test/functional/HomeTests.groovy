@@ -22,7 +22,7 @@ class HomeTests extends GebReportingTest{
 	void profileTest() {
 		to HomePage
 		findProfile('650249226').click()
-		assert at ("http://localhost:8080/?facebookId=650249226")
+		assert at("http://localhost:8080/?facebookId=650249226")
 		
 	}
 }
