@@ -2,27 +2,28 @@ import geb.junit4.GebReportingTest
 import pages.*
 import org.junit.Test
 
-class HomeTests extends GebReportingTest{
-
+class HomeTests extends GebReportingTest {
 
 	@Test
-	void recommandationAndActionTest() {
+	void hasRecommandationsAndActionsOnHomePageTest() {
 		to HomePage
-		assert findRecommandation != 0
-		assert findActions != 0
+		assert findRecommandations.size()
+		assert findActions.size()
 	}
+
 	@Test
-	void viewAllTest() {
+	void hasActionsOnActionsPageTest() {
 		to HomePage
-		viewAllButton.click()
+        viewAllActionsButton.click()
 		assert at(ActionsPage)
-		assert findAllAction !=0
+		assert findAllActions.size()
 	}
+
 	@Test
-	void profileTest() {
+	void checkProfileTest() {
 		to HomePage
-		findProfile('650249226').click()
-		assert at("http://localhost:8080/?facebookId=650249226")
-		
+		findFirstProfileLink().click()
+        println currentProfile()
+        assert currentProfile().contains("Profile{email=")
 	}
 }

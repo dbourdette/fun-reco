@@ -9,7 +9,7 @@
 	            <div class="row">
 	                <div class="span12">
 	                    <legend>Profile</legend>
-	                    ${profile == null ? 'unknown profile' : profile}
+                        <span id="profile">${profile == null ? 'unknown profile' : profile}</span>
 	                </div>
 	            </div>
 	        </g:if>
@@ -19,7 +19,7 @@
 	                <legend>Recommendations for ${profile == null ? 'all users' : profile.email}</legend>
 	                <g:each var="recommendationEntry" in="${recommendation?.entries}">
 	                    <h4>${recommendationEntry.query}</h4>
-	                    <ul>
+	                    <ul id="recommandations">
 	                        <g:each var="recommendedObject" in="${recommendationEntry.objects}">
 	                            <li>
 	                                <g:formatRecommendation recommendedObject="${recommendedObject}" />
@@ -48,7 +48,7 @@
 	                    
 	                    <g:link name="viewAll" controller="actions"  class="btn btn-warning pull-right">View all</g:link>
 	                </legend>
-	                <ul>
+	                <ul id="actions">
 	                    <g:each var="action" in="${actions}">
 	                        <li>
 	                           <g:formatAction action="${action}" />

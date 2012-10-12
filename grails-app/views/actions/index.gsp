@@ -10,7 +10,7 @@
             <div class="span12">
                 <legend>All actions</legend>
                 <g:paginate controller="actions" total="${total}" class="pagination-centered" />
-                <ul>
+                <ul id="actions">
                     <g:each var="action" in="${actions}">
                         <li>
                             <g:formatAction action="${action}" />
