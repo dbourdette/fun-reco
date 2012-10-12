@@ -1,14 +1,12 @@
-package test.functional.pages;
+package pages
 import geb.Page
 
 public class ActionsPage extends Page {
 
-		static url = "actions/index"
+	static url = "actions/index"
+
+	static content = {
+		findAllAction {$("ul").find("li").size()}
 		
-			static at = { title == "ActionsPage" }
-		
-			static content = {
-		
-				findAllAction {$("ul").find("li").size()}
-		}		
+	}
 }
