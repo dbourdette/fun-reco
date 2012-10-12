@@ -1,21 +1,17 @@
 package com.github.funreco
 
-import fun.reco.Object;
-import groovy.util.GroovyTestCase;
-
+import fun.reco.Object
+import org.junit.Test
 
 class ObjectTests extends GroovyTestCase {
+
+    @Test
+	void save() {
+        Object object = TestData.testObject(["type": ["video", "show"], "animateur": ["nomAnimateur"]])
+
+        object.save()
 	
-	void testPersistence() {
-		def testProperties = ["type": ["video", "show"], "animateur": ["nomAnimateur"]]
-		
-		def o = new Object(objectId: "testObjectId", properties: testProperties)
-		o.save()
-	
-		assert o.id != null
-	
-		def test = Object.get(o.id)
-	
-		assert test != null
+		assert object.id
+		assert Object.get(object.id)
 	}
 }

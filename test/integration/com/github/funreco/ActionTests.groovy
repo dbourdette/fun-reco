@@ -1,27 +1,20 @@
 package com.github.funreco
 
 import fun.reco.Action
-import fun.reco.Object;
-import fun.reco.Profile;
-import groovy.util.GroovyTestCase
-
+import fun.reco.Object
+import org.junit.Test
 
 class ActionTests extends GroovyTestCase {
+
+    @Test
+	void save() {
+        Object object = TestData.testObject(['type':['video', 'show']])
+        Action action = new Action(profile: TestData.testProfile(), object: object, date: new Date())
+
+        action.save()
 	
-	void testPersistence() {
-		def testFriendsList = ["testId1", "testId2"]
-		def testProfile = new Profile(facebookId: "testFB", email: "testEmail", name: "testName", friendsList: testFriendsList)
-		def testMap = ['type':['video', 'show']]
-		def testObject = new Object(objectId: "testObjectId", properties: testMap)
-		
-		def a = new Action(profile: testProfile, object: testObject, date: new Date())
-		a.save()
-	
-		assert a.id != null
-	
-		def test = Action.get(a.id)
-	
-		assert test != null
+		assert action.id
+		assert Action.get(action.id)
 	}
 }
 
