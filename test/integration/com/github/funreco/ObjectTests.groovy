@@ -9,7 +9,7 @@ class ObjectTests extends GroovyTestCase {
 	void save() {
         Object object = TestData.testObject(["type": ["video", "show"], "animateur": ["nomAnimateur"]])
 
-        object.save()
+        object.save(flush: true)
 	
 		assert object.id
 		assert Object.get(object.id)

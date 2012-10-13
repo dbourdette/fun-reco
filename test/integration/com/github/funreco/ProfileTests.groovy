@@ -9,7 +9,7 @@ class ProfileTests extends GroovyTestCase {
 	void save() {
 		Profile profile = TestData.testProfile()
 
-        profile.save()
+        profile.save(flush: true)
 
 		assert profile.id
 		assert Profile.get(profile.id)

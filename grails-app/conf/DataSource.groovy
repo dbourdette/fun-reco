@@ -1,16 +1,16 @@
 environments {
 	development {
-		mongo {
-			host = "localhost"
-			port = 27107
-			databaseName = "fun-reco"
+		grails {
+			mongo {
+				databaseName = "fun-reco"
+			}
 		}
 	}
 	test {
-		mongo {
-			host = "localhost"
-			port = 27107
-			databaseName = "fun-reco-test"
+		grails {
+			mongo {
+				databaseName = "fun-reco-test"
+			}
 		}
 	}
 }
