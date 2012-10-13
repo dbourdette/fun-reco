@@ -9,5 +9,5 @@ class Profile {
 	String facebookId
 	String email
 	String name
-	List<String> friendsList
+	List<String> friendsIds
 }
