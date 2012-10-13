@@ -8,7 +8,7 @@ import fun.reco.Object
  */
 class TestData {
     static Profile testProfile() {
-        new Profile(facebookId: "testFB", email: "testEmail", name: "testName", friendsList: testFriends())
+        new Profile(facebookId: "testFB", email: "testEmail", name: "testName", friendsIds: testFriends())
     }
 
     static testFriends() {
