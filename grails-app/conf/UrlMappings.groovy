@@ -6,7 +6,9 @@ class UrlMappings {
 				// apply constraints here
 			}
 		}
-
+		"/document/$id"(controller: "document", , parseRequest: true){
+			action = [GET:"show", POST:"save", PUT:"update", DELETE:"remove"]
+		  }
 		"/"(controller: "index")
 		"500"(view:'/error')
 	}
