@@ -7,9 +7,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import grails.converters.JSON
+import groovy.util.GroovyTestCase;
 
-@TestFor(DocumentController)
-class DocumentRESTTests {
+
+class DocumentRESTTests extends GroovyTestCase {
 	
 	@Before
 	void init() {
@@ -21,40 +22,38 @@ class DocumentRESTTests {
 	 
 	@Test
 	void testShow() {
-	
+		def controller = new DocumentController()
 		controller.show()
-
-		assert response.text == Document.list().encodeAsJSON()
-
+		
+		assertEquals Document.list().encodeAsJSON(), controller.response.contentAsString
 	}
 	
 	@Test
 	void testShowWithId() {
+		def controller = new DocumentController()
 		def doc = Document.findByTitle("title1")
-		params.id = doc.id
-		
+		controller.params.id = doc.id
 		controller.show()
 
-		assert response.text == doc.encodeAsJSON()
+		assertEquals doc.encodeAsJSON(), controller.response.contentAsString
 	}
 	
 	@Test
-	void testSave() {
-		def doc3 = new Document(title: "title3", content: "content3")
-		params.document = doc3.encodeAsJSON()
-		
-		controller.save()
+	void testInsert() {
+		def controller = new DocumentController()
+		controller.params.title = "title3"
+		controller.params.content = "content3"
+		controller.insert()
 		
 		assert Document.findByTitle("title3")
-		assert response.text == doc3.encodeAsJSON()
 	}
 	
 	@Test
 	void testUpdate() {
+		def controller = new DocumentController()
 		def doc = Document.findByTitle("title1")
-		params.id = doc.id
-		params.title = "newTitle"
-		
+		controller.params.id = doc.id
+		controller.params.title = "newTitle"
 		controller.update()
 		
 		assert Document.get(doc.id).title == "newTitle"
@@ -62,11 +61,11 @@ class DocumentRESTTests {
 	
 	@Test
 	void testDelete() {
+		def controller = new DocumentController()
 		def doc = Document.findByTitle("title1")
-		params.id = doc.id
-		
+		controller.params.id = doc.id
 		controller.delete()
 		
-		assert !Document.get(doc.id)
+		assert Document.get(doc.id) == null
 	}
 }

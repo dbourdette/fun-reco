@@ -7,7 +7,7 @@ class UrlMappings {
 			}
 		}
 		"/document/$id?"(controller: "document", , parseRequest: true){
-			action = [GET:"show", POST:"save", PUT:"update", DELETE:"remove"]
+			action = [GET:"show", POST:"insert", PUT:"update", DELETE:"delete"]
 		  }
 		
 		"/"(controller: "index")

@@ -14,15 +14,11 @@ class DocumentController {
 		}
 	}
 
-	def save() {
-		if (!params.id) {
-			def doc = new Document(params.document)
-			if(doc.save()){
-				render doc as JSON
-			}else{
-				response.status = 500
-				render ([error: doc.errors] as JSON)
-			}
+	def insert() {
+		if (!params.id && params.title && params.content) {
+			def doc = new Document(title: params.title, content: params.content)
+			doc.save(flush:true)
+			render doc as JSON
 		}else{
 			response.status = 500
 			render ([error: 'Operation not allowed'] as JSON)
@@ -42,10 +38,9 @@ class DocumentController {
 		}
 	}
 	
-	def remove() {
+	def delete() {
 		if(params.id && Document.exists(params.id)){
-			def doc = Document.get(params.id)
-			doc.delete()
+			Document.get(params.id).delete(flush:true)
 		}else{
 			response.status = 500
 			render ([error: 'Document with this id does not exist'] as JSON)
