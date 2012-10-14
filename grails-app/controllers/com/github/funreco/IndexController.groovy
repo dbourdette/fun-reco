@@ -1,9 +1,9 @@
 package com.github.funreco
 
+
 class IndexController {
 
-	//RecommendationFacade recommendationFacade
-	StubRecommendationFacade stubRecommendationFacade = new StubRecommendationFacade()
+	RecommendationFacade stubRecommendationFacade
 
     def index() {
         Profile profile = stubRecommendationFacade.findProfile(params.email, params.facebookId);

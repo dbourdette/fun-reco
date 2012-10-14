@@ -12,14 +12,14 @@ import com.github.funreco.RecommendedObject;
 
 class StubRecommendationFacade implements RecommendationFacade {
 
-	StubRecommendationFacadeData data = new StubRecommendationFacadeData()
+	StubRecommendationFacadeData stubRecommendationFacadeData = new StubRecommendationFacadeData()
 	
 	def updateProfile(Profile profile) {
          throw new UnsupportedOperationException("Won't be implemented")
     }
 
 	Profile findProfile(String email, String facebookId) {
-        return data.profile
+        return stubRecommendationFacadeData.profile
     }
 
 	def updateFriends(String facebookId, List<Friend> friends) {
@@ -27,7 +27,7 @@ class StubRecommendationFacade implements RecommendationFacade {
     }
 
 	List<Friend> findFriends(String facebookId) {
-        return data.friendsList
+        return stubRecommendationFacadeData.friendsList
     }
 
 	def pushAction(Action action) {
@@ -35,11 +35,11 @@ class StubRecommendationFacade implements RecommendationFacade {
     }
 
 	List<Action> findActions(int offset, int limit) {
-        return data.actions
+        return stubRecommendationFacadeData.actions
     }
 
     List<Action> findActions(String facebookId, int offset, int limit) {
-        return data.actions
+        return stubRecommendationFacadeData.actions
     }
 
 	int countActions() {
@@ -47,11 +47,11 @@ class StubRecommendationFacade implements RecommendationFacade {
     }
 
 	Recommendations findDefaultRecommendations() {
-        return data.recommendations
+        return stubRecommendationFacadeData.recommendations
     }
 
 	Recommendations findRecommendations(String facebookId) {
-        return data.recommendations
+        return stubRecommendationFacadeData.recommendations
     }
 
 }

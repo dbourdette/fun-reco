@@ -6,6 +6,8 @@ import com.github.funreco.legacy.LegacyRecommendationFacade
 import com.github.funreco.legacy.service.OpenGraphActionService
 import com.github.funreco.legacy.service.FacebookProfileService
 import com.github.funreco.legacy.service.FacebookFriendsService
+import com.github.funreco.stub.StubRecommendationFacade
+import com.github.funreco.stub.StubRecommendationFacadeData
 
 // Place your Spring DSL code here
 beans = {
@@ -19,6 +21,12 @@ beans = {
         facebookProfileService = ref("facebookProfileService")
         facebookFriendsService = ref("facebookFriendsService")
     }
+	
+	stubRecommendationFacade(StubRecommendationFacade) {
+		stubRecommendationFacadeData = ref("stubRecommendationFacadeData")
+	}
+	
+	stubRecommendationFacadeData(StubRecommendationFacadeData)
 
     openGraphQueryService(OpenGraphQueryService) {
         communityDatastore = ref("datastore")

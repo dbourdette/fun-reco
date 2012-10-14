@@ -1,9 +1,9 @@
 package com.github.funreco
 
+
 class ActionsController {
 
-    //RecommendationFacade recommendationFacade
-	StubRecommendationFacade stubRecommendationFacade = new StubRecommendationFacade()
+    RecommendationFacade stubRecommendationFacade
 
     def index() {
         int offset = params.offset ? params.int("offset") : 0
