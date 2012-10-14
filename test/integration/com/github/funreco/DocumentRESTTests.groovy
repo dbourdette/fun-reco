@@ -1,34 +1,72 @@
 package com.github.funreco
-import static org.junit.Assert.*;
 
 import fun.reco.Document
 
-import groovyx.net.http.HTTPBuilder
-import groovyx.net.http.ContentType
-import groovyx.net.http.Method
-import groovyx.net.http.RESTClient
+import grails.test.mixin.TestFor
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import grails.converters.JSON
 
+@TestFor(DocumentController)
 class DocumentRESTTests {
 	
-	void testShowAll() {
-		def http = new HTTPBuilder("http://localhost:8080/document")
-		http.request(Method.GET, ContentType.JSON) {
-			//uri.path = '/'
-			//uri.query
-			response.success = { resp, json ->
-				for (doc in json) {
-					assert doc.title == "title"
-				}
-			}
-		}
+	@Before
+	void init() {
+		def doc1 = new Document(title: "title1", content: "content1")
+		doc1.save(flush:true)
+		def doc2 = new Document(title: "title2", content: "content2")
+		doc2.save(flush:true)
+	}
+	 
+	@Test
+	void testShow() {
+	
+		controller.show()
+
+		assert response.text == Document.list().encodeAsJSON()
+
 	}
 	
-	void testShowId() {
-		def http = new HTTPBuilder("http://localhost:8080/document/507ab8c803644a195c086516")
-		http.request(Method.GET, ContentType.JSON) {
-			response.success = { resp, json ->
-				assert json.title == "title"
-			}
-		}
+	@Test
+	void testShowWithId() {
+		def doc = Document.findByTitle("title1")
+		params.id = doc.id
+		
+		controller.show()
+
+		assert response.text == doc.encodeAsJSON()
+	}
+	
+	@Test
+	void testSave() {
+		def doc3 = new Document(title: "title3", content: "content3")
+		params.document = doc3.encodeAsJSON()
+		
+		controller.save()
+		
+		assert Document.findByTitle("title3")
+		assert response.text == doc3.encodeAsJSON()
+	}
+	
+	@Test
+	void testUpdate() {
+		def doc = Document.findByTitle("title1")
+		params.id = doc.id
+		params.title = "newTitle"
+		
+		controller.update()
+		
+		assert Document.get(doc.id).title == "newTitle"
+	}
+	
+	@Test
+	void testDelete() {
+		def doc = Document.findByTitle("title1")
+		params.id = doc.id
+		
+		controller.delete()
+		
+		assert !Document.get(doc.id)
 	}
 }
