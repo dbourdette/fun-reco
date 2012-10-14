@@ -2,10 +2,11 @@ package com.github.funreco
 
 import com.mongodb.util.JSON
 import fun.reco.Document
+import grails.converters.JSON
 
 class DocumentController {
 
-	def show = {
+	def show() {
 		if(params.id && Document.exists(params.id)){
 			render Document.findById(params.id) as JSON
 		}else{
@@ -13,28 +14,41 @@ class DocumentController {
 		}
 	}
 
-	def save = {
-		def doc = new Document(params['document'])
-		if(doc.save()){
-			render doc as JSON
+	def save() {
+		if (!params.id) {
+			def doc = new Document(params.document)
+			if(doc.save()){
+				render doc as JSON
+			}else{
+				response.status = 500
+				render ([error: doc.errors] as JSON)
+			}
 		}else{
-			render doc.errors
+			response.status = 500
+			render ([error: 'Operation not allowed'] as JSON)
+		}
+		
+	}
+	
+	def update() {
+		if(params.id && Document.exists(params.id)){
+			def doc = Document.get(params.id)
+			if (params.title) {doc.title = params.title}
+			if (params.content) {doc.content = params.title}
+			doc.save()
+		}else{
+			response.status = 500
+			render ([error: 'Document with this id does not exist'] as JSON)
 		}
 	}
 	
-	def update = {
+	def remove() {
 		if(params.id && Document.exists(params.id)){
-			// update the doc
+			def doc = Document.get(params.id)
+			doc.delete()
 		}else{
-			// render error 
-		}
-	}
-	
-	def remove = {
-		if(params.id && Document.exists(params.id)){
-			// delete the doc
-		}else{
-			// render error
+			response.status = 500
+			render ([error: 'Document with this id does not exist'] as JSON)
 		}
 	}
 }

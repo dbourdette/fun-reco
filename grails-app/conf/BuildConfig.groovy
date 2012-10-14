@@ -38,6 +38,17 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.20'
+	runtime 'org.antlr:antlr:3.4'
+	runtime 'org.codehaus.jackson:jackson-core-asl:1.9.10'
+	runtime 'org.codehaus.jackson:jackson-mapper-asl:1.9.10'
+        runtime 'org.mongodb:mongo-java-driver:2.9.1'
+	compile 'joda-time:joda-time:2.1'
+	compile 'com.google.code:morphia:0.91'
+       
+	compile 'org.easytesting:fest-assert:1.4'
+	compile 'org.easytesting:fest-reflect:1.4'
+	compile 'org.easytesting:fest-util:1.2.3'
+
         test "org.codehaus.geb:geb-junit4:0.7.2"
         test "org.seleniumhq.selenium:selenium-support:2.25.0"
         test "org.seleniumhq.selenium:selenium-firefox-driver:2.25.0"
@@ -45,6 +56,8 @@ grails.project.dependency.resolution = {
         test("org.seleniumhq.selenium:selenium-htmlunit-driver:2.25.0") {
             exclude "xml-apis"
         }
+	
+        
     }
 
     plugins {
