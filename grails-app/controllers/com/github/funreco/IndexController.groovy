@@ -3,10 +3,10 @@ package com.github.funreco
 
 class IndexController {
 
-	RecommendationFacade stubRecommendationFacade
+	RecommendationFacade recommendationFacade
 
     def index() {
-        Profile profile = stubRecommendationFacade.findProfile(params.email, params.facebookId);
+        Profile profile = recommendationFacade.findProfile(params.email, params.facebookId);
 		
 		
         def model = [
@@ -16,13 +16,13 @@ class IndexController {
         ]
 
         if (profile == null) {
-            model["recommendation"] = stubRecommendationFacade.findDefaultRecommendations();
+            model["recommendation"] = recommendationFacade.findDefaultRecommendations();
 			println model["recommendation"]
-            model["actions"] = stubRecommendationFacade.findActions(0, 10);
+            model["actions"] = recommendationFacade.findActions(0, 10);
         } else {
-            model["recommendation"] = stubRecommendationFacade.findRecommendations(profile.facebookId);
-            model["actions"] = stubRecommendationFacade.findActions(profile.facebookId, 0, 10);
-            model["friends"] = stubRecommendationFacade.findFriends(profile.facebookId);
+            model["recommendation"] = recommendationFacade.findRecommendations(profile.facebookId);
+            model["actions"] = recommendationFacade.findActions(profile.facebookId, 0, 10);
+            model["friends"] = recommendationFacade.findFriends(profile.facebookId);
         }
 		
 		if (params.errorMessage != null) {

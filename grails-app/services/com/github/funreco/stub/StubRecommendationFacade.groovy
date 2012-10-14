@@ -12,7 +12,7 @@ import com.github.funreco.RecommendedObject;
 
 class StubRecommendationFacade implements RecommendationFacade {
 
-	StubRecommendationFacadeData stubRecommendationFacadeData = new StubRecommendationFacadeData()
+	StubRecommendationFacadeData stubRecommendationFacadeData
 	
 	def updateProfile(Profile profile) {
          throw new UnsupportedOperationException("Won't be implemented")

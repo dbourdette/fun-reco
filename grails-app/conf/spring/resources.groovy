@@ -15,14 +15,14 @@ beans = {
 
     bootstrapDB(BootstrapDB)
 
-    recommendationFacade(LegacyRecommendationFacade) {
+    legacyRecommendationFacade(LegacyRecommendationFacade) {
         recommendationEngine = ref("recommendationEngine")
         openGraphActionService = ref("openGraphActionService")
         facebookProfileService = ref("facebookProfileService")
         facebookFriendsService = ref("facebookFriendsService")
     }
 	
-	stubRecommendationFacade(StubRecommendationFacade) {
+	recommendationFacade(StubRecommendationFacade) {
 		stubRecommendationFacadeData = ref("stubRecommendationFacadeData")
 	}
 	
