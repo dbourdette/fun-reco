@@ -32,6 +32,7 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
+      mavenRepo "http://morphia.googlecode.com/svn/mavenrepo/"
     }
     dependencies {
 
@@ -42,8 +43,9 @@ grails.project.dependency.resolution = {
 	runtime 'org.codehaus.jackson:jackson-core-asl:1.9.10'
 	runtime 'org.codehaus.jackson:jackson-mapper-asl:1.9.10'
         runtime 'org.mongodb:mongo-java-driver:2.9.1'
+        compile 'com.google.code.morphia:morphia:0.99'
 	compile 'joda-time:joda-time:2.1'
-	compile 'com.google.code:morphia:0.91'
+	
        
 	compile 'org.easytesting:fest-assert:1.4'
 	compile 'org.easytesting:fest-reflect:1.4'
