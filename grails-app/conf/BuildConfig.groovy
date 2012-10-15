@@ -39,10 +39,12 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.20'
-	runtime 'org.antlr:antlr:3.4'
-	runtime 'org.codehaus.jackson:jackson-core-asl:1.9.10'
-	runtime 'org.codehaus.jackson:jackson-mapper-asl:1.9.10'
+
         runtime 'org.mongodb:mongo-java-driver:2.9.1'
+	compile 'org.antlr:antlr:3.4'
+	compile 'org.codehaus.jackson:jackson-core-asl:1.9.10'
+	compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.10'
+        
         compile 'com.google.code.morphia:morphia:0.99'
 	compile 'joda-time:joda-time:2.1'
 	
