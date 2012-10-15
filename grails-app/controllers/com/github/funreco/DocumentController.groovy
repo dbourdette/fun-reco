@@ -3,6 +3,7 @@ package com.github.funreco
 import com.mongodb.util.JSON
 import fun.reco.Document
 import grails.converters.JSON
+import org.codehaus.groovy.grails.web.json.*
 
 class DocumentController {
 
@@ -14,11 +15,16 @@ class DocumentController {
 		}
 	}
 
-	def insert() {
-		if (!params.id && params.title && params.content) {
-			def doc = new Document(title: params.title, content: params.content)
-			doc.save(flush:true)
-			render doc as JSON
+	def save() {
+		if (!params.id && params.document) {
+			def logJson = new JSONArray("["+params.document+"]");
+			def doc = new Document(new JSONObject(logJson[0]))
+			if (doc.save(flush:true)) {
+				render doc as JSON
+			}else{
+			response.status = 500
+			render ([error: 'Parsing failed'] as JSON)
+			}
 		}else{
 			response.status = 500
 			render ([error: 'Operation not allowed'] as JSON)

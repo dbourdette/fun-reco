@@ -2,7 +2,6 @@ package com.github.funreco
 
 import fun.reco.Document
 
-import grails.test.mixin.TestFor
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,11 +38,11 @@ class DocumentRESTTests extends GroovyTestCase {
 	}
 	
 	@Test
-	void testInsert() {
+	void testSave() {
 		def controller = new DocumentController()
-		controller.params.title = "title3"
-		controller.params.content = "content3"
-		controller.insert()
+		def doc3 = new Document(title: "title3", content: "content3")
+		controller.params.document = doc3.encodeAsJSON()
+		controller.save()
 		
 		assert Document.findByTitle("title3")
 	}

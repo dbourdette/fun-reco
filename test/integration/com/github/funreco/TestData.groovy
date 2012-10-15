@@ -2,6 +2,7 @@ package com.github.funreco
 
 import fun.reco.Profile
 import fun.reco.Object
+import fun.reco.Action
 
 /**
  * @author damien bourdette
@@ -18,4 +19,8 @@ class TestData {
     static testObject(properties) {
         new Object(objectId: "testObjectId", properties: properties)
     }
+	
+	static testAction() {
+		new Action(profile: testProfile(), object: testObject(['type':['video', 'show']]), date: new Date())
+	}
 }
