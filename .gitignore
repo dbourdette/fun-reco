@@ -4,3 +4,7 @@
 target
 .settings
 target-eclipse
+
+.DS_Store
+
+.classpath

@@ -4,6 +4,7 @@ import com.mongodb.util.JSON
 import fun.reco.Action
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.*
+import org.codehaus.jackson.map.ObjectMapper
 
 class ActionRestController {
 	
@@ -19,8 +20,9 @@ class ActionRestController {
 
 	def save() {
 		if (!params.id && params.action) {
-			def logJson = new JSONArray("["+params.action+"]");
-			def action = new Action(new JSONObject(logJson[0]))
+			println params.action
+			ObjectMapper mapper = new ObjectMapper();
+			Action action = mapper.readValue(params.action, Action.class);
 			if (action.save(flush:true)) {
 				render action as JSON
 			}else{

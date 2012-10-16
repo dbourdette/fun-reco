@@ -40,8 +40,12 @@ class DocumentRESTTests extends GroovyTestCase {
 	@Test
 	void testSave() {
 		def controller = new DocumentController()
-		def doc3 = new Document(title: "title3", content: "content3")
-		controller.params.document = doc3.encodeAsJSON()
+		String json = """{
+		  "title" : "title3",
+		  "content" : "content3"
+		}
+		"""
+		controller.params.document = json
 		controller.save()
 		
 		assert Document.findByTitle("title3")

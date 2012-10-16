@@ -4,6 +4,7 @@ import com.mongodb.util.JSON
 import fun.reco.Document
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.*
+import org.codehaus.jackson.map.ObjectMapper
 
 class DocumentController {
 
@@ -17,8 +18,8 @@ class DocumentController {
 
 	def save() {
 		if (!params.id && params.document) {
-			def logJson = new JSONArray("["+params.document+"]");
-			def doc = new Document(new JSONObject(logJson[0]))
+			ObjectMapper mapper = new ObjectMapper();
+			Document doc = mapper.readValue(params.document, Document.class);
 			if (doc.save(flush:true)) {
 				render doc as JSON
 			}else{
