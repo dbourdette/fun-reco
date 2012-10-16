@@ -1,0 +1,29 @@
+Testsuite: com.github.funreco.DocumentRESTTests
+Tests run: 5, Failures: 0, Errors: 1, Time elapsed: 0,274 sec
+------------- Standard Output ---------------
+--Output from testShow--
+--Output from testShowWithId--
+--Output from testSave--
+[format:json, document:{"title" : "test title"}]
+--Output from testUpdate--
+--Output from testDelete--
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from testShow--
+--Output from testShowWithId--
+--Output from testSave--
+--Output from testUpdate--
+--Output from testDelete--
+------------- ---------------- ---------------
+
+Testcase: testShow took 0,22 sec
+Testcase: testShowWithId took 0,014 sec
+Testcase: testSave took 0,012 sec
+	Caused an ERROR
+Could not find matching constructor for: fun.reco.Document(java.lang.String)
+groovy.lang.GroovyRuntimeException: Could not find matching constructor for: fun.reco.Document(java.lang.String)
+	at com.github.funreco.DocumentController$$ENlvfVBI.save(DocumentController.groovy:20)
+	at com.github.funreco.DocumentRESTTests.testSave(DocumentRESTTests.groovy:42)
+
+Testcase: testUpdate took 0,012 sec
+Testcase: testDelete took 0,012 sec
