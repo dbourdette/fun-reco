@@ -1,6 +1,0 @@
---Output from testShow--
---Output from testShowWithId--
---Output from testSave--
-[format:json, document:{"title" : "test title"}]
---Output from testUpdate--
---Output from testDelete--
