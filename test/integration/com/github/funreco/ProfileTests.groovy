@@ -3,13 +3,11 @@ package com.github.funreco
 import java.util.List;
 
 import fun.reco.Profile
-import org.junit.Test
 import org.codehaus.jackson.map.ObjectMapper
 
 class ProfileTests extends GroovyTestCase {
 
-    @Test
-	void save() {
+	void testSave() {
 		Profile profile = TestData.testProfile()
 
         profile.save(flush: true)
@@ -18,7 +16,6 @@ class ProfileTests extends GroovyTestCase {
 		assert Profile.get(profile.id)
 	}
 	
-	@Test
 	void testJackson() {
 		String json = """{
 		  "facebookId" : "testFacebookId",
