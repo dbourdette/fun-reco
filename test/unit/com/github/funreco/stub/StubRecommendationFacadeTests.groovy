@@ -10,52 +10,56 @@ import com.github.funreco.Action;
 import com.github.funreco.Friend;
 import com.github.funreco.Profile;
 import com.github.funreco.Recommendation;
-import com.github.funreco.RecommendationFacade
 import com.github.funreco.Recommendations;
-import com.github.funreco.stub.StubRecommendationFacade;
-import com.github.funreco.stub.StubRecommendationFacadeData;
 
 class StubRecommendationFacadeTests {
 
-	StubRecommendationFacade stubRecommendationFacade
+	StubRecommendationFacade recommendationFacade
 	StubRecommendationFacadeData stubRecommendationFacadeData
 	
 	@Before
 	void init(){
 		
-		stubRecommendationFacade = new StubRecommendationFacade()
+		recommendationFacade = new StubRecommendationFacade()
 		stubRecommendationFacadeData = new StubRecommendationFacadeData()
 	}
 	
 	@Test
    void findProfile() {
-	   assertThat(stubRecommendationFacade.findProfile("", "")).isEqualTo(stubRecommendationFacadeData.profile)
+	   assertThat(recommendationFacade.findProfile("", "")).isEqualTo(stubRecommendationFacadeData.profile)
+   }
+   
+   @Test
+   void findProfileAttributsComparison() {
+	   assertTrue(recommendationFacade.findProfile("", "").facebookId.equals(stubRecommendationFacadeData.profile.facebookId))
+	   assertTrue(recommendationFacade.findProfile("", "").email.equals(stubRecommendationFacadeData.profile.email))
+	   assertTrue(recommendationFacade.findProfile("", "").name.equals(stubRecommendationFacadeData.profile.name))
    }
 
    @Test
    void findFriends() {
-	   assertThat(stubRecommendationFacade.findFriends("")).isEqualTo(stubRecommendationFacadeData.friendsList)
+	   assertThat(recommendationFacade.findFriends("")).isEqualTo(stubRecommendationFacadeData.friendsList)
    }
 
    @Test
    void findActions() {
-	   assertThat(stubRecommendationFacade.findActions(0, 10)).isEqualTo(stubRecommendationFacadeData.actions)
-	   assertThat(stubRecommendationFacade.findActions("", 0, 10)).isEqualTo(stubRecommendationFacadeData.actions)
+	   assertThat(recommendationFacade.findActions(0, 10)).isEqualTo(stubRecommendationFacadeData.actions)
+	   assertThat(recommendationFacade.findActions("", 0, 10)).isEqualTo(stubRecommendationFacadeData.actions)
    }
 
    @Test
    void countActions() {
-	   assertThat(stubRecommendationFacade.countActions()).isEqualTo(2)
+	   assertThat(recommendationFacade.countActions()).isEqualTo(2)
    }
 
    @Test
    void findDefaultRecommendations() {
-	   assertThat(stubRecommendationFacade.findDefaultRecommendations()).isEqualTo(stubRecommendationFacadeData.recommendations)
+	   assertThat(recommendationFacade.findDefaultRecommendations()).isEqualTo(stubRecommendationFacadeData.recommendations)
    }
 
    @Test
    void findRecommendations() {
-	   assertThat(stubRecommendationFacade.findRecommendations("")).isEqualTo(stubRecommendationFacadeData.recommendations)
+	   assertThat(recommendationFacade.findRecommendations("")).isEqualTo(stubRecommendationFacadeData.recommendations)
    }
 	
 	
