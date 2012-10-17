@@ -19,11 +19,13 @@
 							placeholder="Email">
 						<input type="text" name="facebookId" value="${facebookId}"
 							class="span2" placeholder="Facebook ID">
-						<button type="submit" class="btn">Search</button>
+						<button type="submit" class="btn">Search profile</button>
 					</g:form>
-					<ul class="nav pull-right">
-						<li><a href="/legacy">Legacy</a></li>
-					</ul>
+					<g:form controller="actions" class="navbar-form pull-right">
+                        <input type="text" name="facebookIdForAction" value="${facebookIdForAction}"
+                            class="span2" placeholder="Facebook ID">
+                        <button type="submit" class="btn">Search latest actions</button>
+                    </g:form>
 				</div>
 			</div>
 
