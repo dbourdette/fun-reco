@@ -33,6 +33,7 @@ class BootStrap {
 			def returnArray = [:]
 			returnArray['objectId'] = it.objectId
 			returnArray['properties'] = it.properties
+			returnArray['date'] = it.date
 			return returnArray
 		}
 				

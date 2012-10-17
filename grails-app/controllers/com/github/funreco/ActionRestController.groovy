@@ -30,7 +30,8 @@ class ActionRestController {
 	}
 
 	def update() {
-		save()
+		response.status = 500
+		render ([error: 'Operation not allowed'] as JSON)
 	}
 
 	def delete() {

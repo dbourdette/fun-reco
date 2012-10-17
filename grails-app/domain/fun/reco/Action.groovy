@@ -1,6 +1,5 @@
 package fun.reco
 
-import java.util.Date;
 import org.bson.types.ObjectId
 
 class Action {
