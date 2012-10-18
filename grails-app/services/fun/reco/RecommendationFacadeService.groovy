@@ -1,20 +1,21 @@
 package fun.reco
 
 import java.util.List;
-
+import fun.reco.Profile;
+import fun.reco.Action;
 import com.github.funreco.Recommendations;
 
 interface RecommendationFacadeService {
 
-	def updateProfile(Profile profile);
+	    Profile updateProfile(Profile profile);
 	
 		Profile findProfile(String email, String facebookId);
 	
-		def updateFriends(String facebookId, List<String> friendsIds);
+		Profile updateFriends(String facebookId, List<String> friendsIds);
 	
 		List<Profile> findFriends(String facebookId);
 	
-		def pushAction(Action action);
+		Action pushAction(Action action);
 	
 		List<Action> findActions(int offset, int limit);
 	

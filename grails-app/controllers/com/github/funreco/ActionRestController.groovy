@@ -3,6 +3,7 @@ package com.github.funreco
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.*
 import org.codehaus.jackson.map.ObjectMapper
+import fun.reco.RecommendationFacade;
 
 class ActionRestController {
 	

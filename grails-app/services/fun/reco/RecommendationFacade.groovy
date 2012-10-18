@@ -5,10 +5,18 @@ import com.github.funreco.Recommendations
 class RecommendationFacade implements RecommendationFacadeService {
 
 	
-	public Object updateProfile(Profile profile) {
-		// TODO Auto-generated method stub
+	public Profile updateProfile(Profile profile) {
+		List<Profile> profiles = Profile.withCriteria {
+			eq('facebookId', profile.facebookId)
+			maxResults(1)
+		}
 		
-		return null;
+		if(profiles.size()>0){
+			Profile oldProfile = profiles.get(0)
+			profile.id = oldProfile.id
+		}
+		profile.save()
+		return profile;
 	}
 
 	public Profile findProfile(String email, String facebookId) {
@@ -24,7 +32,7 @@ class RecommendationFacade implements RecommendationFacadeService {
 	}
 
 	@Override
-	public Object updateFriends(String facebookId, List<String> friendsIds) {
+	public Profile updateFriends(String facebookId, List<String> friendsIds) {
 		
 		Profile profile = Profile.findByFacebookId(facebookId)
 		profile.friendsIds = friendsIds
@@ -49,9 +57,20 @@ class RecommendationFacade implements RecommendationFacadeService {
 	}
 
 	@Override
-	public Object pushAction(Action action) {
-		// TODO Auto-generated method stub
-		return null;
+	public Action pushAction(Action action) {
+		List<Action> actions = Action.withCriteria {
+			eq("profile", action.profile)
+			eq("object", action.object)
+			maxResults(1)
+		}
+		
+		if(actions.size()>0){
+			Action oldAction = actions.get(0)
+			oldAction.date = action.date
+			action.id = oldAction.id
+		}
+		action.save()
+		return action;
 	}
 
 	@Override
@@ -92,7 +111,6 @@ class RecommendationFacade implements RecommendationFacadeService {
 
 	@Override
 	public int countActions() {
-		
 		return Action.count();
 	}
 
