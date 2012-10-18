@@ -8,3 +8,5 @@ target-eclipse
 .DS_Store
 
 .classpath
+
+.groovy

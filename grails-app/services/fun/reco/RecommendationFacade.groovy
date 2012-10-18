@@ -7,27 +7,25 @@ class RecommendationFacade implements RecommendationFacadeService {
 	
 	public Object updateProfile(Profile profile) {
 		// TODO Auto-generated method stub
-		Object o
-		return o;
+		
+		return null;
 	}
 
 	public Profile findProfile(String email, String facebookId) {
-		/*
-		Profile profile = Profile.withCriteria {
-			like('email', email)
-			like('facebookId', facebookId)
+		
+		List<Profile> profiles = Profile.withCriteria {
+			eq('email', email)
+			eq('facebookId', facebookId)
+			maxResults(2)
 		}
+		Profile profile = profiles.get(0)
 		
-		print profile.name
-		*/
-		
-		Profile profile = Profile.collection.findOne(email: email, facebookId: facebookId)
 		return profile;
 	}
 
 	@Override
 	public Object updateFriends(String facebookId, List<String> friendsIds) {
-		// TODO Auto-generated method stub
+		
 		Profile profile = Profile.findByFacebookId(facebookId)
 		profile.friendsIds = friendsIds
 		profile.save()
@@ -37,17 +35,10 @@ class RecommendationFacade implements RecommendationFacadeService {
 
 	@Override
 	public List<Profile> findFriends(String facebookId) {
-		// TODO Auto-generated method stub
+		
 		List<Profile> L = []
 		
 		Profile profile = Profile.findByFacebookId(facebookId)
-		print "**********************************************"
-		print profile.facebookId
-		print "**********************************************"
-		/*
-		Profile profile = Profile.withCriteria {
-			like('facebookId', facebookId)
-		}*/
 		
 		for(int i=0; i<profile.friendsIds.size(); i++){
 			Profile friend = Profile.findByFacebookId(profile.friendsIds.get(i))
@@ -65,20 +56,44 @@ class RecommendationFacade implements RecommendationFacadeService {
 
 	@Override
 	public List<Action> findActions(int offset, int limit) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Action> actions = Action.withCriteria {
+			maxResults(limit)
+		}
+		if(offset >= actions.size()){
+			return null;
+		}
+		for(int i=0; i<offset; i++){
+			actions.remove(0)
+		}
+		return actions;
 	}
 
 	@Override
 	public List<Action> findActions(String facebookId, int offset, int limit) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Action> actions = findActions(offset, limit)
+		
+		if(actions == null){
+			return null;
+		}
+		/*
+		int retard = 0
+		for(int i=0; i<actions.size(); i++){
+			
+			if(!(actions.get(i).profile.facebookId == facebookId) && actions.size() >= 1){
+				actions.remove(i-retard)
+				retard++
+			}
+			else if(actions.size() == 0){
+				return null
+			}
+		}*/
+		return actions;
 	}
 
 	@Override
 	public int countActions() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return Action.count() //list().size();
 	}
 
 	@Override

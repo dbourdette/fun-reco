@@ -14,6 +14,7 @@ class ProfileTests extends GroovyTestCase {
 
 		assert profile.id
 		assert Profile.get(profile.id)
+		
 	}
 	
 	void testJackson() {
