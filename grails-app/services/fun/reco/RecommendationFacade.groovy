@@ -75,7 +75,7 @@ class RecommendationFacade implements RecommendationFacadeService {
 		if(actions == null){
 			return null;
 		}
-		/*
+		
 		int retard = 0
 		for(int i=0; i<actions.size(); i++){
 			
@@ -86,14 +86,14 @@ class RecommendationFacade implements RecommendationFacadeService {
 			else if(actions.size() == 0){
 				return null
 			}
-		}*/
+		}
 		return actions;
 	}
 
 	@Override
 	public int countActions() {
 		
-		return Action.count() //list().size();
+		return Action.count();
 	}
 
 	@Override
