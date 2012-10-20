@@ -1,9 +1,10 @@
 package com.github.funreco.basic;
 
 
-import fun.reco.Profile;
-import fun.reco.Object;
-import fun.reco.Action;
+import com.github.funreco.Profile as PublicProfile
+import fun.reco.Action
+import fun.reco.Object
+import fun.reco.Profile
 
 class RecommendationFacadeTests {
 
@@ -38,7 +39,20 @@ class RecommendationFacadeTests {
 		
 		action.delete()
 	}
-	
+
+    void testUpdateUnknownProfile() {
+        // arrange
+        def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
+
+        // act
+        facade.updateProfile(profile)
+
+        // assert
+        def dbProfile = Profile.findByEmail('123@test.com')
+        assert dbProfile.name == '123'
+        assert dbProfile.facebookId == 'fbId'
+        assert !dbProfile.friendsIds
+    }
 	
 	void testUpdateProfile(){
 		profile.name = "name updated"

@@ -6,31 +6,24 @@ import org.bson.types.ObjectId;
 import com.github.funreco.RecommendationFacade
 import com.github.funreco.Profile
 import com.github.funreco.Action
-import com.github.funreco.Friend;
+import com.github.funreco.Friend
+import fun.reco.Profile as DBProfile
 
 class RecommendationFacadeImpl implements RecommendationFacade {
 
-	
 	public Profile updateProfile(Profile profile) {
-		List<Profile> profiles = Profile.withCriteria {
-			eq('facebookId', profile.facebookId)
-			maxResults(1)
-		}
-		ObjectId id
-		if(profiles.size()>0){
-			Profile oldProfile = profiles.get(0)
-			oldProfile.email = profile.email
-			oldProfile.name = profile.name
-			oldProfile.friendsIds = profile.friendsIds
-			oldProfile.save()
-			id = oldProfile.id
-		}
-		else{
-			profile.save()
-			id = profile.id
-		}
-		
-		return Profile.get(id);
+        DBProfile dbProfile = DBProfile.findByFacebookId(profile.facebookId)
+
+        if (!dbProfile) {
+            dbProfile = new DBProfile(facebookId: profile.facebookId)
+        }
+
+        dbProfile.name = profile.name
+        dbProfile.email = profile.email
+
+        dbProfile.save(flush: true)
+
+        return profile
 	}
 
 	private Profile findProfile(String facebookId){
