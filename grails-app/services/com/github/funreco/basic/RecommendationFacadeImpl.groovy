@@ -1,12 +1,12 @@
 package com.github.funreco.basic
 
-import fun.reco.Profile;
-import fun.reco.Action;
-import fun.reco.Object;
 import com.github.funreco.Recommendations;
 import org.bson.types.ObjectId;
 
-import com.github.funreco.RecommendationFacade;
+import com.github.funreco.RecommendationFacade
+import com.github.funreco.Profile
+import com.github.funreco.Action
+import com.github.funreco.Friend;
 
 class RecommendationFacadeImpl implements RecommendationFacade {
 
@@ -65,7 +65,7 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 	}
 
 	@Override
-	public Profile updateFriends(String facebookId, List<String> friendsIds) {
+	public Profile updateFriends(String facebookId, List<Friend> friends) {
 		
 		Profile profile = findProfile(facebookId)
 		profile.friendsIds = friendsIds
