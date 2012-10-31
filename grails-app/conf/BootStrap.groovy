@@ -6,9 +6,9 @@ import java.util.Set;
 
 import com.mongodb.Mongo
 
-import fun.reco.Object;
-import fun.reco.Profile;
-import fun.reco.Action
+import com.github.dbourdette.ecm.Object;
+import com.github.dbourdette.ecm.Profile;
+import com.github.dbourdette.ecm.Action
 import grails.converters.JSON
 
 class BootStrap {
