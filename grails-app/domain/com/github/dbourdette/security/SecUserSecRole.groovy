@@ -1,4 +1,4 @@
-package com.github.dbourdette.ecm.security
+package com.github.dbourdette.security
 
 import org.apache.commons.lang.builder.HashCodeBuilder
 

@@ -1,3 +1,4 @@
+package com.github.dbourdette.security
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 
 class LogoutController {

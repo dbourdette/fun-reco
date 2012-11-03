@@ -11,9 +11,9 @@ import com.github.dbourdette.ecm.Profile;
 import com.github.dbourdette.ecm.Action
 import grails.converters.JSON
 
-import com.github.dbourdette.ecm.security.SecRole;
-import com.github.dbourdette.ecm.security.SecUser;
-import com.github.dbourdette.ecm.security.SecUserSecRole;
+import com.github.dbourdette.security.SecRole;
+import com.github.dbourdette.security.SecUser;
+import com.github.dbourdette.security.SecUserSecRole;
 
 class BootStrap {
 

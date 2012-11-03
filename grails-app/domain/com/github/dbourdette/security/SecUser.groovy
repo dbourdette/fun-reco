@@ -1,4 +1,4 @@
-package com.github.dbourdette.ecm.security
+package com.github.dbourdette.security
 
 class SecUser {
 
