@@ -17,7 +17,7 @@ class ProfileRestController {
 			ObjectMapper mapper = new ObjectMapper();
 			Profile profile = mapper.readValue(params.profile, Profile.class);
 			if (recommendationFacade.updateProfile(profile)) {
-				render params.profile
+				render mapper.writeValueAsString(profile)
 			}else{
 				response.status = 500
 				render ([error: 'Parsing failed'] as JSON)

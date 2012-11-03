@@ -18,7 +18,7 @@ class ActionRestController {
 			ObjectMapper mapper = new ObjectMapper();
 			Action action = mapper.readValue(params.action, Action.class);
 			if (recommendationFacade.pushAction(action)) {
-				render action as JSON
+				render mapper.writeValueAsString(action)
 			}else{
 				response.status = 500
 				render ([error: 'Parsing failed'] as JSON)
