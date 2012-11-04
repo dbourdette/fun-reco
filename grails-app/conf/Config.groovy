@@ -96,8 +96,8 @@ log4j = {
 grails.plugins.twitterbootstrap.fixtaglib = true
 
 // Added by the Spring Security Core plugin:
-grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.github.dbourdette.ecm.security.SecUser'
-grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.github.dbourdette.ecm.security.SecUserSecRole'
-grails.plugins.springsecurity.authority.className = 'com.github.dbourdette.ecm.security.SecRole'
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.github.dbourdette.security.SecUser'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.github.dbourdette.security.SecUserSecRole'
+grails.plugins.springsecurity.authority.className = 'com.github.dbourdette.security.SecRole'
 
 
