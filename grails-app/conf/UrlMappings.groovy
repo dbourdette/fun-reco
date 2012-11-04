@@ -6,8 +6,8 @@ class UrlMappings {
 				// apply constraints here
 			}
 		}
-		"/document/$id?"(resource: "document")
-		"/action/$id?"(resource: "action")
+		"/profile/$id?"(resource: "profileRest")
+		"/action/$id?"(resource: "actionRest")
 		"/"(controller: "index")
 		"500"(view:'/error')
 	}
