@@ -8,6 +8,7 @@ import com.github.dbourdette.api.Profile
 import com.github.dbourdette.api.Action
 import com.github.dbourdette.api.Friend
 import com.github.dbourdette.ecm.Profile as DBProfile
+import com.github.dbourdette.ecm.Action as DBAction
 
 class RecommendationFacadeImpl implements RecommendationFacade {
 
@@ -27,19 +28,14 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 	}
 
 	private Profile findProfile(String facebookId){
-		List<Profile> profiles = Profile.withCriteria {
-			eq('facebookId', facebookId)
-			maxResults(1)
-		}
-		Profile profile = null
-		if (profiles.size() > 0){
-			profile = profiles.get(0)
-		}
-		else{
-			throw new UnsupportedOperationException("no profile with facebookId = "+ facebookId)
+		DBProfile dbProfile = DBProfile.findByFacebookId(facebookId)
+		if (!dbProfile) {
+			throw new UnsupportedOperationException("not profile found with facebookId="+facebookId)
 		}
 		
-		return profile;
+		Profile profile = new Profile(facebookId:dbProfile.facebookId, email:dbProfile.email, name:dbProfile.name)
+		
+		return profile
 	}
 	
 	public Profile findProfile(String email, String facebookId) {
@@ -60,21 +56,32 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 	@Override
 	public Profile updateFriends(String facebookId, List<Friend> friends) {
 		
-		Profile profile = findProfile(facebookId)
-		profile.friendsIds = friendsIds
-		profile.save()
-		
-		return profile;
+		DBProfile dbProfile = DBProfile.findByFacebookId(facebookId)
+
+        if (!dbProfile) {
+			throw new UnsupportedOperationException("not profile found with facebookId="+facebookId)
+		}
+
+		List<String> friendsIds = []
+		for(int i=0; i<friends.size(); i++){
+			friendsIds.add(friends.get(i).facebookId)
+		}
+        dbProfile.friendsIds = friendsIds
+
+        dbProfile.save(flush: true)
+
+		Profile profile = new Profile(facebookId:dbProfile.facebookId, email:dbProfile.email, name:dbProfile.name)
+        return profile
 	}
 
 	@Override
 	public List<Profile> findFriends(String facebookId) {
 		
 		List<Profile> L = []
-		Profile profile = findProfile(facebookId)
+		DBProfile dbProfile = DBProfile.findByFacebookId(facebookId)
 		
-		for(int i=0; i<profile.friendsIds.size(); i++){
-			Profile friend = findProfile(profile.friendsIds.get(i))
+		for(int i=0; i<dbProfile.friendsIds.size(); i++){
+			Profile friend = findProfile(dbProfile.friendsIds.get(i))
 			L.add(friend)
 		}
 		
@@ -141,7 +148,7 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 
 	@Override
 	public int countActions() {
-		return Action.list().size();
+		return DBAction.list().size();
 	}
 
 	@Override
