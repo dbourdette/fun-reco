@@ -1,4 +1,7 @@
-package com.github.dbourdette.api
+package com.github.dbourdette
+
+import com.github.dbourdette.api.Profile;
+import com.github.dbourdette.api.RecommendationFacade;
 
 class IndexController {
 

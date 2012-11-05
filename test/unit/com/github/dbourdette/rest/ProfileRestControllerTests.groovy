@@ -1,10 +1,13 @@
-package com.github.dbourdette.api
+package com.github.dbourdette.rest
 
 import grails.test.mixin.*
 import org.codehaus.jackson.map.ObjectMapper
 
+import com.github.dbourdette.api.Profile;
+import com.github.dbourdette.api.RecommendationFacade;
+
 @TestFor(ProfileRestController)
-class ProfileRestTests {
+class ProfileRestControllerTests {
 
     void testSave() {
 		def facade = mockFor(RecommendationFacade) 

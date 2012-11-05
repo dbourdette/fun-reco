@@ -1,7 +1,10 @@
-package com.github.dbourdette.api
+package com.github.dbourdette.rest
 
 import grails.converters.JSON
 import org.codehaus.jackson.map.ObjectMapper
+
+import com.github.dbourdette.api.Profile;
+import com.github.dbourdette.api.RecommendationFacade;
 
 class ProfileRestController {
 

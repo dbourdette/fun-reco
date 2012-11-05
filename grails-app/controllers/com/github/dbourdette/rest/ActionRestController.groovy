@@ -1,8 +1,11 @@
-package com.github.dbourdette.api
+package com.github.dbourdette.rest
 
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.*
 import org.codehaus.jackson.map.ObjectMapper
+
+import com.github.dbourdette.api.Action;
+import com.github.dbourdette.api.RecommendationFacade;
 
 class ActionRestController {
 	
