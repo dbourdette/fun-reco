@@ -13,8 +13,7 @@ class AuthentificationTests extends GebReportingTest {
 		loginForm.j_username << 'admin'
 		loginForm.j_password << 'admin'
 		loginButton.click()
-		to (ActionPage)
-		at (ActionPage)
+		assert at (ActionPage)
 
 	}
 	

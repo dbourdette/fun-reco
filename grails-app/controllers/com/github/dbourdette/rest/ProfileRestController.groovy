@@ -12,7 +12,7 @@ class ProfileRestController {
 	ObjectMapper mapper = new ObjectMapper();
 	RecommendationFacade recommendationFacade
 	
-	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_REMEMBERED'])
+	@Secured(['IS_AUTHENTICATED_REMEMBERED'])
 	def show() {
 		def foundProfile = recommendationFacade.findProfile("", params.facebookId)
 		if (foundProfile) {
@@ -23,7 +23,7 @@ class ProfileRestController {
 		}
 	}
 	
-	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
+	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def save() {
 		if (params.profile) {
 			Profile profile = mapper.readValue(params.profile, Profile.class)
@@ -44,13 +44,13 @@ class ProfileRestController {
 		}
 	}
 	
-	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
+	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def update() {
 		response.status = 500
 		render ([error: 'Operation not allowed'] as JSON)
 	}
 	
-	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
+	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def delete() {
 		response.status = 500
 		render ([error: 'Operation not allowed'] as JSON)

@@ -100,4 +100,12 @@ grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.github.dbour
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.github.dbourdette.security.SecUserSecRole'
 grails.plugins.springsecurity.authority.className = 'com.github.dbourdette.security.SecRole'
 
+grails.plugins.springsecurity.useBasicAuth = true
+grails.plugins.springsecurity.basic.realmName = "fun-reco"
+grails.plugins.springsecurity.filterChain.chainMap = [
+    '/action/**': 'JOINED_FILTERS,-exceptionTranslationFilter', 
+    '/profile/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
+    '/**': 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
+]
+
 
