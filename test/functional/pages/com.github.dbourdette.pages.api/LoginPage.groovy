@@ -1,4 +1,5 @@
 package pages
+package com.github.dbourdette.pages.api;
 import geb.Page
 
 class LoginPage extends Page {

@@ -11,13 +11,13 @@ import com.github.dbourdette.api.RecommendationFacade;
 class ActionRestController {
 	
 	RecommendationFacade recommendationFacade
-	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_REMEMBERED'])
+	@Secured(['IS_AUTHENTICATED_REMEMBERED'])
 	def show() {
 		response.status = 500
 		render ([error: 'Operation not allowed'] as JSON)
 	}
 
-	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
+	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def save() {
 		if (params.action) {
 			ObjectMapper mapper = new ObjectMapper();
@@ -33,12 +33,12 @@ class ActionRestController {
 			render ([error: 'Operation not allowed'] as JSON)
 		}
 	}
-	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
+	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def update() {
 		response.status = 500
 		render ([error: 'Operation not allowed'] as JSON)
 	}
-	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
+	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def delete() {
 		response.status = 500
 		render ([error: 'Operation not allowed'] as JSON)
