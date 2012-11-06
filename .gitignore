@@ -1,7 +1,11 @@
 *.iml
 *.ipr
 *.iws
+*~
+*.o
+.*.sw[op]
 .idea
+bin
 target
 .settings
 target-eclipse

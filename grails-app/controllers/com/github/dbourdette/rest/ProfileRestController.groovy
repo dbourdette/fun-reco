@@ -1,5 +1,6 @@
 package com.github.dbourdette.rest
 
+import grails.plugins.springsecurity.Secured
 import grails.converters.JSON
 import org.codehaus.jackson.map.ObjectMapper
 
@@ -9,12 +10,12 @@ import com.github.dbourdette.api.RecommendationFacade;
 class ProfileRestController {
 
 	RecommendationFacade recommendationFacade
-
+	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_REMEMBERED'])
 	def show() {
 		response.status = 500
 		render ([error: 'Operation not allowed'] as JSON)
 	}
-
+	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
 	def save() {
 		if (params.profile) {
 			ObjectMapper mapper = new ObjectMapper();
@@ -30,12 +31,12 @@ class ProfileRestController {
 			render ([error: 'Operation not allowed'] as JSON)
 		}
 	}
-
+	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
 	def update() {
 		response.status = 500
 		render ([error: 'Operation not allowed'] as JSON)
 	}
-
+	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
 	def delete() {
 		response.status = 500
 		render ([error: 'Operation not allowed'] as JSON)

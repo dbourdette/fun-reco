@@ -1,6 +1,7 @@
 package com.github.dbourdette.basic;
 
 
+import com.github.dbourdette.api.Friend
 import com.github.dbourdette.api.Profile as PublicProfile
 import com.github.dbourdette.ecm.Action
 import com.github.dbourdette.ecm.Object
@@ -17,7 +18,7 @@ class RecommendationFacadeTests {
 	Action action
 	
 	void setUp(){
-		profile = new Profile(facebookId:'testID', email:'test@test.com', name:'Mr. test', friendsIds:['friend1ID', 'friend2ID'])
+		profile = new Profile(facebookId:'testID', email:'test@test.com', name:'test', friendsIds:['friend1ID', 'friend2ID'])
 		friend1 = new Profile(facebookId:'friend1ID', email:'friend1@test.com', name:'friend1', friendsIds:['testID'])
 		friend2 = new Profile(facebookId:'friend2ID', email:'friend2@test.com', name:'friend2', friendsIds:['testID'])
 		
@@ -54,56 +55,78 @@ class RecommendationFacadeTests {
         assert !dbProfile.friendsIds
     }
 	
-	void testUpdateProfile(){
-		profile.name = "name updated"
+	void testUpdateExistingProfile(){
+		//arrange
+		def fbID = 'ProfileID'
+		def profile = new PublicProfile(facebookId:fbID, email:'profile@test.com', name:'Profile')
 		facade.updateProfile(profile)
-		assert Profile.get(profile.id).name == "name updated"
 		
-		Profile newProfile = new Profile(facebookId:'newProfileID', email:'new.profile@test.com', name:'newProfile', friendsIds:['friend1ID', 'friend2ID'])
-		facade.updateProfile(newProfile)
-		assert Profile.get(newProfile.id) != null
+		//act
+		def profileWithExistingID = new PublicProfile(facebookId:fbID, email:'newprofile@test.com', name:'newProfile')
+		def profileReturned = facade.updateProfile(profileWithExistingID)
+		
+		//assert
+		assert profileReturned.name == "newProfile"
+		assert profileReturned.email == 'newprofile@test.com'
 	}
 	
 	void testUpdateProfileNoDuplicataOfFacebookId(){
-		Profile newProfile1 = new Profile(facebookId:'newProfileID', email:'new.profile1@test.com', name:'newProfile 1', friendsIds:['friend1ID', 'friend2ID'])
-		Profile newProfile2withSameId = new Profile(facebookId:'newProfileID', email:'new.profile2@test.com', name:'newProfile 2', friendsIds:['friend1ID', 'friend2ID'])
-		newProfile1 = facade.updateProfile(newProfile1)
-		newProfile2withSameId = facade.updateProfile(newProfile2withSameId)
+		//arrange
+		def fbID = 'ProfileID'
+		def profile = new PublicProfile(facebookId:fbID, email:'profile@test.com', name:'Profile')
+		facade.updateProfile(profile)
 		
-		List<Profile> profiles = Profile.withCriteria {
-			eq('facebookId', "newProfileID")
-			maxResults(10)
-		}
-		assert profiles.size() == 1
+		//act
+		def profileWithExistingID = new PublicProfile(facebookId:fbID, email:'newprofile@test.com', name:'newProfile')
+		def profileReturned = facade.updateProfile(profileWithExistingID)
 		
-		newProfile1.delete()
-		newProfile2withSameId.delete()
+		//assert
+		Profile profileSaved = Profile.findByFacebookId(profile.facebookId)
+		assert profileSaved.name == "newProfile"
+		assert profileSaved.email == 'newprofile@test.com'
 	}
 	
 	void testFindProfile() {
-		List<Profile> profiles = Profile.list()
-		Profile firstProfileSaved = profiles.get(0)
+		// arrange
+        def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
+		facade.updateProfile(profile)
 		
-		assert facade.findProfile(firstProfileSaved.email, firstProfileSaved.facebookId).id == firstProfileSaved.id
-		
+        // act
+        def profileFound = facade.findProfile(profile.facebookId)
+
+        // assert
+        assert profileFound.name == '123'
+        assert profileFound.facebookId == 'fbId'
+        assert profileFound.email == '123@test.com'
 	}
 	
 	void testUpdateFriends() {
-		List<Profile> profiles = Profile.list()
-		Profile firstProfileSaved = profiles.get(0)
-		List<String> initialFriends = firstProfileSaved.friendsIds
+		//arrange
+		Friend friend = new Friend(facebookId: "friendId", name: "friend")
+		def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
+		facade.updateProfile(profile)
 		
-		facade.updateFriends(firstProfileSaved.facebookId, ["liste updated"])
-		assert Profile.get(firstProfileSaved.id).friendsIds == ["liste updated"]
-		facade.updateFriends(firstProfileSaved.facebookId, initialFriends)
+		//act
+		facade.updateFriends(profile.facebookId, [friend])
+		
+		//assert
+		assert Profile.findByFacebookId(profile.facebookId).friendsIds == [friend.facebookId]
 	}
 	
 	void testFindFriends() {
-		List<Profile> profiles = Profile.list()
-		String firstProfileIdSaved = profiles.get(0).facebookId
-		List<String> friendsIds = profiles.get(0).friendsIds
+		//arrange
+		Friend friend = new Friend(facebookId: "friendId", name: "friend")
+		def friendProfile = new PublicProfile(facebookId: friend.facebookId, email: "friend@test.com", name: friend.name)
+		def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
+		facade.updateProfile(profile)
+		facade.updateProfile(friendProfile)
+		facade.updateFriends(profile.facebookId, [friendProfile])
 		
-		assert facade.findFriends(firstProfileIdSaved).get(0).facebookId == friendsIds[0]
+		//act
+		PublicProfile friendFound = facade.findFriends(profile.facebookId).get(0)
+		
+		//assert
+		assert friendFound.equals(friendProfile)
 	}
 
 	void testPushActionUpdateExistingEntry(){
