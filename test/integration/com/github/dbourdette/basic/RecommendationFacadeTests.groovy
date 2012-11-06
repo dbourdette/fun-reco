@@ -3,6 +3,8 @@ package com.github.dbourdette.basic;
 
 import com.github.dbourdette.api.Friend
 import com.github.dbourdette.api.Profile as PublicProfile
+import com.github.dbourdette.api.Object as PublicObject
+import com.github.dbourdette.api.Action as PublicAction
 import com.github.dbourdette.ecm.Action
 import com.github.dbourdette.ecm.Object
 import com.github.dbourdette.ecm.Profile
@@ -46,13 +48,14 @@ class RecommendationFacadeTests {
         def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
 
         // act
-        facade.updateProfile(profile)
+        def profileUpdated = facade.updateProfile(profile)
 
         // assert
         def dbProfile = Profile.findByEmail('123@test.com')
         assert dbProfile.name == '123'
         assert dbProfile.facebookId == 'fbId'
-        assert !dbProfile.friendsIds
+		assert profileUpdated.name == '123'
+        assert !profileUpdated.friendsIds
     }
 	
 	void testUpdateExistingProfile(){
@@ -146,19 +149,19 @@ class RecommendationFacadeTests {
 		assert actions.size() == 0
 		newProfile.delete()
 	}
-	void testPushActionAddEntry(){
-		Profile newProfile = new Profile(facebookId:'newProfileID', email:'new.profile@test.com', name:'newProfile', friendsIds:['friend1ID', 'friend2ID'])
-		
-		Object o = new Object(date: new Date(), objectId: "OID", properties: ["show":["musique", "dance"]])
-		Action newAction = new Action(profile: newProfile, object: o, date: new Date())
-		newAction = facade.pushAction(newAction)
-		assert newAction.id != null
-		
-		action.profile = profile
-		action = facade.pushAction(action)
-		
-		newAction.delete()
-		newProfile.delete()
+	
+	void testPushActionNewEntry(){
+		// arrange
+		def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
+		def object = new PublicObject(id: "objectId", properties: ["show":["musique", "dance"]])
+		def action = new PublicAction(profile: profile, object: object, date: new Date())
+
+		// act
+		facade.pushAction(action)
+
+		// assert
+		def actionSaved = PublicAction.findByProfile(PublicProfile.findByFacebookId(profile.facebookId))
+		assert actionSaved.object.id == object.id
 	}
 	
 	void testPpushActionNonDuplicata(){

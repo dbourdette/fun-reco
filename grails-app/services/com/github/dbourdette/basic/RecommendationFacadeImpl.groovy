@@ -90,33 +90,23 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 
 	@Override
 	public Action pushAction(Action action) {
-		List<Action> actions = Action.withCriteria {
-			eq("profile", action.profile)
-			eq("object", action.object)
-			maxResults(1)
-		}
+		//TODO
+		DBProfile dbAction = DBAction.findByProfile(DBProfile.findByFacebookId(action.profile.facebookId))
 		
-		ObjectId id
-		if(actions.size()>0){
-			if(action.id != null){
-				action.delete()
-			}
-			Action oldAction = actions.get(0)
-			oldAction.date = action.date
-			oldAction.save()
-			id = oldAction.id
+		if (!dbProfile) {
+			dbProfile = new DBProfile(facebookId: profile.facebookId)
 		}
-		else{
-			action.save()
-			id = action.id
-		}
+		dbProfile.name = profile.name
+		dbProfile.email = profile.email
 		
-		return Action.get(id);
+		dbProfile.save(flush: true)
+		
+		return profile
 	}
 
 	@Override
 	public List<Action> findActions(int offset, int limit) {
-		List<Action> actions = Action.withCriteria {
+		List<DBAction> actions = DBAction.withCriteria {
 			maxResults(limit)
 		}
 		if(offset >= actions.size()){
