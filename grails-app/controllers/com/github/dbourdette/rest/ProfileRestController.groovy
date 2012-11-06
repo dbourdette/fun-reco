@@ -8,34 +8,48 @@ import com.github.dbourdette.api.Profile;
 import com.github.dbourdette.api.RecommendationFacade;
 
 class ProfileRestController {
-
+	
+	ObjectMapper mapper = new ObjectMapper();
 	RecommendationFacade recommendationFacade
+	
 	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_REMEMBERED'])
 	def show() {
-		response.status = 500
-		render ([error: 'Operation not allowed'] as JSON)
+		def foundProfile = recommendationFacade.findProfile("", params.facebookId)
+		if (foundProfile) {
+			render mapper.writeValueAsString(foundProfile)
+		}else{
+			response.status = 500
+			render ([error: 'Profile not found'] as JSON)
+		}
 	}
+	
 	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
 	def save() {
 		if (params.profile) {
-			ObjectMapper mapper = new ObjectMapper();
-			Profile profile = mapper.readValue(params.profile, Profile.class);
-			if (recommendationFacade.updateProfile(profile)) {
-				render mapper.writeValueAsString(profile)
+			Profile profile = mapper.readValue(params.profile, Profile.class)
+			if (profile.facebookId == params.facebookId) {
+				if (recommendationFacade.updateProfile(profile)) {
+					render mapper.writeValueAsString(profile)
+				}else{
+					response.status = 500
+					render ([error: 'Parsing failed'] as JSON)
+				}
 			}else{
 				response.status = 500
-				render ([error: 'Parsing failed'] as JSON)
+				render ([error: 'Facebook IDs are not matching'] as JSON)
 			}
 		}else{
 			response.status = 500
 			render ([error: 'Operation not allowed'] as JSON)
 		}
 	}
+	
 	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
 	def update() {
 		response.status = 500
 		render ([error: 'Operation not allowed'] as JSON)
 	}
+	
 	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
 	def delete() {
 		response.status = 500

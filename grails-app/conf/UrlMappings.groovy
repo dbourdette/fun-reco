@@ -6,8 +6,9 @@ class UrlMappings {
 				// apply constraints here
 			}
 		}
-		"/profile/$id?"(resource: "profileRest")
-		"/action/$id?"(resource: "actionRest")
+		"/api/profile/$facebookId"(resource: "profileRest")
+		"/api/profile/$facebookId/actions"(resource: "actionRest")
+		"/api/profile/$facebookId/friends"(resource: "friendsRest")
 		"/"(controller: "index")
 		"500"(view:'/error')
 	}

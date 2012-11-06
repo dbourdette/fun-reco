@@ -10,7 +10,9 @@ import com.github.dbourdette.api.RecommendationFacade;
 
 class ActionRestController {
 	
+	ObjectMapper mapper = new ObjectMapper()
 	RecommendationFacade recommendationFacade
+	
 	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_REMEMBERED'])
 	def show() {
 		response.status = 500
@@ -19,25 +21,31 @@ class ActionRestController {
 
 	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
 	def save() {
+		response.status = 500
+		render ([error: 'Operation not allowed'] as JSON)
+	}
+	
+	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
+	def update() {
 		if (params.action) {
-			ObjectMapper mapper = new ObjectMapper();
 			Action action = mapper.readValue(params.action, Action.class);
-			if (recommendationFacade.pushAction(action)) {
-				render mapper.writeValueAsString(action)
+			if (action.profile.facebookId == params.facebookId) {
+				if (recommendationFacade.pushAction(action)) {
+					render mapper.writeValueAsString(action)
+				}else{
+					response.status = 500
+					render ([error: 'Parsing failed'] as JSON)
+				}
 			}else{
 				response.status = 500
-				render ([error: 'Parsing failed'] as JSON)
+				render ([error: 'Facebook IDs are not matching'] as JSON)
 			}
 		}else{
 			response.status = 500
 			render ([error: 'Operation not allowed'] as JSON)
 		}
 	}
-	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
-	def update() {
-		response.status = 500
-		render ([error: 'Operation not allowed'] as JSON)
-	}
+	
 	@Secured(['ROLE_ADMIN','ROLE_USER','IS_AUTHENTICATED_FULLY'])
 	def delete() {
 		response.status = 500
