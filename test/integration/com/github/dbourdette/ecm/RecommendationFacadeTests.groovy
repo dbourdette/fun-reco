@@ -1,13 +1,10 @@
-package com.github.dbourdette.basic;
+package com.github.dbourdette.ecm;
 
-
-import com.github.dbourdette.api.Friend
+import com.github.dbourdette.api.Friend as PublicFriend
 import com.github.dbourdette.api.Profile as PublicProfile
 import com.github.dbourdette.api.Object as PublicObject
 import com.github.dbourdette.api.Action as PublicAction
-import com.github.dbourdette.ecm.Action
-import com.github.dbourdette.ecm.Object
-import com.github.dbourdette.ecm.Profile
+
 
 class RecommendationFacadeTests {
 
@@ -55,7 +52,6 @@ class RecommendationFacadeTests {
         assert dbProfile.name == '123'
         assert dbProfile.facebookId == 'fbId'
 		assert profileUpdated.name == '123'
-        assert !profileUpdated.friendsIds
     }
 	
 	void testUpdateExistingProfile(){
@@ -105,7 +101,7 @@ class RecommendationFacadeTests {
 	
 	void testUpdateFriends() {
 		//arrange
-		Friend friend = new Friend(facebookId: "friendId", name: "friend")
+		def friend = new PublicFriend(facebookId: "friendId", name: "friend")
 		def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
 		facade.updateProfile(profile)
 		
@@ -118,7 +114,7 @@ class RecommendationFacadeTests {
 	
 	void testFindFriends() {
 		//arrange
-		Friend friend = new Friend(facebookId: "friendId", name: "friend")
+		def friend = new PublicFriend(facebookId: "friendId", name: "friend")
 		def friendProfile = new PublicProfile(facebookId: friend.facebookId, email: "friend@test.com", name: friend.name)
 		def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
 		facade.updateProfile(profile)
