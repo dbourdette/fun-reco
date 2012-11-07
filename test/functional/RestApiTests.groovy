@@ -1,31 +1,27 @@
 import geb.junit4.GebReportingTest
-import pages.*
+import com.github.dbourdette.pages.api.*
 import org.junit.Test
 
-class AuthentificationTests extends GebReportingTest {
+class RestApiTests extends GebReportingTest {
 
 	
 	@Test
 	void ActionPageTest() {
 		
 		to ActionPage
-		assert at(LoginPage)
-		loginForm.j_username << 'admin'
-		loginForm.j_password << 'admin'
-		loginButton.click()
-		assert at (ActionPage)
+		assert at(ActionPage)
 
 	}
 	
 	@Test
 	void ProfilePageTest() {
 		to ProfilePage
-		assert at (LoginPage)
-		loginForm.j_username << 'admin'
-		loginForm.j_password << 'admin'
-		loginButton.click()
-		to ProfilePage
-		at ProfilePage
-
+		assert at(ProfilePage)	
+	}
+	
+	@Test
+	void FriendPageTest() {
+		to FriendPage
+		assert at(FriendPage)
 	}
 }

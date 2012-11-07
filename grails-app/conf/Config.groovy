@@ -103,8 +103,9 @@ grails.plugins.springsecurity.authority.className = 'com.github.dbourdette.secur
 grails.plugins.springsecurity.useBasicAuth = true
 grails.plugins.springsecurity.basic.realmName = "fun-reco"
 grails.plugins.springsecurity.filterChain.chainMap = [
-    '/action/**': 'JOINED_FILTERS,-exceptionTranslationFilter', 
-    '/profile/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
+    '/api/profile/$facebookId/actions/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
+    '/api/profile/$facebookId/friends/**': 'JOINED_FILTERS,-exceptionTranslationFilter', 
+    '/api/profile/$facebookId/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
     '/**': 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
 ]
 
