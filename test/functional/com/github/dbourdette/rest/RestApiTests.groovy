@@ -1,22 +1,23 @@
+package com.github.dbourdette.rest
+
 import geb.junit4.GebReportingTest
-import com.github.dbourdette.pages.api.*
 import org.junit.Test
 
 class RestApiTests extends GebReportingTest {
 
-	
 	@Test
 	void ActionPageTest() {
-		
 		to ActionPage
 		assert at(ActionPage)
-
 	}
 	
 	@Test
 	void ProfilePageTest() {
-		to ProfilePage
-		assert at(ProfilePage)	
+        browser.drive {
+            go "http://admin:admin@localhost:8080/api/profile/1"
+
+            println driver.pageSource
+        }
 	}
 	
 	@Test

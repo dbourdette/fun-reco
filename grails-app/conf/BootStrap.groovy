@@ -17,18 +17,20 @@ import com.github.dbourdette.security.SecUserSecRole;
 
 class BootStrap {
 
+    def mongo
+
 	def init = { servletContext ->
-            def roleAdmin = new SecRole(authority: 'ROLE_ADMIN').save()
-            def roleUser = new SecRole(authority: 'ROLE_USER').save()
-     	    def userAdmin = new SecUser(username: 'admin', password: 'admin', enabled: true)
-            userAdmin.save()
-            SecUserSecRole.create(userAdmin, roleAdmin)
-		environments {
-			test {
-				new Mongo().getDB("fun-reco-test").dropDatabase();
-			}
-		}
-			
+        environments {
+            test {
+                if (mongo.getDB("fun-reco-test").secUser.count() == 0) {
+                    def roleAdmin = new SecRole(authority: 'ROLE_ADMIN').save()
+                    def userAdmin = new SecUser(username: 'admin', password: 'admin', enabled: true)
+                    userAdmin.save(flush: true)
+                    SecUserSecRole.create(userAdmin, roleAdmin)
+                }
+            }
+        }
+
 		JSON.registerObjectMarshaller(Profile) {
 			def returnArray = [:]
 			returnArray['facebookId'] = it.facebookId

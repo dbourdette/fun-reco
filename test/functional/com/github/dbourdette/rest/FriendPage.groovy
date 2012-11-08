@@ -1,4 +1,4 @@
-package com.github.dbourdette.pages.api;
+package com.github.dbourdette.rest;
 import geb.Page
 
 class FriendPage extends Page {
