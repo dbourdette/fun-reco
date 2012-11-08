@@ -11,33 +11,29 @@ import com.github.dbourdette.api.RecommendationFacade;
 @TestFor(ActionRestController)
 class ActionRestControllerTests {
 
+    private static final String FACEBOOK_ID = "testFB"
+
+    private static final Date ACTION_DATE = new Date()
+
+    private def facade;
+
     void testSuccessfulUpdate() {
-		def facade = mockFor(RecommendationFacade) 
-		facade.demand.pushAction(1..1) {Action action -> action}
-		controller.recommendationFacade = facade.createMock()
-		Profile profile = new Profile(facebookId: "testFB", email: "testEmail", name: "testName") 
-		Object object = new Object(id: "testObjectId", properties: ["type": ["video", "show"], "animateur": ["nomAnimateur"]])
-		Action action = new Action(profile: profile, object: object, date: new Date())
-		String jsonString = new ObjectMapper().writeValueAsString(action)
-		params.action = jsonString
-		params.facebookId = "testFB"
+        controller.recommendationFacade = createMock {Action action -> action}
+		params.action = testProfileJson()
+		params.facebookId = FACEBOOK_ID
+
 		controller.update()
 		
 		facade.verify()
 		assert response.status == 200
-		assert response.text == jsonString
+		assert response.text == testProfileJson()
 	}
 	
 	void testFailUpdate() {
-		def facade = mockFor(RecommendationFacade)
-		facade.demand.pushAction(1..1) {Action action -> null}
-		controller.recommendationFacade = facade.createMock()
-		Profile profile = new Profile(facebookId: "testFB", email: "testEmail", name: "testName")
-		Object object = new Object(id: "testObjectId", properties: ["type": ["video", "show"], "animateur": ["nomAnimateur"]])
-		Action action = new Action(profile: profile, object: object, date: new Date())
-		String jsonString = new ObjectMapper().writeValueAsString(action)
-		params.action = jsonString
-		params.facebookId = "testFB"
+        controller.recommendationFacade = createMock {Action action -> null}
+        params.action = testProfileJson()
+		params.facebookId = FACEBOOK_ID
+
 		controller.update()
 		
 		facade.verify()
@@ -45,19 +41,27 @@ class ActionRestControllerTests {
 	}
 	
 	void testUpdateWithDifferentIds() {
-		def facade = mockFor(RecommendationFacade)
-		facade.demand.pushAction(1..1) {Action action -> action}
-		controller.recommendationFacade = facade.createMock()
-		Profile profile = new Profile(facebookId: "testFB", email: "testEmail", name: "testName")
-		Object object = new Object(id: "testObjectId", properties: ["type": ["video", "show"], "animateur": ["nomAnimateur"]])
-		Action action = new Action(profile: profile, object: object, date: new Date())
-		String jsonString = new ObjectMapper().writeValueAsString(action)
-		params.action = jsonString
-		params.facebookId = "differentTestFB"
+        params.action = testProfileJson()
+		params.facebookId = "wrongTestFB"
+
 		controller.update()
-		
+
 		assert response.status == 500
 	}
+
+    private RecommendationFacade createMock(Closure closure) {
+        facade = mockFor(RecommendationFacade)
+        facade.demand.pushAction(1..1, closure)
+        facade.createMock()
+    }
+
+    private String testProfileJson() {
+        Profile profile = new Profile(facebookId: FACEBOOK_ID, email: "testEmail", name: "testName")
+        Object object = new Object(id: "testObjectId", properties: ["type": ["video", "show"], "animateur": ["nomAnimateur"]])
+        Action action = new Action(profile: profile, object: object, date: ACTION_DATE)
+
+        new ObjectMapper().writeValueAsString(action)
+    }
 	
 	
 
