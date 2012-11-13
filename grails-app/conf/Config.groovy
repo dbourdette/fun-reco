@@ -108,11 +108,11 @@ grails.plugins.springsecurity.filterChain.chainMap = [
 ]
 
 //plugin FileUploader
-def path = new File(".").getCanonicalPath()
+def pathRoot = new File(".").getCanonicalPath()
 fileuploader {
 	archive {
 		allowedExtensions = ["zip"]
-		path = path + "/tmp/archive"
+		path = pathRoot + "/tmp/archive"
 	}
 }
 
