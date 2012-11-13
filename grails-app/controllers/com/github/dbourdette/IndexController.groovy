@@ -8,6 +8,7 @@ class IndexController {
 	RecommendationFacade recommendationFacade
 
     def index() {
+		
         Profile profile = recommendationFacade.findProfile(params.email, params.facebookId);
 		
 		

@@ -107,4 +107,13 @@ grails.plugins.springsecurity.filterChain.chainMap = [
     '/**': 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
 ]
 
+//plugin FileUploader
+def path = new File(".").getCanonicalPath()
+fileuploader {
+	archive {
+		allowedExtensions = ["zip"]
+		path = path + "/tmp/archive"
+	}
+}
+
 
