@@ -3,18 +3,13 @@ package com.github.dbourdette.api
 class Recommendations {
     Profile profile
 
-    Map<String, Recommendation> recommendations = new HashMap<String, Recommendation>()
+    Map<Object,Integer> recommendations = new HashMap<Object,Integer>()
+	
+	Date date
 
-    Collection<String> getEntries() {
-       return recommendations.values()
-    }
-
-    Recommendation forQuery(String query) {
-        return recommendations.get(query)
-    }
-
-    void addRecommendation(Recommendation recommendation) {
-        recommendations.put(recommendation.query, recommendation)
+   
+    void addRecommendation(Object objet, int views) {
+        recommendations.put(objet, views)
     }
 	
 	@Override
