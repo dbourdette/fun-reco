@@ -90,11 +90,14 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 	public PublicAction pushAction(PublicAction action) {
 		//TODO
 		Action dbAction = Action.findByProfile(Profile.findByFacebookId(action.profile.facebookId))
-		Profile dbProfile = new Profile(facebookId: action.profile.facebookId, email: action.profile.email, name: action.profile.name)
-		Object dbObject = new Object(date: new Date(), objectId: action.object.id)
+		Profile dbProfile = Profile.findByFacebookId(action.profile.facebookId)//new Profile(facebookId: action.profile.facebookId, email: action.profile.email, name: action.profile.name)
+		Object dbObject = Object.findByObjectId(action.object.id)//new Object(date: new Date(), objectId: action.object.id)
 		
 		if (!dbAction) {
 			dbAction = new Action(profile: dbProfile, object: dbObject, date: action.date)
+		}
+		if (! dbObject){
+			dbObject = new Object(objectId: action.object.id, properties: action.object.properties)
 		}
 
 		dbAction.profile = dbProfile

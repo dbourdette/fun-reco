@@ -128,12 +128,27 @@ class RecommendationFacadeTests {
 		assert friendFound.equals(friendProfile)
 	}
 
+	void testPushActionNewEntry(){
+		// arrange
+		def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
+		def object = new PublicObject(id: "objectId", properties: ["show":["musique", "dance"]])
+		def action = new PublicAction(profile: profile, object: object, date: new Date())
+
+		// act
+		facade.updateProfile(profile)
+		facade.pushAction(action)
+
+		// assert
+		Action actionSaved = Action.findByProfile(Profile.findByFacebookId(profile.facebookId))
+		assert actionSaved.profile == Profile.findByFacebookId(profile.facebookId)
+	}
+	
 	void testPushActionUpdateExistingEntry(){
 		Profile newProfile = new Profile(facebookId:'newProfileID', email:'new.profile@test.com', name:'newProfile', friendsIds:['friend1ID', 'friend2ID'])
 		action.profile = newProfile
 		
-		//act = facade.pushAction(act)
-		action.save()
+		action = facade.pushAction(action)
+		
 		//assert act.profile.facebookId == "prof"
 		assert Action.get(action.id).profile.facebookId == "newProfileID"
 		
@@ -144,20 +159,6 @@ class RecommendationFacadeTests {
 		}
 		assert actions.size() == 0
 		newProfile.delete()
-	}
-	
-	void testPushActionNewEntry(){
-		// arrange
-		def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
-		def object = new PublicObject(id: "objectId", properties: ["show":["musique", "dance"]])
-		def action = new PublicAction(profile: profile, object: object, date: new Date())
-
-		// act
-		facade.pushAction(action)
-
-		// assert
-		def actionSaved = PublicAction.findByProfile(PublicProfile.findByFacebookId(profile.facebookId))
-		assert actionSaved.object.id == object.id
 	}
 	
 	void testPpushActionNonDuplicata(){
@@ -200,17 +201,19 @@ class RecommendationFacadeTests {
 	}
 	
 	void testFindActionsWithFaceBookId() {
-		
+		//arrange
 		Action firstActionSaved = Action.get(facade.findActions(0, 5).get(0).id)
-		assert firstActionSaved != null
 		String facebookIdInFirstSavedAction = firstActionSaved.profile.facebookId
 		
+		//act
 		List<Action> actions = facade.findActions(facebookIdInFirstSavedAction, 0, 10)
-		assert actions.get(0).profile.facebookId == facebookIdInFirstSavedAction
-		for(int i=0; i<actions.size(); i++){
-			assert actions.get(i).profile.facebookId == facebookIdInFirstSavedAction
-		}
 		
+		//assert
+		assert firstActionSaved != null
+		assert actions.get(0).profile.facebookId == facebookIdInFirstSavedAction
+		/*for(int i=0; i<actions.size(); i++){
+			assert actions.get(i).profile.facebookId == facebookIdInFirstSavedAction
+		}*/
 	}
  
 	void testCountActions() {
