@@ -220,6 +220,8 @@ class RecommendationFacadeTests {
 	}
  
 	void testFindDefaultRecommendations() {
+		assert action.object != null
+		facade.findDefaultRecommendations()
 	}
  
 	void testFindRecommendations() {

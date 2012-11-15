@@ -1,9 +1,12 @@
 package com.github.dbourdette.ecm
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import org.bson.types.ObjectId;
 
 import com.github.dbourdette.api.RecommendationFacade;
-import com.github.dbourdette.api.Recommendations;
+import com.github.dbourdette.api.Recommendations as PublicRecommendations
 import com.github.dbourdette.api.Profile as PublicProfile
 import com.github.dbourdette.api.Action as PublicAction
 import com.github.dbourdette.api.Friend as PublicFriend
@@ -135,7 +138,7 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 				break;
 			}
 		}
-		return actions;
+		return actions;	
 	}
 
 	@Override
@@ -144,13 +147,35 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 	}
 
 	@Override
-	public Recommendations findDefaultRecommendations() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("not implemented yet")
+	public PublicRecommendations findDefaultRecommendations() {
+		def lastRecommendation = [:]
+		def views = 0
+		def today= new Date()
+		//List<Profile> profiles = []
+		List<Action> actions = Action.withCriteria {
+			between("date", today - 15, today)
+		}
+		
+		for (action in actions)
+		{
+				List<Action> actionsOfObject = Action.withCriteria {
+					eq("object",action.object)
+				}
+				for (act in actionsOfObject)
+				{
+					// profiles.add(act.profile)
+					 views++
+				}
+				lastRecommendation.put(action.object,views)
+			
+		}
+		lastRecommendation.entrySet().sort{it.value}.reverse()
+		Recommendations defaultRecommendation = new Recommendations(recommendations : lastRecommendation, date : today)
+		return defaultRecommendation
 	}
 
 	@Override
-	public Recommendations findRecommendations(String facebookId) {
+	public PublicRecommendations findRecommendations(String facebookId) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("not implemented yet")
 	}
