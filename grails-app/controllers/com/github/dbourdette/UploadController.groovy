@@ -14,7 +14,7 @@ class UploadController {
 	
 	def upload_error() {
 		flash.error = "There's been an error with your upload. Check your file extension, only .zip are allowed."
-		render(view: "/index")
+		redirect(uri: "/upload")
 	}
 	
 	def upload_success() {
