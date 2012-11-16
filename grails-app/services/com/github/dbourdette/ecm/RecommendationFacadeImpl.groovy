@@ -93,7 +93,7 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 	@Override
 	public PublicAction pushAction(PublicAction action) {
 		//TODO
-		
+		Date currentDate = new Date()
 		Profile dbProfile = Profile.findByFacebookId(action.profile.facebookId)//new Profile(facebookId: action.profile.facebookId, email: action.profile.email, name: action.profile.name)
 		Object dbObject = Object.findByObjectId(action.object.id)//new Object(date: new Date(), objectId: action.object.id)
 		
@@ -111,22 +111,22 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 		
 		Action dbAction = null
 		for(int i=0; i<dbActions.size(); i++){
-			if(dbActions.get(i).profile.facebookId.equals(action.profile.facebookId) && dbActions.get(i).object.objectId.equals(action.object.Id)){
+			if(dbActions.get(i).profile.facebookId.equals(action.profile.facebookId) && dbActions.get(i).object.objectId.equals(action.object.id)){
 				dbAction = dbActions.get(i)
 			}
 		}
 		if (!dbAction) {
-			dbAction = new Action(profile: dbProfile, object: dbObject, date: action.date)
+			dbAction = new Action(profile: dbProfile, object: dbObject, date: currentDate)
 		}
 		
 
 		dbAction.profile = dbProfile
 		dbAction.object = dbObject
-		dbAction.date = action.date
+		dbAction.date = currentDate
 		
 		dbAction.save(flush: true)
 		
-		return new PublicAction(profile: new PublicProfile(facebookId: dbProfile.facebookId, email: dbProfile.email, name: dbProfile.name), object: new PublicObject(id: dbObject.objectId, properties: dbObject.properties))
+		return new PublicAction(profile: new PublicProfile(facebookId: dbProfile.facebookId, email: dbProfile.email, name: dbProfile.name), object: new PublicObject(id: dbObject.objectId, properties: dbObject.properties), date: currentDate)
 	}
 
 	@Override
