@@ -10,6 +10,7 @@ import com.github.dbourdette.api.Recommendations as PublicRecommendations
 import com.github.dbourdette.api.Profile as PublicProfile
 import com.github.dbourdette.api.Action as PublicAction
 import com.github.dbourdette.api.Friend as PublicFriend
+import com.github.dbourdette.api.Object as PublicObject
 
 class RecommendationFacadeImpl implements RecommendationFacade {
 
@@ -92,16 +93,32 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 	@Override
 	public PublicAction pushAction(PublicAction action) {
 		//TODO
-		Action dbAction = Action.findByProfile(Profile.findByFacebookId(action.profile.facebookId))
+		
 		Profile dbProfile = Profile.findByFacebookId(action.profile.facebookId)//new Profile(facebookId: action.profile.facebookId, email: action.profile.email, name: action.profile.name)
 		Object dbObject = Object.findByObjectId(action.object.id)//new Object(date: new Date(), objectId: action.object.id)
 		
+		if (! dbObject){
+			throw new UnsupportedOperationException("can't push action because object "+action.object.id+" doesn't exist!")
+		}
+		if (! dbProfile){
+			throw new UnsupportedOperationException("can't push action because profile "+action.profile.facebookId+" doesn't exist!")
+		}
+		
+		List<Action> dbActions = Action.withCriteria {
+			eq('profile', dbProfile)
+			eq('object', dbObject)
+		}
+		
+		Action dbAction = null
+		for(int i=0; i<dbActions.size(); i++){
+			if(dbActions.get(i).profile.facebookId.equals(action.profile.facebookId) && dbActions.get(i).object.objectId.equals(action.object.Id)){
+				dbAction = dbActions.get(i)
+			}
+		}
 		if (!dbAction) {
 			dbAction = new Action(profile: dbProfile, object: dbObject, date: action.date)
 		}
-		if (! dbObject){
-			dbObject = new Object(objectId: action.object.id, properties: action.object.properties)
-		}
+		
 
 		dbAction.profile = dbProfile
 		dbAction.object = dbObject
@@ -109,7 +126,7 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 		
 		dbAction.save(flush: true)
 		
-		return action
+		return new PublicAction(profile: new PublicProfile(facebookId: dbProfile.facebookId, email: dbProfile.email, name: dbProfile.name), object: new PublicObject(id: dbObject.objectId, properties: dbObject.properties))
 	}
 
 	@Override

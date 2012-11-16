@@ -14,6 +14,7 @@ class RecommendationFacadeTests {
 	Profile friend1
 	Profile friend2
 	
+	Object object
 	Action action
 	
 	void setUp(){
@@ -21,8 +22,9 @@ class RecommendationFacadeTests {
 		friend1 = new Profile(facebookId:'friend1ID', email:'friend1@test.com', name:'friend1', friendsIds:['testID'])
 		friend2 = new Profile(facebookId:'friend2ID', email:'friend2@test.com', name:'friend2', friendsIds:['testID'])
 		
-		Object o = new Object(date: new Date(), objectId: "OID", properties: ["show":["musique", "dance"]])
-		action = new Action(profile: profile, object: o, date: new Date())
+		object = new Object(date: new Date(), objectId: "OID", properties: ["show":["musique", "dance"]])
+		object.save(flush: true)
+		action = new Action(profile: profile, object: object, date: new Date())
 		action.save()
 		
 		friend1.save()
@@ -131,8 +133,8 @@ class RecommendationFacadeTests {
 	void testPushActionNewEntry(){
 		// arrange
 		def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
-		def object = new PublicObject(id: "objectId", properties: ["show":["musique", "dance"]])
-		def action = new PublicAction(profile: profile, object: object, date: new Date())
+		def publicObject = new PublicObject(id: object.objectId, properties: ["show":["musique", "dance"]])
+		def action = new PublicAction(profile: profile, object: publicObject, date: new Date())
 
 		// act
 		facade.updateProfile(profile)
@@ -144,21 +146,16 @@ class RecommendationFacadeTests {
 	}
 	
 	void testPushActionUpdateExistingEntry(){
-		Profile newProfile = new Profile(facebookId:'newProfileID', email:'new.profile@test.com', name:'newProfile', friendsIds:['friend1ID', 'friend2ID'])
-		action.profile = newProfile
+		//arrange
+		def newProfile = new PublicProfile(facebookId:'newProfileID', email:'new.profile@test.com', name:'newProfile')
+		def object = new PublicObject(id: "objectId", properties: ["show":["musique", "dance"]])
+		def action = new PublicAction(profile: newProfile, object: object, date: new Date())
 		
+		//act
 		action = facade.pushAction(action)
 		
 		//assert act.profile.facebookId == "prof"
-		assert Action.get(action.id).profile.facebookId == "newProfileID"
-		
-		List<Action> actions = Action.withCriteria {
-			eq("profile", action.profile)
-			eq("object", action.object)
-			maxResults(1)
-		}
-		assert actions.size() == 0
-		newProfile.delete()
+		assert Action.findByObject(Object.findByObjectId(object.id)).profile.facebookId == "newProfileID"
 	}
 	
 	void testPpushActionNonDuplicata(){
