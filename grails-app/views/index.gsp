@@ -5,6 +5,8 @@
 	</head>
 	
 	<body>
+            <g:link name="upload" controller="upload"  class="btn">Import data</g:link>
+	
 	        <g:if test="${email || facebookId}">
 	            <div class="row">
 	                <div class="span12">
@@ -13,22 +15,6 @@
 	                </div>
 	            </div>
 	        </g:if>
-	
-	        <div class="row">
-	            <div class="span12">
-	                <legend>Recommendations for ${profile == null ? 'all users' : profile.email}</legend>
-	                <g:each var="recommendationEntry" in="${recommendation?.entries}">
-	                    <h4>${recommendationEntry.query}</h4>
-	                    <ul id="recommandations">
-	                        <g:each var="recommendedObject" in="${recommendationEntry.objects}">
-	                            <li>
-	                                <g:formatRecommendation recommendedObject="${recommendedObject}" />
-	                            </li>
-	                        </g:each>
-	                    </ul>
-	                </g:each>
-	            </div>
-	        </div>
 	
 	        <g:if test="${profile}">
 	            <div class="row">
