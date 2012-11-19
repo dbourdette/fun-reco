@@ -2,6 +2,7 @@ package com.github.dbourdette.ecm
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 import org.bson.types.ObjectId;
 
@@ -90,6 +91,21 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 		return L;
 	}
 
+	public PublicObject pushObject(PublicObject object){
+		//TODO
+		Object dbObject = Object.findByObjectId(object.id)
+		
+		if (!dbObject) {
+			dbObject = new Object(objectId: object.id, properties: object.properties)
+		}
+		
+		
+		dbObject.properties = object.properties
+		dbObject.save(flush: true)
+		
+		return object		
+	}
+	
 	@Override
 	public PublicAction pushAction(PublicAction action) {
 		//TODO
@@ -129,6 +145,16 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 		return new PublicAction(profile: new PublicProfile(facebookId: dbProfile.facebookId, email: dbProfile.email, name: dbProfile.name), object: new PublicObject(id: dbObject.objectId, properties: dbObject.properties), date: currentDate)
 	}
 
+	public PublicAction convertIntoPublicAction(Action action){
+		Profile dbProfile = Profile.findByFacebookId(action.profile.facebookId)
+		def profile = new PublicProfile(facebookId: dbProfile.facebookId, email: dbProfile.email, name: dbProfile.name)
+		Object dbObject = Object.findByObjectId(action.object.objectId)
+		def object = new PublicObject(id: dbObject.objectId, properties: dbObject.properties)
+		def publicAction = new PublicAction(profile: profile, object: object, date: action.date)
+	
+		return publicAction 
+	}
+	
 	@Override
 	public List<PublicAction> findActions(int offset, int limit) {
 		List<Action> actions = Action.withCriteria {
@@ -140,25 +166,36 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 		for(int i=0; i<offset; i++){
 			actions.remove(0)
 		}
-		return actions;
+		
+		List<PublicAction> publicActions = []
+		for(int i=0; i<actions.size(); i++){
+			publicActions.add(convertIntoPublicAction(actions.get(i)))
+		}
+		
+		return publicActions;
 	}
 
 	@Override
 	public List<PublicAction> findActions(String facebookId, int offset, int limit) {
-		List<PublicAction> actions = findActions(offset, limit)
-		
-		int retard = 0
-		for(int i=0; i<actions.size(); i++){
-			
-			if((actions.get(i).profile.facebookId != facebookId) && actions.size() >= 1){
-				actions.remove(i-retard)
-				retard++
-			}
-			if(actions.size() == 0){
-				break;
-			}
+		Profile dbProfile = Profile.findByFacebookId(facebookId)
+		List<Action> actions = Action.withCriteria {
+			eq('profile', dbProfile)
+			maxResults(limit)
 		}
-		return actions;	
+		
+		if(offset >= actions.size()){
+			return [];
+		}
+		for(int i=0; i<offset; i++){
+			actions.remove(0)
+		}
+		
+		List<PublicAction> publicActions = []
+		for(int i=0; i<actions.size(); i++){
+			publicActions.add(convertIntoPublicAction(actions.get(i)))
+		}
+		
+		return publicActions;	
 	}
 
 	@Override
