@@ -196,8 +196,35 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 
 	@Override
 	public PublicRecommendations findRecommendations(String facebookId) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("not implemented yet")
+		def lastRecommendation = [:]
+		def views = 0
+		def today= new Date()
+		List<Action> actionsOfFriends
+		Profile profile= Profile.findByFacebookId(facebookId)
+		List<Action> actions = Action.findAll()
+		for (action in actions)
+		{
+				Profile friend= action.profile
+				if (profile.friendsIds.contains(friend.facebookId))
+				{	 
+				actionsOfFriends = action
+				}
+		}
+		for (action in actionsOfFriends)
+		{
+				List<Action> actionsOfObject = Action.withCriteria {
+					eq("object",action.object)
+				}
+				for (act in actionsOfObject)
+				{
+					 views++
+				}
+				lastRecommendation.put(action.object,views)
+			
+		}
+		lastRecommendation.entrySet().sort{it.value}.reverse()
+		Recommendations defaultRecommendation = new Recommendations(recommendations : lastRecommendation, date : today)
+		return defaultRecommendation
 	}
 
 }
