@@ -92,11 +92,12 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 	}
 
 	public PublicObject pushObject(PublicObject object){
-		//TODO
 		Object dbObject = Object.findByObjectId(object.id)
 		
 		if (!dbObject) {
-			dbObject = new Object(objectId: object.id, properties: object.properties)
+			dbObject = new Object(objectId: object.id, properties: object.properties, date: new Date())
+			dbObject.save(flush: true)
+			return object
 		}
 		
 		
@@ -146,10 +147,17 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 	}
 
 	public PublicAction convertIntoPublicAction(Action action){
-		Profile dbProfile = Profile.findByFacebookId(action.profile.facebookId)
-		def profile = new PublicProfile(facebookId: dbProfile.facebookId, email: dbProfile.email, name: dbProfile.name)
-		Object dbObject = Object.findByObjectId(action.object.objectId)
-		def object = new PublicObject(id: dbObject.objectId, properties: dbObject.properties)
+		def profile = null
+		if(action.profile){
+			Profile dbProfile = Profile.findByFacebookId(action.profile.facebookId)
+			profile = new PublicProfile(facebookId: dbProfile.facebookId, email: dbProfile.email, name: dbProfile.name)
+		}
+		
+		def object = null
+		if(action.object){
+			Object dbObject = Object.findByObjectId(action.object.objectId)
+			object = new PublicObject(id: dbObject.objectId, properties: dbObject.properties)
+		}
 		def publicAction = new PublicAction(profile: profile, object: object, date: action.date)
 	
 		return publicAction 
@@ -223,7 +231,7 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 					// profiles.add(act.profile)
 					 views++
 				}
-				lastRecommendation.put(action.object,views)
+				lastRecommendation.put(convertIntoPublicAction(action).object,views)
 			
 		}
 		lastRecommendation.entrySet().sort{it.value}.reverse()
