@@ -248,8 +248,24 @@ class RecommendationFacadeTests {
 	}
  
 	void testFindDefaultRecommendations() {
+		//arrange (push actions)
+		def profile1 = new PublicProfile(facebookId: "fbId1", email: "123@test.com", name: "123")
+		def profile2 = new PublicProfile(facebookId: "fbId2", email: "456@test.com", name: "456")
+		def publicObject = new PublicObject(id: "publicObjectId", properties: ["show":["musique", "dance"]])
+		def action1 = new PublicAction(profile: profile1, object: publicObject, date: new Date())
+		def action2 = new PublicAction(profile: profile2, object: publicObject, date: new Date())
+		facade.updateProfile(profile1)
+		facade.updateProfile(profile2)
+		facade.pushObject(publicObject)
+		facade.pushAction(action1)
+		facade.pushAction(action2)
 		
-		facade.findDefaultRecommendations()
+		//act
+		List<PublicAction> actionsRecommended = facade.findDefaultRecommendations()
+		
+		//assert
+		assert actionsRecommended.size() >=1
+		//assert actionsRecommended
 	}
  
 	void testFindRecommendations() {

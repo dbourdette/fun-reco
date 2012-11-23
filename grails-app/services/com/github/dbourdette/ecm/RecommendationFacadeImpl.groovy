@@ -223,19 +223,33 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 		
 		for (action in actions)
 		{
+			Object objectTracked = null
+			if(action.object){
+				objectTracked = Object.findByObjectId(action.object.objectId)
+			}
+			else{
+				throw new UnsupportedOperationException("action doesn't contains object.")
+			}
+			
+			if(objectTracked){
 				List<Action> actionsOfObject = Action.withCriteria {
-					eq("object",action.object)
+					eq("object",objectTracked)
 				}
+				System.out.println("first test passed!");
 				for (act in actionsOfObject)
 				{
 					// profiles.add(act.profile)
 					 views++
 				}
 				lastRecommendation.put(convertIntoPublicAction(action).object,views)
+			}
+			else{
+				throw new UnsupportedOperationException("there is no object with objectId = "+action.object.objectId+"\n Recommendation on this object is impossible!")
+			}
 			
 		}
 		lastRecommendation.entrySet().sort{it.value}.reverse()
-		Recommendations defaultRecommendation = new Recommendations(recommendations : lastRecommendation, date : today)
+		Recommendations defaultRecommendation = new Recommendations(recommendations : lastRecommendation, date : today, profile: null)
 		return defaultRecommendation
 	}
 

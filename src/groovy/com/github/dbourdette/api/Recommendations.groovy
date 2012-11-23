@@ -2,7 +2,6 @@ package com.github.dbourdette.api
 
 class Recommendations {
     Profile profile
-
     Map<Object,Integer> recommendations = new HashMap<Object,Integer>()
 	
 	Date date
