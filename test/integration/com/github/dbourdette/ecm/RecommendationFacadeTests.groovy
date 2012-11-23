@@ -21,15 +21,11 @@ class RecommendationFacadeTests {
 	}
 
 	void testObjectPercistence(){
+		
+		def properties = ["show":["musique", "dance"]]
 		def publicObject = new PublicObject(id: "idDeMonObjet", objectProperties: ["show":["musique", "dance"]])
 		facade.pushObject(publicObject)
-		
-		//convert groovy Map into typed HashMap
-		Map<String, Set<String>> dbMapProperties = new HashMap<String, Set<String>>()
-		for(key in publicObject.objectProperties){
-			dbMapProperties.put(key, publicObject.objectProperties[key])
-		}
-		assert Object.findByObjectId("idDeMonObjet").objectProperties == dbMapProperties
+		assert Object.findByObjectId("idDeMonObjet").objectProperties == properties
 	}
 	
     void testUpdateUnknownProfile() {
@@ -190,7 +186,7 @@ class RecommendationFacadeTests {
 			// arrange
 			def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
 			def publicObjectId = "publicObjectId"
-			def publicObject = new PublicObject(id: publicObjectId, properties: ["show":["musique", "dance"]])
+			def publicObject = new PublicObject(id: publicObjectId, objectProperties: ["show":["musique", "dance"]])
 			def action = new PublicAction(profile: profile, object: publicObject, date: new Date())
 
 			// act
@@ -211,7 +207,7 @@ class RecommendationFacadeTests {
 		// arrange
 		def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
 		def publicObjectId = "publicObjectId"
-		def publicObject = new PublicObject(id: publicObjectId, properties: ["show":["musique", "dance"]])
+		def publicObject = new PublicObject(id: publicObjectId, objectProperties: ["show":["musique", "dance"]])
 		def action = new PublicAction(profile: profile, object: publicObject, date: new Date())
 		
 		//act
@@ -228,7 +224,7 @@ class RecommendationFacadeTests {
 		//arrange
 		def profile1 = new PublicProfile(facebookId: "fbId1", email: "123@test.com", name: "123")
 		def profile2 = new PublicProfile(facebookId: "fbId2", email: "456@test.com", name: "456")
-		def publicObject = new PublicObject(id: "publicObjectId", properties: ["show":["musique", "dance"]])
+		def publicObject = new PublicObject(id: "publicObjectId", objectProperties: ["show":["musique", "dance"]])
 		def action1 = new PublicAction(profile: profile1, object: publicObject, date: new Date())
 		def action2 = new PublicAction(profile: profile2, object: publicObject, date: new Date())
 		facade.updateProfile(profile1)
@@ -260,7 +256,7 @@ class RecommendationFacadeTests {
 		//arrange (push actions)
 		def profile1 = new PublicProfile(facebookId: "fbId1", email: "123@test.com", name: "123")
 		def profile2 = new PublicProfile(facebookId: "fbId2", email: "456@test.com", name: "456")
-		def publicObject = new PublicObject(id: "publicObjectId", properties: ["show":["musique", "dance"]])
+		def publicObject = new PublicObject(id: "publicObjectId", objectProperties: ["show":["musique", "dance"]])
 		def action1 = new PublicAction(profile: profile1, object: publicObject, date: new Date())
 		def action2 = new PublicAction(profile: profile2, object: publicObject, date: new Date())
 		facade.updateProfile(profile1)

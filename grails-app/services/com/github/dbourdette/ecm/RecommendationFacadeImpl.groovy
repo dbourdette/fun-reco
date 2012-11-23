@@ -144,7 +144,7 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 		
 		dbAction.save(flush: true)
 		
-		return new PublicAction(profile: new PublicProfile(facebookId: dbProfile.facebookId, email: dbProfile.email, name: dbProfile.name), object: new PublicObject(id: dbObject.objectId, properties: dbObject.properties), date: currentDate)
+		return new PublicAction(profile: new PublicProfile(facebookId: dbProfile.facebookId, email: dbProfile.email, name: dbProfile.name), object: new PublicObject(id: dbObject.objectId, objectProperties: dbObject.properties), date: currentDate)
 	}
 
 	public PublicAction convertIntoPublicAction(Action action){
@@ -157,7 +157,7 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 		def object = null
 		if(action.object){
 			Object dbObject = Object.findByObjectId(action.object.objectId)
-			object = new PublicObject(id: dbObject.objectId, properties: dbObject.properties)
+			object = new PublicObject(id: dbObject.objectId, objectProperties: dbObject.properties)
 		}
 		def publicAction = new PublicAction(profile: profile, object: object, date: action.date)
 	
