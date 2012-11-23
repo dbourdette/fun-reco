@@ -1,5 +1,8 @@
 package com.github.dbourdette.ecm;
 
+import java.util.Map;
+import java.util.Set;
+
 import com.github.dbourdette.api.Friend as PublicFriend
 import com.github.dbourdette.api.Profile as PublicProfile
 import com.github.dbourdette.api.Object as PublicObject
@@ -18,10 +21,15 @@ class RecommendationFacadeTests {
 	}
 
 	void testObjectPercistence(){
-		Object dbObject = new Object(objectId: "testOID", properties: ["show":["musique", "dance"]], date: new Date())
-		dbObject.save(flush: true)
-		assert Object.findByObjectId("testOID") != null
-		assert Object.findByObjectId("testOID").properties == ["show":["musique", "dance"]]
+		def publicObject = new PublicObject(id: "idDeMonObjet", objectProperties: ["show":["musique", "dance"]])
+		facade.pushObject(publicObject)
+		
+		//convert groovy Map into typed HashMap
+		Map<String, Set<String>> dbMapProperties = new HashMap<String, Set<String>>()
+		for(key in publicObject.objectProperties){
+			dbMapProperties.put(key, publicObject.objectProperties[key])
+		}
+		assert Object.findByObjectId("idDeMonObjet").objectProperties == dbMapProperties
 	}
 	
     void testUpdateUnknownProfile() {
@@ -116,23 +124,24 @@ class RecommendationFacadeTests {
 		//arrange
 		def properties = ["show":["musique", "dance"]]
 		String objectId = "objectId"
-		def publicObject = new PublicObject(id: objectId, properties: properties)
+		def publicObject = new PublicObject(id: objectId, objectProperties: properties)
 		
 		//act
 		facade.pushObject(publicObject)
-		Object object = new Object(objectId: "OIDdirectSave", properties: ["show":["musique", "dance"]], date: new Date())
+		Object object = new Object(objectId: "OIDdirectSave", objectProperties: ["show":["musique", "dance"]], date: new Date())
 		object.save(flush: true)
 		
 		//assert
 		assert Object.findByObjectId("OIDdirectSave") != null
 		assert Object.findByObjectId(objectId) != null
+		assert Object.findByObjectId(objectId).objectProperties == properties
 	}
 	
 	void testPushActionNewEntry(){
 		// arrange
 		def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
 		def publicObjectId = "publicObjectId"
-		def publicObject = new PublicObject(id: publicObjectId, properties: ["show":["musique", "dance"]])
+		def publicObject = new PublicObject(id: publicObjectId, objectProperties: ["show":["musique", "dance"]])
 		def action = new PublicAction(profile: profile, object: publicObject, date: new Date())
 
 		// act
@@ -158,7 +167,7 @@ class RecommendationFacadeTests {
 		    // arrange
 		    def profile = new PublicProfile(facebookId: "fbId", email: "123@test.com", name: "123")
 			def publicObjectId = "publicObjectId"
-		    def publicObject = new PublicObject(id: publicObjectId, properties: ["show":["musique", "dance"]])
+		    def publicObject = new PublicObject(id: publicObjectId, objectProperties: ["show":["musique", "dance"]])
 		    def action = new PublicAction(profile: profile, object: publicObject, date: new Date())
 
 		    // act

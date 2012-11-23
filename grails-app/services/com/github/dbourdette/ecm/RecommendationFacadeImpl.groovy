@@ -95,13 +95,14 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 		Object dbObject = Object.findByObjectId(object.id)
 		
 		if (!dbObject) {
-			dbObject = new Object(objectId: object.id, properties: object.properties, date: new Date())
+			
+			dbObject = new Object(objectId: object.id, objectProperties: object.objectProperties, date: new Date())
 			dbObject.save(flush: true)
 			return object
 		}
 		
 		
-		dbObject.properties = object.properties
+		dbObject.objectProperties = object.objectProperties
 		dbObject.save(flush: true)
 		
 		return object		

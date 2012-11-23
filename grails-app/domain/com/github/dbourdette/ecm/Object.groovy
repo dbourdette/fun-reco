@@ -8,6 +8,6 @@ class Object {
 
 	Date date
     String objectId
-    Map<String, Set<String>> properties
+    Map<String, Set<String>> objectProperties
 
 }

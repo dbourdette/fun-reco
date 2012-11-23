@@ -57,7 +57,7 @@ class ActionRestControllerTests {
 
     private String testProfileJson() {
         Profile profile = new Profile(facebookId: FACEBOOK_ID, email: "testEmail", name: "testName")
-        Object object = new Object(id: "testObjectId", properties: ["type": ["video", "show"], "animateur": ["nomAnimateur"]])
+        Object object = new Object(id: "testObjectId", objectProperties: ["type": ["video", "show"], "animateur": ["nomAnimateur"]])
         Action action = new Action(profile: profile, object: object, date: ACTION_DATE)
 
         new ObjectMapper().writeValueAsString(action)

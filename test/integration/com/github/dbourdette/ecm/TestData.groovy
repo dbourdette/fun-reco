@@ -13,7 +13,7 @@ class TestData {
     }
 
     static testObject(properties) {
-        new Object(objectId: "testObjectId", properties: properties)
+        new Object(objectId: "testObjectId", objectProperties: properties)
     }
 	
 	static testAction() {
