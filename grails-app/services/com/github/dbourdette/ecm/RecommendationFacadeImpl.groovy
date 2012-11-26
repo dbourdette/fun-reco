@@ -30,7 +30,7 @@ class RecommendationFacadeImpl implements RecommendationFacade {
         return profile
 	}
 
-	private PublicProfile findProfile(String facebookId){
+	def PublicProfile findProfile(String facebookId){
 		Profile dbProfile = Profile.findByFacebookId(facebookId)
 		if (!dbProfile) {
 			throw new UnsupportedOperationException("not profile found with facebookId="+facebookId)
@@ -41,7 +41,7 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 		return profile
 	}
 	
-	public PublicProfile findProfile(String email, String facebookId) {
+	def PublicProfile findProfile(String email, String facebookId) {
 		
 		List<PublicProfile> profiles = PublicProfile.withCriteria {
 			eq('email', email)

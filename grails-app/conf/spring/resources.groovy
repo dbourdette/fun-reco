@@ -1,11 +1,27 @@
+import grails.util.Environment
+
 import com.github.dbourdette.stub.StubRecommendationFacade
 import com.github.dbourdette.stub.StubRecommendationFacadeData
+import com.github.dbourdette.ecm.RecommendationFacadeImpl
 
 beans = {
-	
-	recommendationFacade(StubRecommendationFacade) {
-		stubRecommendationFacadeData = ref("stubRecommendationFacadeData")
+	switch(Environment.current) {
+		case Environment.TEST:
+			recommendationFacade(StubRecommendationFacade) {
+				stubRecommendationFacadeData = ref("stubRecommendationFacadeData")
+			}
+			
+			stubRecommendationFacadeData(StubRecommendationFacadeData)
+			break
+		case Environment.DEVELOPMENT:
+//			recommendationFacade(RecommendationFacadeImpl) {
+//			}
+			recommendationFacade(StubRecommendationFacade) {
+				stubRecommendationFacadeData = ref("stubRecommendationFacadeData")
+			}
+			
+			stubRecommendationFacadeData(StubRecommendationFacadeData)
+			break
 	}
 	
-	stubRecommendationFacadeData(StubRecommendationFacadeData)
 }
