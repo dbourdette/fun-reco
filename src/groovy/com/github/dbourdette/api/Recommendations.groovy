@@ -1,16 +1,23 @@
 package com.github.dbourdette.api
 
 class Recommendations {
-    Profile profile
-    Map<Object,Integer> recommendations = new HashMap<Object,Integer>()
-	
-	Date date
+	Profile profile
+	Map<String, Recommendation> recommendations = new HashMap<String, Recommendation>()
 
-   
-    void addRecommendation(Object objet, int views) {
-        recommendations.put(objet, views)
-    }
 	
+	Collection<String> getEntries() {
+		return recommendations.values()
+	}
+
+	Recommendation forQuery(String query) {
+		return recommendations.get(query)
+	}
+
+	void addRecommendation(Recommendation recommendation) {
+		recommendations.put(recommendation.query, recommendation)
+	}
+
+
 	@Override
 	public boolean equals(Recommendations recommendations) {
 		return (this.profile.equals(recommendations.profile) && this.recommendations.equals(recommendations.recommendations));

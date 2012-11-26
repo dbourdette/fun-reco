@@ -21,11 +21,9 @@ class RecommendationFacadeTests {
 	}
 
 	void testObjectPercistence(){
-		
-		def properties = ["show":["musique", "dance"]]
 		def publicObject = new PublicObject(id: "idDeMonObjet", objectProperties: ["show":["musique", "dance"]])
 		facade.pushObject(publicObject)
-		assert Object.findByObjectId("idDeMonObjet").objectProperties == properties
+		assert Object.findByObjectId("idDeMonObjet").objectProperties == ["show":["musique", "dance"]]
 	}
 	
     void testUpdateUnknownProfile() {
