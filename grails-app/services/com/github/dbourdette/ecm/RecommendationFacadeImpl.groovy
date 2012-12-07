@@ -236,7 +236,6 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 				List<Action> actionsOfObject = Action.withCriteria {
 					eq("object",objectTracked)
 				}
-				System.out.println("first test passed!");
 				for (act in actionsOfObject)
 				{
 					// profiles.add(act.profile)
@@ -250,7 +249,7 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 			
 		}
 		lastRecommendation.entrySet().sort{it.value}.reverse()
-		Recommendations defaultRecommendation = new Recommendations(recommendations : lastRecommendation, date : today, profile: null)
+		PublicRecommendations defaultRecommendation = new PublicRecommendations(recommendations : lastRecommendation, profile: null)
 		return defaultRecommendation
 	}
 

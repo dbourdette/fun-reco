@@ -1,29 +1,24 @@
 package com.github.dbourdette.ecm;
 
-import java.util.Map;
-import java.util.Set;
-
-import com.github.dbourdette.api.Friend as PublicFriend
-import com.github.dbourdette.api.Profile as PublicProfile
-import com.github.dbourdette.api.Object as PublicObject
 import com.github.dbourdette.api.Action as PublicAction
+import com.github.dbourdette.api.Friend as PublicFriend
+import com.github.dbourdette.api.Object as PublicObject
+import com.github.dbourdette.api.Profile as PublicProfile
+import com.github.dbourdette.api.Recommendations as PublicRecommendations
 
+import com.mongodb.Mongo
 
 class RecommendationFacadeTests {
 
     RecommendationFacadeImpl facade = new RecommendationFacadeImpl()
-	
+	def mongo
 	
 	void setUp(){
 	}
 	
 	void tearDown(){
-	}
-
-	void testObjectPercistence(){
-		def publicObject = new PublicObject(id: "idDeMonObjet", objectProperties: ["show":["musique", "dance"]])
-		facade.pushObject(publicObject)
-		assert Object.findByObjectId("idDeMonObjet").objectProperties == ["show":["musique", "dance"]]
+		def db = mongo.getDB("fun-reco-test")
+		db.dropDatabase()
 	}
 	
     void testUpdateUnknownProfile() {
@@ -122,13 +117,10 @@ class RecommendationFacadeTests {
 		
 		//act
 		facade.pushObject(publicObject)
-		Object object = new Object(objectId: "OIDdirectSave", objectProperties: ["show":["musique", "dance"]], date: new Date())
-		object.save(flush: true)
 		
 		//assert
-		assert Object.findByObjectId("OIDdirectSave") != null
 		assert Object.findByObjectId(objectId) != null
-		assert Object.findByObjectId(objectId).objectProperties == properties
+		assert Object.findByObjectId(objectId).objectProperties.equals(properties)
 	}
 	
 	void testPushActionNewEntry(){
@@ -144,7 +136,6 @@ class RecommendationFacadeTests {
 		facade.pushAction(action)
 
 		// assert
-		//Action actionSaved = Action.findByProfile(Profile.findByFacebookId(profile.facebookId))
 		Profile dbProfile = Profile.findByFacebookId(profile.facebookId)
 		Object dbObject = Object.findByObjectId(publicObjectId)
 		List<Action> dbActions = Action.withCriteria {
@@ -245,8 +236,18 @@ class RecommendationFacadeTests {
 	}
  
 	void testCountActions() {
+		def profile1 = new PublicProfile(facebookId: "fbId1", email: "123@test.com", name: "123")
+		def profile2 = new PublicProfile(facebookId: "fbId2", email: "456@test.com", name: "456")
+		def publicObject = new PublicObject(id: "publicObjectId", objectProperties: ["show":["musique", "dance"]])
+		def action1 = new PublicAction(profile: profile1, object: publicObject, date: new Date())
+		def action2 = new PublicAction(profile: profile2, object: publicObject, date: new Date())
+		facade.updateProfile(profile1)
+		facade.updateProfile(profile2)
+		facade.pushObject(publicObject)
+		facade.pushAction(action1)
+		facade.pushAction(action2)
 		
-		assert facade.countActions() > 0
+		assert facade.countActions() == 2
 		
 	}
  
@@ -264,11 +265,10 @@ class RecommendationFacadeTests {
 		facade.pushAction(action2)
 		
 		//act
-		List<PublicAction> actionsRecommended = facade.findDefaultRecommendations()
+		PublicRecommendations reco = facade.findDefaultRecommendations()
 		
 		//assert
-		assert actionsRecommended.size() >=1
-		//assert actionsRecommended
+		assert reco.recommendations.size() > 0
 	}
  
 	void testFindRecommendations() {

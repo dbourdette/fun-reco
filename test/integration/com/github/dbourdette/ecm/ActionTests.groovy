@@ -1,6 +1,15 @@
 package com.github.dbourdette.ecm
 
+import com.mongodb.Mongo
+
 class ActionTests extends GroovyTestCase {
+	
+	def mongo
+	
+	void tearDown(){
+		def db = mongo.getDB("fun-reco-test")
+		db.dropDatabase()
+	}
 
 	void testSave() {
         Object object = TestData.testObject(['type':['video', 'show']])

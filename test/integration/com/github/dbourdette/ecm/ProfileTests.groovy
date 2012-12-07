@@ -2,8 +2,16 @@ package com.github.dbourdette.ecm
 
 import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper
+import com.mongodb.Mongo
 
 class ProfileTests extends GroovyTestCase {
+	
+	def mongo
+	
+	void tearDown(){
+		def db = mongo.getDB("fun-reco-test")
+		db.dropDatabase()
+	}
 
 	void testSave() {
 		Profile profile = TestData.testProfile()
