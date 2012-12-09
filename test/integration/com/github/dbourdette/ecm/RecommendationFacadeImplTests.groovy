@@ -1,14 +1,11 @@
-package com.github.dbourdette.ecm;
-
+package com.github.dbourdette.ecm
 import com.github.dbourdette.api.Action as PublicAction
 import com.github.dbourdette.api.Friend as PublicFriend
 import com.github.dbourdette.api.Object as PublicObject
 import com.github.dbourdette.api.Profile as PublicProfile
 import com.github.dbourdette.api.Recommendations as PublicRecommendations
 
-import com.mongodb.Mongo
-
-class RecommendationFacadeTests {
+class RecommendationFacadeImplTests {
 
     RecommendationFacadeImpl facade = new RecommendationFacadeImpl()
 	def mongo
