@@ -1,4 +1,4 @@
-package pages
+package com.github.dbourdette.site
 import geb.Page
 
 public class ActionsPage extends Page {

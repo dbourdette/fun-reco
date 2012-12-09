@@ -1,5 +1,6 @@
+package com.github.dbourdette.site
+
 import geb.junit4.GebReportingTest
-import pages.*
 import org.junit.Test
 
 class HomeTests extends GebReportingTest {

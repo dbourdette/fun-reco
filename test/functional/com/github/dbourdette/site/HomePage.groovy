@@ -1,4 +1,4 @@
-package pages
+package com.github.dbourdette.site
 import geb.Page
 
 class HomePage extends Page {
