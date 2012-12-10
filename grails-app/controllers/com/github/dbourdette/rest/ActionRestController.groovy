@@ -11,6 +11,7 @@ import com.github.dbourdette.api.RecommendationFacade;
 class ActionRestController {
 	
 	ObjectMapper mapper = new ObjectMapper()
+
 	RecommendationFacade recommendationFacade
 	
 	@Secured(['IS_AUTHENTICATED_REMEMBERED'])

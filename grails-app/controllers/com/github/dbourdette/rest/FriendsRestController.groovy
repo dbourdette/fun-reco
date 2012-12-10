@@ -1,57 +1,52 @@
 package com.github.dbourdette.rest
 
-import java.util.List;
-
-import grails.plugins.springsecurity.Secured
+import com.github.dbourdette.api.Friend
+import com.github.dbourdette.api.RecommendationFacade
 import grails.converters.JSON
-import org.codehaus.groovy.grails.web.json.*
+import grails.plugins.springsecurity.Secured
 import org.codehaus.jackson.map.ObjectMapper
-import org.codehaus.jackson.type.TypeReference
-
-import com.github.dbourdette.api.Friend;
-import com.github.dbourdette.api.RecommendationFacade;
 
 class FriendsRestController {
 
-	ObjectMapper mapper = new ObjectMapper();
+	ObjectMapper mapper = new ObjectMapper()
+
     RecommendationFacade recommendationFacade
 
-	@Secured(['IS_AUTHENTICATED_REMEMBERED'])
+	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def show() {
-		def foundFriends = recommendationFacade.findFriends(params.facebookId)
-		if (foundFriends) {
-			render mapper.writeValueAsString(foundFriends)
-		}else{
-			response.status = 500
+		def friends = recommendationFacade.findFriends(params.facebookId)
+
+        if (friends) {
+			render mapper.writeValueAsString(friends)
+		} else{
+			response.status = 404
 			render ([error: 'Profile not found'] as JSON)
 		}
 	}
 
 	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def save() {
-		if (params.friends) {
-			List<Friend> friends = mapper.readValue(params.friends, new TypeReference<List<Friend>>(){})
-			if (recommendationFacade.updateFriends(params.facebookId, friends)) {
-				response.status = 200
-			}else{
-				response.status = 500
-				render ([error: 'Parsing failed'] as JSON)
-			}
-		}else{
-			response.status = 500
-			render ([error: 'Operation not allowed'] as JSON)
-		}
+        def friends = []
+        request.JSON.each { friends << new Friend(it) }
+
+        try {
+            recommendationFacade.updateFriends(params.facebookId, friends)
+            render ([status: 'success'] as JSON)
+        } catch (e) {
+            response.status = 500
+            render ([status: 'error', reason: "Failed to update friends, reason: ${e.message}"] as JSON)
+        }
 	}
 
 	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def update() {
-		response.status = 500
+		response.status = 405
 		render ([error: 'Operation not allowed'] as JSON)
 	}
 
 	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def delete() {
-		response.status = 500
-		render ([error: 'Operation not allowed'] as JSON)
+		response.status = 405
+		render ([error: 'Operation (yet ?) not allowed'] as JSON)
 	}
 }

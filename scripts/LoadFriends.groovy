@@ -7,11 +7,11 @@ import groovyx.net.http.Method
 includeTargets << grailsScript("_GrailsInit")
 includeTargets << grailsScript("_GrailsArgParsing")
 
-target(main: "Loads profiles through HTTP REST API") {
+target(main: "Loads friends through HTTP REST API") {
     parseArguments()
 
     if (!argsMap.params) {
-        event("StatusError", ["Please provide a file containing profiles"])
+        event("StatusError", ["Please provide a file containing friends"])
     } else {
         def http = new HTTPBuilder('http://localhost:8080')
         http.auth.basic 'admin', 'admin'
@@ -20,15 +20,11 @@ target(main: "Loads profiles through HTTP REST API") {
             new File(file).eachLine { line ->
                 json = new JsonSlurper().parseText(line)
 
-                println "updating ${json.email}"
+                println "updating ${json.profile.name}"
 
                 http.request( Method.POST, ContentType.JSON) {
-                    uri.path = '/api/profile'
-                    body = [
-                        email: json.email,
-                        name: json.name,
-                        facebookId: json.facebookId
-                    ]
+                    uri.path = "/api/profile/${json.profile.facebookId}/friends"
+                    body = json.friends
                 }
             }
         }
