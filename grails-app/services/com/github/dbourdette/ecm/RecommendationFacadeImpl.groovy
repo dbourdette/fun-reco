@@ -1,17 +1,12 @@
 package com.github.dbourdette.ecm
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-
-import org.bson.types.ObjectId;
-
-import com.github.dbourdette.api.RecommendationFacade;
 import com.github.dbourdette.api.Recommendations as PublicRecommendations
 import com.github.dbourdette.api.Profile as PublicProfile
 import com.github.dbourdette.api.Action as PublicAction
 import com.github.dbourdette.api.Friend as PublicFriend
 import com.github.dbourdette.api.Object as PublicObject
+
+import com.github.dbourdette.api.RecommendationFacade
 
 class RecommendationFacadeImpl implements RecommendationFacade {
 
@@ -32,28 +27,22 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 
 	def PublicProfile findProfile(String facebookId){
 		Profile dbProfile = Profile.findByFacebookId(facebookId)
-		if (!dbProfile) {
+
+        if (!dbProfile) {
 			throw new UnsupportedOperationException("not profile found with facebookId="+facebookId)
 		}
 		
-		PublicProfile profile = new PublicProfile(facebookId:dbProfile.facebookId, email:dbProfile.email, name:dbProfile.name)
-		
-		return profile
+		return toPublicProfile(dbProfile)
 	}
 	
 	def PublicProfile findProfile(String email, String facebookId) {
-		
-		List<PublicProfile> profiles = PublicProfile.withCriteria {
-			eq('email', email)
-			eq('facebookId', facebookId)
-			maxResults(1)
-		}
-		PublicProfile profile = null
-		if (profiles.size() > 0){
-			profile = profiles.get(0)
-		}
-		
-		return profile;
+        Profile profile = Profile.findByEmail(email)
+
+        if (profile) {
+            return toPublicProfile(profile)
+        }
+
+        return toPublicProfile(Profile.findByFacebookId(facebookId))
 	}
 
 	@Override
@@ -285,6 +274,14 @@ class RecommendationFacadeImpl implements RecommendationFacade {
 		Recommendations defaultRecommendation = new Recommendations(recommendations : lastRecommendation, date : today)
 		return defaultRecommendation
 	}
+
+    private PublicProfile toPublicProfile(Profile profile) {
+        if (!profile) {
+            return null
+        }
+
+        return new PublicProfile(facebookId: profile.facebookId, email: profile.email, name: profile.name)
+    }
 
 }
 

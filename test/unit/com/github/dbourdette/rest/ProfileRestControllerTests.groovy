@@ -8,7 +8,7 @@ import com.github.dbourdette.api.RecommendationFacade;
 
 @TestFor(ProfileRestController)
 class ProfileRestControllerTests {
-	
+
 	void testSuccessfulShow() {
 		def facade = mockFor(RecommendationFacade)
 		facade.demand.findProfile(1..1) {String email, String facebookId -> new Profile(facebookId: "testFB", email: "testEmail", name: "testName")}

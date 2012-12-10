@@ -10,49 +10,41 @@ import com.github.dbourdette.api.RecommendationFacade;
 class ProfileRestController {
 	
 	ObjectMapper mapper = new ObjectMapper();
+
 	RecommendationFacade recommendationFacade
 	
-	@Secured(['IS_AUTHENTICATED_REMEMBERED'])
+	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def show() {
 		def foundProfile = recommendationFacade.findProfile("", params.facebookId)
-		if (foundProfile) {
+
+        if (foundProfile) {
 			render mapper.writeValueAsString(foundProfile)
-		}else{
-			response.status = 500
-			render ([error: 'Profile not found'] as JSON)
+		} else{
+			response.status = 404
+			render ([status: 'error', error: 'Profile not found'] as JSON)
 		}
 	}
 	
 	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def save() {
-		if (params.profile) {
-			Profile profile = mapper.readValue(params.profile, Profile.class)
-			if (profile.facebookId == params.facebookId) {
-				if (recommendationFacade.updateProfile(profile)) {
-					render mapper.writeValueAsString(profile)
-				}else{
-					response.status = 500
-					render ([error: 'Parsing failed'] as JSON)
-				}
-			}else{
-				response.status = 500
-				render ([error: 'Facebook IDs are not matching'] as JSON)
-			}
-		}else{
-			response.status = 500
-			render ([error: 'Operation not allowed'] as JSON)
-		}
+        try {
+            recommendationFacade.updateProfile(new Profile(request.JSON))
+            render ([status: 'success'] as JSON)
+        } catch (e) {
+            response.status = 500
+            render ([status: 'error', reason: "Failed to update profile, reason: ${e.message}"] as JSON)
+        }
 	}
 	
 	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def update() {
-		response.status = 500
+		response.status = 405
 		render ([error: 'Operation not allowed'] as JSON)
 	}
 	
 	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def delete() {
-		response.status = 500
-		render ([error: 'Operation not allowed'] as JSON)
+		response.status = 405
+		render ([error: 'Operation not (yet ?) allowed'] as JSON)
 	}
 }

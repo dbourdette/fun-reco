@@ -14,13 +14,7 @@ beans = {
 			stubRecommendationFacadeData(StubRecommendationFacadeData)
 			break
 		case Environment.DEVELOPMENT:
-//			recommendationFacade(RecommendationFacadeImpl) {
-//			}
-			recommendationFacade(StubRecommendationFacade) {
-				stubRecommendationFacadeData = ref("stubRecommendationFacadeData")
-			}
-			
-			stubRecommendationFacadeData(StubRecommendationFacadeData)
+			recommendationFacade(RecommendationFacadeImpl)
 			break
 	}
 	
